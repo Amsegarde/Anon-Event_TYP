@@ -1,2 +1,2 @@
-# teamproject
-2016 TYP
+# TYP 2016
+Sean, Jonny, Joe & Amy
