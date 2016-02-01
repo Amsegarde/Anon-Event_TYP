@@ -12,14 +12,13 @@ class CreateTicketInfoTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('users', function(Blueprint $table)
+		Schema::create('ticket_info', function(Blueprint $table)
 		{
-			$table->increments('id');
-			$table->string('name');
-			$table->string('email')->unique();
-			$table->string('password', 60);
-			$table->rememberToken();
-			$table->timestamps();
+			$table->increments('unique_id');
+			$table->integer('user_id');
+			$table->integer('event_id');
+			$table->date('transaction_date');
+			$table->datetime('transaction_time');
 		});
 	}
 
@@ -30,7 +29,7 @@ class CreateTicketInfoTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('users');
+		Schema::drop('ticket_info');
 	}
 
 }

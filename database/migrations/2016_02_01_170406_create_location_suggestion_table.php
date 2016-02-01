@@ -12,13 +12,11 @@ class CreateLocationSuggestionTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('users', function(Blueprint $table)
+		Schema::create('location_suggestion', function(Blueprint $table)
 		{
-			$table->increments('id');
-			$table->string('name');
-			$table->string('email')->unique();
-			$table->string('password', 60);
-			$table->rememberToken();
+			$table->increments('event_id');
+			$table->string('location');
+			$table->integer('votes');
 			$table->timestamps();
 		});
 	}
@@ -30,7 +28,7 @@ class CreateLocationSuggestionTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('users');
+		Schema::drop('location_suggestion');
 	}
 
 }

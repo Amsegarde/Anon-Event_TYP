@@ -12,13 +12,11 @@ class CreateVotedOnTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('users', function(Blueprint $table)
+		Schema::create('voted_on', function(Blueprint $table)
 		{
-			$table->increments('id');
-			$table->string('name');
-			$table->string('email')->unique();
-			$table->string('password', 60);
-			$table->rememberToken();
+			$table->integer('event_id')->unsigned();
+			$table->integer('user_id')->unsigned();
+			$table->primary(['event_id','user_id']);
 			$table->timestamps();
 		});
 	}
@@ -30,7 +28,7 @@ class CreateVotedOnTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('users');
+		Schema::drop('voted_on');
 	}
 
 }

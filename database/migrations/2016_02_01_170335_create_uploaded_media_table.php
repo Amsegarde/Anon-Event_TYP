@@ -12,13 +12,13 @@ class CreateUploadedMediaTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('users', function(Blueprint $table)
+		Schema::create('uploaded_media', function(Blueprint $table)
 		{
-			$table->increments('id');
-			$table->string('name');
-			$table->string('email')->unique();
-			$table->string('password', 60);
-			$table->rememberToken();
+			$table->increments('media_id');
+			$table->integer('event_id');
+			$table->string('media');
+			$table->integer('user_id');
+			$table->boolean('flagged');
 			$table->timestamps();
 		});
 	}
@@ -30,7 +30,7 @@ class CreateUploadedMediaTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('users');
+		Schema::drop('uploaded_media');
 	}
 
 }
