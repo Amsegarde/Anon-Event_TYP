@@ -11,9 +11,10 @@
 |
 */
 
+//Route::get('home','HomePageController@test');
 Route::get('/', 'HomePageController@index');
 Route::get('contact', 'ContactPageController@index');
-Route::get('about', 'AboutPageController@index');
+Route::get('/home', 'AboutPageController@index');
 Route::get('events', 'EventPageController@index');
 
 Route::controllers([

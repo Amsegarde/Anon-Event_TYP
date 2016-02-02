@@ -9,7 +9,7 @@ class HomePageController extends Controller {
 
 	public function __construct()
 	{
-		$this->middleware('guest');
+		//$this->middleware('guest');
 	}
 
 	/**
@@ -19,7 +19,13 @@ class HomePageController extends Controller {
 	 */
 	public function index()
 	{
-		return view('welcome');
+		return view('app');
+		//return view('welcome');
+	}
+	public function test()
+	{
+		return "hello";
+		//return view('welcome');
 	}
 
 }
