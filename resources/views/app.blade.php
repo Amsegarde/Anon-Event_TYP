@@ -44,16 +44,17 @@
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->firstname }} <span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">
-								<li><a href="{{ url('/auth/logout') }}">Tickets</a></li>
-								<li><a href="{{ url('/auth/logout') }}">Saved</a></li>
+							    <!-- tickets page not created yet-->
+								<li><a href="{{ url('/tickets') }}">Tickets</a></li>
+								<li><a href="{{ url('/events') }}">Saved/Favourited</a></li>
 								<hr />
 								
-								<li><a href="{{ url('/auth/logout') }}">Manage Events</a></li>
-								<li><a href="{{ url('/auth/logout') }}">Organisations</a></li>
-								<li><a href="{{ url('/auth/logout') }}">Contacts</a></li>
+								<li><a href="{{ url('/eventDashboard') }}">Manage Events</a></li>
+								<li><a href="{{ url('/organisationDashboard') }}">Organisations</a></li>
+								<li><a href="{{ url('/contact') }}">Contact</a></li>
 								<hr />
 
-								<li><a href="{{ url('/auth/logout') }}">Account Settings</a></li>
+								<!--<li><a href="{{ url('/auth/logout') }}">Account Settings</a></li>-->
 								<hr />
 								
 								<li><a href="{{ url('/auth/logout') }}">Logout</a></li>

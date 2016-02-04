@@ -9,7 +9,7 @@ class AboutPageController extends Controller {
 
 	public function __construct()
 	{
-		$this->middleware('guest');
+		//$this->middleware('guest');
 	}
 
 	/**
@@ -19,8 +19,8 @@ class AboutPageController extends Controller {
 	 */
 	public function index()
 	{
-		return "hello";
-		//return view('welcome');
+		//return "hello";
+		return view('about');
 	}
 
 }

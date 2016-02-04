@@ -19,7 +19,7 @@ class HomePageController extends Controller {
 	 */
 	public function index()
 	{
-		return view('app');
+		return view('home');
 		//return view('welcome');
 	}
 	public function test()

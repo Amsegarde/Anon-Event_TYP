@@ -12,10 +12,18 @@
 */
 
 //Route::get('home','HomePageController@test');
-Route::get('/', 'HomePageController@index');
+Route::get('about', 'AboutPageController@index');
+
+Route::get('browseEvents', 'BrowseEventsController@index');
+Route::get('browsePastEvents', 'BrowsePastEventsController@index');
 Route::get('contact', 'ContactPageController@index');
-Route::get('/home', 'AboutPageController@index');
+Route::get('createEvent', 'CreateEventController@index');
+Route::get('createEvent', 'CreateEventController@index');
+Route::get('createOrganisation', 'createOrganisationController@index');
+Route::get('eventDashboard', 'EventDashboardController@index');
 Route::get('events', 'EventPageController@index');
+Route::get('/', 'HomePageController@index');
+Route::get('organisationDashboard', 'OrganisationDashboardController@index');
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',

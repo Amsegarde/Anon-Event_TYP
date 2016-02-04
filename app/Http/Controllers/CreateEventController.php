@@ -9,7 +9,7 @@ class CreateEventController extends Controller {
 
 	public function __construct()
 	{
-		$this->middleware('guest');
+		//$this->middleware('guest');
 	}
 
 	/**
@@ -19,7 +19,7 @@ class CreateEventController extends Controller {
 	 */
 	public function index()
 	{
-		return view('welcome');
+		return view('createEvent');
 	}
 
 }
