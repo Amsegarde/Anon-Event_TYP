@@ -13,7 +13,6 @@
 
 //Route::get('home','HomePageController@test');
 Route::get('about', 'AboutPageController@index');
-Route::get('contact', 'ContactPageController@index');
 Route::get('/', 'HomePageController@index');
 
 Route::get('events/browse', 'EventController@browse');
@@ -26,6 +25,11 @@ Route::get('organisation/create', 'OrganisationController@create');
 Route::get('organisation/dashboard', 'OrganisationController@dashboard');
 Route::get('organisation', 'OrganisationController@index');
 Route::post('organisation', 'OrganisationController@store');
+
+Route::get('contact', 
+  ['as' => 'contact', 'uses' => 'AboutController@create']);
+Route::post('contact', 
+  ['as' => 'contact_store', 'uses' => 'AboutController@store']);
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',
