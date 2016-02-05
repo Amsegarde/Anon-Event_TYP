@@ -22,10 +22,10 @@ Route::get('events/create', 'EventController@create');
 Route::get('events/dashboard', 'EventController@dashboard');
 Route::get('events', 'EventController@index');
 
-
 Route::get('organisation/create', 'OrganisationController@create');
 Route::get('organisation/dashboard', 'OrganisationController@dashboard');
 Route::get('organisation', 'OrganisationController@index');
+Route::post('organisation', 'OrganisationController@store');
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',

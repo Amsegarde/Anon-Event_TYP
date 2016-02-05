@@ -1,9 +1,11 @@
 <?php namespace App\Http\Controllers;
 
+use App\Organisation;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use Illuminate\Http\Request;
+//use Illuminate\Http\Request;
+use Request;
 
 class OrganisationController extends Controller {
 
@@ -26,7 +28,6 @@ class OrganisationController extends Controller {
 	 */
 	public function create()
 	{
-		//
 		return view('organisation.create');
 	}
 
@@ -37,7 +38,10 @@ class OrganisationController extends Controller {
 	 */
 	public function store()
 	{
-		//
+		$input = Request::all();
+
+		Organisation::create($input);
+		return $input;
 	}
 
 	/**

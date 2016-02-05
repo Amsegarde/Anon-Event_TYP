@@ -1,17 +1,33 @@
 @extends('app')
 
 @section('content')
-<div class="container">
-	<div class="row">
-		<div class="col-md-10 col-md-offset-1">
-			<div class="panel panel-default">
-				<div class="panel-heading">Home</div>
 
-				<div class="panel-body">
-					This is the create Organisation page.
-				</div>
-			</div>
+	{!! Form::open(['url' => 'organisation']) !!}
+		<!-- Bio Form input -->
+		<div class="form-group">
+
+			{!! Form::label('name', 'Organisation Name: ') !!}
+			{!! Form::text('name', null, ['class' => 'form-control']) !!}
 		</div>
-	</div>
-</div>
+
+		<!-- Bio Form input -->
+		<div class="form-group">
+			{!! Form::label('bio', 'Biography: ') !!}
+			{!! Form::textarea('bio', null, ['class' => 'form-control']) !!}
+		</div>
+
+		<div class='form-group'>
+			{!! Form::label('logo', 'Logo: ' ) !!}
+			{!! Form::text('logo', 'upload logo', ['class'=>'form-control']) !!}
+		</div>
+
+		<!-- Submit Form input -->
+		<div class='form-group'>
+			{!! Form::submit('Add Organisation', ['class' => 'btn btn-primary form-control']) !!}
+		</div>
+
+
+
+	{!! Form::close() !!}
+
 @endsection
