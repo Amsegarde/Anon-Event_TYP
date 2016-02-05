@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEngagesWithTable extends Migration {
+class CreateMediasTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,13 +12,13 @@ class CreateEngagesWithTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('engages_with', function(Blueprint $table)
+		Schema::create('medias', function(Blueprint $table)
 		{
-			$table->increments('unique_id');
-			$table->integer('user_id');
+			$table->increments('media_id');
 			$table->integer('event_id');
-			$table->boolean('rsvp');
-			$table->boolean('favourited');
+			$table->string('media');
+			$table->integer('user_id');
+			$table->boolean('flagged');
 			$table->timestamps();
 		});
 	}
@@ -30,7 +30,7 @@ class CreateEngagesWithTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('engages_with');
+		Schema::drop('medias');
 	}
 
 }

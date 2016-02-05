@@ -26,6 +26,7 @@ class CreateEventDetailsTable extends Migration {
 			$table->string('genre');
 			$table->string('keywords/tags');
 			$table->boolean('active');
+			$table->string('scope'); // local, regional, national, international
 			$table->timestamps();
 		});
 	}

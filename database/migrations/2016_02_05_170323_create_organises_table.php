@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateVotedOnTable extends Migration {
+class CreateOrganisesTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,11 +12,11 @@ class CreateVotedOnTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('voted_on', function(Blueprint $table)
+		Schema::create('organises', function(Blueprint $table)
 		{
 			$table->integer('event_id')->unsigned();
-			$table->integer('user_id')->unsigned();
-			$table->primary(['event_id','user_id']);
+			$table->integer('organisation_id')->unsigned();
+			$table->primary(['event_id','organisation_id']);
 			$table->timestamps();
 		});
 	}
@@ -28,7 +28,7 @@ class CreateVotedOnTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('voted_on');
+		Schema::drop('organises');
 	}
 
 }

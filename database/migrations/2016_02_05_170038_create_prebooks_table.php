@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateFavouritedOrganisationTable extends Migration {
+class CreatePrebooksTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,11 +12,13 @@ class CreateFavouritedOrganisationTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('favourited_organisation', function(Blueprint $table)
+		Schema::create('prebooks', function(Blueprint $table)
 		{
 			$table->integer('user_id')->unsigned();
-			$table->integer('organisation_id')->unsigned();
-			$table->primary(['user_id','organisation_id']);
+			$table->integer('itinerary_id')->unsigned();
+			$table->primary(['user_id','itinerary_id']);
+			
+			$table->rememberToken();
 			$table->timestamps();
 		});
 	}
@@ -28,7 +30,7 @@ class CreateFavouritedOrganisationTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('favourited_organisation');
+		Schema::drop('prebooks');
 	}
 
 }

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUploadedMediaTable extends Migration {
+class CreateTicketsTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,14 +12,13 @@ class CreateUploadedMediaTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('uploaded_media', function(Blueprint $table)
+		Schema::create('tickets', function(Blueprint $table)
 		{
-			$table->increments('media_id');
-			$table->integer('event_id');
-			$table->string('media');
+			$table->increments('unique_id');
 			$table->integer('user_id');
-			$table->boolean('flagged');
-			$table->timestamps();
+			$table->integer('event_id');
+			$table->date('transaction_date');
+			$table->datetime('transaction_time');
 		});
 	}
 
@@ -30,7 +29,7 @@ class CreateUploadedMediaTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('uploaded_media');
+		Schema::drop('tickets');
 	}
 
 }

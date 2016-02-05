@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateLocationSuggestionTable extends Migration {
+class CreateOrganisationsTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,11 +12,9 @@ class CreateLocationSuggestionTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('location_suggestion', function(Blueprint $table)
+		Schema::create('organisations', function(Blueprint $table)
 		{
-			$table->increments('event_id');
-			$table->string('location');
-			$table->integer('votes');
+			$table->increments('id');
 			$table->timestamps();
 		});
 	}
@@ -28,7 +26,7 @@ class CreateLocationSuggestionTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('location_suggestion');
+		Schema::drop('organisations');
 	}
 
 }
