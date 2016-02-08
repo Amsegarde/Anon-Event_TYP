@@ -17,9 +17,14 @@ Route::get('/', 'HomePageController@index');
 
 Route::get('events/browse', 'EventController@browse');
 Route::get('events/browsePast', 'EventController@browsePast');
-Route::get('events/create', 'EventController@create');
 Route::get('events/dashboard', 'EventController@dashboard');
 Route::get('events', 'EventController@index');
+Route::get('events/create', 
+  ['as' => 'create', 'uses' => 'EventController@create']);
+Route::post('events/create', 
+  ['as' => 'create_store', 'uses' => 'EventController@store']);
+
+
 
 Route::get('organisation/create', 'OrganisationController@create');
 Route::get('organisation/dashboard', 'OrganisationController@dashboard');
