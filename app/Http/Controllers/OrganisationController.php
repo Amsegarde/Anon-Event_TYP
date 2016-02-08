@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 //use Illuminate\Http\Request;
 use Request;
 use DB;
+use Input;
 
 class OrganisationController extends Controller {
 
@@ -39,22 +40,41 @@ class OrganisationController extends Controller {
 	 *
 	 * @return Response
 	 */
+
 	public function store()
 	{
 		$input = Request::all();
 
-		Organisation::create($input);
+		$org = new Organisation;
 
-		$id = Organisation::where('name', $input['name'])->first();
+		$org->name = $input['name'];
+		$org->bio = $input['bio'];
+		$org->scope = $input['scope'];
+
+		$org->save();
+
+		/**
+		* change the name of the file and save it !!!! :D
+		*
+		*/
+		$imageFile = Input::file('image');
+		$imageName = $org->id . '.' . $imageFile->getClientOriginalExtension(); 
+
+		$destinationPath = base_path() . '/public/images/organisations/';
+
+		Input::file('image')->move($destinationPath, $imageName);
+		// End of Image save!!
+
+		$id = $org->id;
 
 		$admin = new Admin;
-
 		$admin->user_id = Auth::user()->id;
-		$admin->organisation_id = $id->organisation_id;
-
+		$admin->organisation_id = $id;
 		$admin->save();
 
-		return $admin;
+		echo $admin;
+
+		return redirect('organisation/' . $id);
 	}
 
 	/**
@@ -66,7 +86,9 @@ class OrganisationController extends Controller {
 	public function show($id)
 	{
 		//
-		//return view('organisation.dashboard');
+
+		$org = Organisation::find($id);
+		return view('organisation.organisation', array('org' => $org));
 	}
 
 	public function dashboard()

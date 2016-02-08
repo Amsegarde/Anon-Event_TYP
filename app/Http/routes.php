@@ -25,6 +25,7 @@ Route::get('organisation/create', 'OrganisationController@create');
 Route::get('organisation/dashboard', 'OrganisationController@dashboard');
 Route::get('organisation', 'OrganisationController@index');
 Route::post('organisation', 'OrganisationController@store');
+Route::get('organisation/{id}', 'OrganisationController@show');
 
 Route::get('contact', 
   ['as' => 'contact', 'uses' => 'AboutController@create']);
