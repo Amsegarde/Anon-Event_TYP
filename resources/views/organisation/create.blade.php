@@ -14,6 +14,15 @@
 						<p><a href="{{ url('/auth/login') }}">Log in</a> or <a href="{{ url('/auth/register') }}">Register</a></p>
 					@else
 
+						@if ($errors->any())
+							<ul class='alert alert-danger'>
+								@foreach ($errors->all() as $error)
+									<li>{!! $error !!}</li>
+								@endforeach
+							</ul>
+						@endif	
+
+
 						{!! Form::open(array('url'=>'organisation','method'=>'POST', 'files'=>true)) !!}
 							<!-- Bio Form input -->
 							<div class="form-group">
@@ -37,6 +46,7 @@
 								{!! Form::label('logo', 'Logo: ' ) !!}
 								{!! Form::file('image',null, ['class'=>'form-control']) !!}
 							</div>
+
 
 							<!-- Submit Form input -->
 							<div class='form-group'>

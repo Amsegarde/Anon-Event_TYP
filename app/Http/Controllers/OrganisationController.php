@@ -6,8 +6,9 @@ use Auth;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-//use Illuminate\Http\Request;
-use Request;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Validator;
+//use Request;
 use DB;
 use Input;
 
@@ -41,10 +42,15 @@ class OrganisationController extends Controller {
 	 * @return Response
 	 */
 
-	public function store()
+	public function store(Request $request)
 	{
-		$input = Request::all();
+		$input = $request->all();
 
+		$this->validate($request, [
+			'name' => 'required|min:3|unique:organisations'
+			]);
+
+		// add organisation table
 		$org = new Organisation;
 
 		$org->name = $input['name'];
@@ -57,14 +63,18 @@ class OrganisationController extends Controller {
 		* change the name of the file and save it !!!! :D
 		*
 		*/
-		$imageFile = Input::file('image');
-		$imageName = $org->id . '.' . $imageFile->getClientOriginalExtension(); 
+		if (Input::hasFile('image')){
+			$imageFile = Input::file('image');
+			$imageName = $org->id . '.' . $imageFile->getClientOriginalExtension(); 
 
-		$destinationPath = base_path() . '/public/images/organisations/';
+			$destinationPath = base_path() . '/public/images/organisations/';
 
-		Input::file('image')->move($destinationPath, $imageName);
+			Input::file('image')->move($destinationPath, $imageName);	
+		}
+		
 		// End of Image save!!
 
+		// Update admins table
 		$id = $org->id;
 
 		$admin = new Admin;
@@ -87,7 +97,7 @@ class OrganisationController extends Controller {
 	{
 		//
 
-		$org = Organisation::find($id);
+		$org = Organisation::findOrFail($id);
 		return view('organisation.organisation', array('org' => $org));
 	}
 

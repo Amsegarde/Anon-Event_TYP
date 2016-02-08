@@ -8,10 +8,11 @@
 				<div class="panel-heading"></div>
 
 				<div class="panel-body">
-					<p>Welcome to {!! $org->name !!}</p>
+					<h1>{!! $org->name !!}</h1>
 
 					<p>{!! $org->bio !!}</p>
 
+					<img src="../images/organisations/{!! $org->id !!}">
 					<p>Display logo!</p>
 				</div>
 			</div>
