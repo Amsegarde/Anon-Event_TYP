@@ -6,7 +6,12 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Laravel</title>
 
+	<link href="/css/elements.css" rel="stylesheet">
+	<script src="/js/my_js.js"></script>
+ 
+
 	<link href="{{ asset('/css/app.css') }}" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" media="all" href="{{ asset('/css/style.css') }}" >
 
 	<!-- Fonts -->
 	<link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
@@ -41,6 +46,8 @@
 						<li><a href="{{ url('/auth/login') }}">Login</a></li>
 						<li><a href="{{ url('/auth/register') }}">Register</a></li>
 					@else
+						<li><a href="{{ url('events/create') }}">Create Event</a></li>
+						<li><a href="{{ url('organisations/create') }}">Create Organisation</a></li>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->firstname }} <span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">
@@ -50,7 +57,7 @@
 								<hr />
 								
 								<li><a href="{{ url('/eventDashboard') }}">Manage Events</a></li>
-								<li><a href="{{ url('/organisationDashboard') }}">Organisations</a></li>
+								<li><a href="{{ url('/organisations') }}">Organisations</a></li>
 								<li><a href="{{ url('/contact') }}">Contact</a></li>
 								<hr />
 
