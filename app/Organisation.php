@@ -16,6 +16,6 @@ class Organisation extends Model {
 	 *
 	 * @var array
 	 */
-	protected $fillable = ['name', 'bio', 'image', 'scope'];
+	protected $fillable = ['name', 'bio', 'scope', 'image'];
 
 }

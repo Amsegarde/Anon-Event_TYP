@@ -1,11 +1,14 @@
 <?php namespace App\Http\Controllers;
 
 use App\Organisation;
+use App\Admin;
+use Auth;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 //use Illuminate\Http\Request;
 use Request;
+use DB;
 
 class OrganisationController extends Controller {
 
@@ -41,7 +44,17 @@ class OrganisationController extends Controller {
 		$input = Request::all();
 
 		Organisation::create($input);
-		return $input;
+
+		$id = Organisation::where('name', $input['name'])->first();
+
+		$admin = new Admin;
+
+		$admin->user_id = Auth::user()->id;
+		$admin->organisation_id = $id->organisation_id;
+
+		$admin->save();
+
+		return $admin;
 	}
 
 	/**
