@@ -18,7 +18,8 @@ class CreateEventDetailsTable extends Migration {
 			$table->string('name');
 			$table->string('bio',500);
 			$table->string('image');
-			$table->date('date')->nullable();
+			$table->dateTime('start_date')->nullable();
+			$table->dateTime('end_date')->nullable();
 			$table->string('Location')->nullable();
 			$table->integer('no_tickets');
 			$table->integer('avail_tickets');

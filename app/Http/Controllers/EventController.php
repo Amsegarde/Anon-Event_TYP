@@ -10,6 +10,7 @@ use DB;
 use Illuminate\Http\Request;
 use App\EventDetail;
 use App\Organise;
+use Carbon\Carbon;
 
 class EventController extends Controller {
 
@@ -50,6 +51,7 @@ class EventController extends Controller {
 										->where('user_id', '=', '?')
 										->setBindings([$id]);
 								})->get();
+		$genre = new Genre::all();
 		return view('events.create', compact('organisations'));
 	}
 
@@ -59,31 +61,35 @@ class EventController extends Controller {
 	 * @return Redirect
 	 */
 	public function store(CreateEventFormRequest $request){
-		
-		$newEvent = EventDetail::create(['name'=>$request->name,
-						'bio'=>$request->bio]
-						//'image'=>$request->image,
-						//'date'=>$request->date,
-						//'Location'=>$request->location, 
-					///	'no_tickets'=>$request->no_tickets,
-					//	'avail_tickets'=>$request->avail_tickets,
-					//	'price'=>$request->price, 
-					//	'genre'=>$request->genre,
+		$start_date = new Carbon($request->start_date);
+		$end_date = new Carbon($request->end_date);
+		//$carbonStart = $carbon->createFromFormat('d-m-Y', $start_date)->toDateString();
+		//$carbonEnd = $carbon->createFromFormat('d-m-Y', $end_date)->toDateString();
+
+		$newEvent = EventDetail::create([
+						'name'=>$request->name,
+						'bio'=>$request->bio,
+						'image'=>$request->image,
+						'start_date'=>$start_date->toDateTimeString(),
+						'end_date'=>$end_date->toDateTimeString(),
+						'Location'=>$request->location,
+						'no_tickets'=>$request->no_tickets,
+						'avail_tickets'=>$request->no_tickets,
+						'price'=>$request->price, 
+						'genre'=>$request->genre,
 					//	'keywords/tags'=>$request->keywords_tags,
 					//	'active'=>$request->active, 
-					//	'scope'=>$request->scope]
-						);
+						'scope'=>$request->scope
+						]);
 		
 		$eventID = EventDetail::max('event_id');
-		
 
 		$newOrganise = Organise::create(['event_id'=>$eventID, 'organisation_id'=>$request->organisation]);
-	//	$newOrganise->event_id = $eventID;
-	//	$newOrganise->organisation_id = $request->organisation;
-	//	$newOrganise->save();
+		$newGenre = Genre::create([])
 
 		return redirect('events')->with('message', 'Event Created!');
-		}
+	}
+
 	/**
 	 * Show the past events list to the user.
 	 *
