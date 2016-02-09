@@ -22,8 +22,21 @@ class OrganisationController extends Controller {
 	 */
 	public function index()
 	{
-		//
-		return view('organisation.organisation');
+		$id = Auth::user()->id;
+		$organisations = DB::table('organisations')
+								->whereIn('id', function($query) use ($id) {
+										$query->select('id')
+										->from('admins')
+										->where('user_id', '=', '?')
+										->setBindings([$id]);
+								})->get();
+
+		/*$organisations = Organisations::whereIn('organisation_id', function($query) use ($id) {
+								$query->Auth::where('user_id', '=', '?')
+									  ->setBindings([$id])
+
+		 				})->get();*/
+		return view('organisation.index', compact('organisations'));
 	}
 
 	/**

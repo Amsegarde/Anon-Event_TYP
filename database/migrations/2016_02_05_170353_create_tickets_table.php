@@ -14,11 +14,10 @@ class CreateTicketsTable extends Migration {
 	{
 		Schema::create('tickets', function(Blueprint $table)
 		{
-			$table->increments('unique_id');
+			$table->increments('id');
 			$table->integer('user_id');
 			$table->integer('event_id');
-			$table->date('transaction_date');
-			$table->datetime('transaction_time');
+			$table->timestamps();
 		});
 	}
 

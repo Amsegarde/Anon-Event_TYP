@@ -39,6 +39,7 @@
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
 					<li><a href="{{ url('/') }}">Home</a></li>
+					<li><a href="{{ url('/events/browse') }}">Browse Events</a></li>
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right">
@@ -47,7 +48,7 @@
 						<li><a href="{{ url('/auth/register') }}">Register</a></li>
 					@else
 						<li><a href="{{ url('events/create') }}">Create Event</a></li>
-						<li><a href="{{ url('organisations/create') }}">Create Organisation</a></li>
+						<li><a href="{{ url('organisation/create') }}">Create Organisation</a></li>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->firstname }} <span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">
@@ -57,7 +58,7 @@
 								<hr />
 								
 								<li><a href="{{ url('/eventDashboard') }}">Manage Events</a></li>
-								<li><a href="{{ url('/organisations') }}">Organisations</a></li>
+								<li><a href="{{ url('/organisation') }}">Organisations</a></li>
 								<li><a href="{{ url('/contact') }}">Contact</a></li>
 								<hr />
 

@@ -93,8 +93,15 @@ class EventController extends Controller {
 	 */
 	public function browse()
 	{
-		return view('events.browse');	
+		$events = EventDetail::all();
+		return view('events.browse', compact('events'));	
 
-}
+	}
+
+	public function show($id) {
+		$event = EventDetail::findOrFail($id);
+		return view('events.eventDetails', array('event' => $event));
+	}
+
 
 }
