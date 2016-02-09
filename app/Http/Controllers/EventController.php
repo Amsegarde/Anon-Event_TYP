@@ -9,6 +9,7 @@ use App\Organisation;
 use DB;
 use Illuminate\Http\Request;
 use App\EventDetail;
+use App\Organise;
 
 class EventController extends Controller {
 
@@ -58,21 +59,28 @@ class EventController extends Controller {
 	 * @return Redirect
 	 */
 	public function store(CreateEventFormRequest $request){
-		EventDetail::create(['name'=>$request->name,
-						'bio'=>$request->bio,
-						'image'=>$request->image,
-						'date'=>$request->date,
-						'Location'=>$request->location, 
-						'no_tickets'=>$request->no_tickets,
-						'avail_tickets'=>$request->avail_tickets,
-						'price'=>$request->price, 
-						'genre'=>$request->genre,
-						'keywords/tags'=>$request->keywords_tags,
-						'active'=>$request->active, 
-						'scope'=>$request->scope]
+		
+		$newEvent = EventDetail::create(['name'=>$request->name,
+						'bio'=>$request->bio]
+						//'image'=>$request->image,
+						//'date'=>$request->date,
+						//'Location'=>$request->location, 
+					///	'no_tickets'=>$request->no_tickets,
+					//	'avail_tickets'=>$request->avail_tickets,
+					//	'price'=>$request->price, 
+					//	'genre'=>$request->genre,
+					//	'keywords/tags'=>$request->keywords_tags,
+					//	'active'=>$request->active, 
+					//	'scope'=>$request->scope]
 						);
+		
+		$eventID = EventDetail::max('event_id');
+		
 
-		$eventID = EventDetail::id();
+		$newOrganise = Organise::create(['event_id'=>$eventID, 'organisation_id'=>$request->organisation]);
+	//	$newOrganise->event_id = $eventID;
+	//	$newOrganise->organisation_id = $request->organisation;
+	//	$newOrganise->save();
 
 		return redirect('events')->with('message', 'Event Created!');
 		}

@@ -20,21 +20,22 @@
 
 					<div class="form-group">
 					    {!! Form::label('Event Name') !!}
-					    {!! Form::text('event_name', null, 
-					        array('required', 
-					              'class'=>'form-control', 
-					              'placeholder'=>'Event Name')) !!}
+					    {!! Form::text('name', 
+					    				null, 
+					      				array('required', 
+					         		    'class'=>'form-control', 
+					          		    'placeholder'=>'Event Name')) !!}
 					</div>
 
 
 					<div class="form-group">
-							{!! Form::label('name', 'Select Organisation') !!}
+							{!! Form::label('organisation', 'Select Organisation') !!}
 								<select name="organisation" class="form-control">
 								    <option value="0">Select an Organisation</option>
 								    	<!--look into passing org id along with form even though its not displayed-->
 								    @foreach ($organisations as $organisation)
 
-								    	<option value="1">{{$organisation->name}}</option>
+								    	<option value="{{$organisation->id}}">{{$organisation->name}}</option>
 								    @endforeach
 								</select>		
 						</div>
@@ -42,7 +43,7 @@
 
 					<div class="form-group">
 					    {!! Form::label('Describe the Event') !!}
-					    {!! Form::textarea('event_description', null, 
+					    {!! Form::textarea('bio', null, 
 					        array('required', 
 					              'class'=>'form-control', 
 					              'placeholder'=>'Enter a description of the event!')) !!}

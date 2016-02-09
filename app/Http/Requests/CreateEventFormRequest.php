@@ -31,9 +31,9 @@ class CreateEventFormRequest extends Request {
 	public function rules()
 	{
 		return [
-			'event_name' => 'required',
+			'name' => 'required',
     		'organisation' => 'required',
-    		'event_description' => 'required',
+    		'bio' => 'required',
 		];
 	}
 
