@@ -130,18 +130,10 @@
 
 					<div class='form-group'>
 						{!! Form::label('genre', 'Event Type: ' ) !!}
-						<!-- {!! Form::select('genre', ['Select a Category', 'Music', 'Sport', 
+						{!! Form::select('genre', ['Select a Category', 'Music', 'Sport', 
 							'Theatre', 'Convention',
 							'Course', 'Conference', 'Seminar', 'Gaming', 'Party', 'Screening', 
-							'Tour', 'Other'], null, ['class'=>'form-control']) !!} -->
-								<select name="genre" class="form-control">
-								    <option value="0">Select An Event Type</option>
-								    	<!--look into passing org id along with form even though its not displayed-->
-								    @foreach ($genres as $genre)
-
-								    	<option value="{{$genre->id}}">{{$genre->type}}</option>
-								    @endforeach
-								</select>
+							'Tour', 'Other'], null, ['class'=>'form-control']) !!}
 					</div>
 
 					<div class='form-group'>

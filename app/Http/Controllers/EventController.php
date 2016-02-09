@@ -51,8 +51,11 @@ class EventController extends Controller {
 										->where('user_id', '=', '?')
 										->setBindings([$id]);
 								})->get();
-		$genre = new Genre::all();
+		
 		return view('events.create', compact('organisations'));
+
+		
+
 	}
 
 	/**
@@ -85,7 +88,6 @@ class EventController extends Controller {
 		$eventID = EventDetail::max('event_id');
 
 		$newOrganise = Organise::create(['event_id'=>$eventID, 'organisation_id'=>$request->organisation]);
-		$newGenre = Genre::create([])
 
 		return redirect('events')->with('message', 'Event Created!');
 	}
