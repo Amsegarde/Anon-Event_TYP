@@ -1,11 +1,16 @@
 <?php namespace App\Http\Controllers;
 
 use App\Organisation;
+use App\Admin;
+use Auth;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-//use Illuminate\Http\Request;
-use Request;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Validator;
+//use Request;
+use DB;
+use Input;
 
 class OrganisationController extends Controller {
 
@@ -36,12 +41,50 @@ class OrganisationController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store()
-	{
-		$input = Request::all();
 
-		Organisation::create($input);
-		return $input;
+	public function store(Request $request)
+	{
+		$input = $request->all();
+
+		$this->validate($request, [
+			'name' => 'required|min:3|unique:organisations'
+			]);
+
+		// add organisation table
+		$org = new Organisation;
+
+		$org->name = $input['name'];
+		$org->bio = $input['bio'];
+		$org->scope = $input['scope'];
+
+		$org->save();
+
+		/**
+		* change the name of the file and save it !!!! :D
+		*
+		*/
+		if (Input::hasFile('image')){
+			$imageFile = Input::file('image');
+			$imageName = $org->id . '.' . $imageFile->getClientOriginalExtension(); 
+
+			$destinationPath = base_path() . '/public/images/organisations/';
+
+			Input::file('image')->move($destinationPath, $imageName);	
+		}
+		
+		// End of Image save!!
+
+		// Update admins table
+		$id = $org->id;
+
+		$admin = new Admin;
+		$admin->user_id = Auth::user()->id;
+		$admin->organisation_id = $id;
+		$admin->save();
+
+		echo $admin;
+
+		return redirect('organisation/' . $id);
 	}
 
 	/**
@@ -53,7 +96,9 @@ class OrganisationController extends Controller {
 	public function show($id)
 	{
 		//
-		//return view('organisation.dashboard');
+
+		$org = Organisation::findOrFail($id);
+		return view('organisation.organisation', array('org' => $org));
 	}
 
 	public function dashboard()

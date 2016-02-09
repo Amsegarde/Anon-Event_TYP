@@ -8,7 +8,51 @@
 				<div class="panel-heading">Home</div>
 
 				<div class="panel-body">
-					This is the create event page.
+					<h1>Create Event</h1>
+
+					<ul>
+					    @foreach($errors->all() as $error)
+					        <li>{{ $error }}</li>
+					    @endforeach
+					</ul>
+
+					{!! Form::open(array('route' => 'create_store', 'class' => 'form')) !!}
+
+					<div class="form-group">
+					    {!! Form::label('Event Name') !!}
+					    {!! Form::text('event_name', null, 
+					        array('required', 
+					              'class'=>'form-control', 
+					              'placeholder'=>'Event Name')) !!}
+					</div>
+
+
+					<div class="form-group">
+							{!! Form::label('name', 'Select Organisation') !!}
+								<select name="organisation" class="form-control">
+								    <option value="0">Select an Organisation</option>
+								    	<!--look into passing org id along with form even though its not displayed-->
+								    @foreach ($organisations as $organisation)
+
+								    	<option value="1">{{$organisation->name}}</option>
+								    @endforeach
+								</select>		
+						</div>
+					
+
+					<div class="form-group">
+					    {!! Form::label('Describe the Event') !!}
+					    {!! Form::textarea('event_description', null, 
+					        array('required', 
+					              'class'=>'form-control', 
+					              'placeholder'=>'Enter a description of the event!')) !!}
+					</div>
+
+					<div class="form-group">
+					    {!! Form::submit('Create Event!', 
+					      array('class'=>'btn btn-primary')) !!}
+					</div>
+					{!! Form::close() !!}
 				</div>
 			</div>
 		</div>

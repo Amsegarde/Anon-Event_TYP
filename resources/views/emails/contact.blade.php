@@ -5,15 +5,22 @@
 	<div class="row">
 		<div class="col-md-10 col-md-offset-1">
 			<div class="panel panel-default">
-				<div class="panel-heading"></div>
+				<div class="panel-heading">Home</div>
 
 				<div class="panel-body">
-					<h1>{!! $org->name !!}</h1>
+					You received a message from Anon-Event
 
-					<p>{!! $org->bio !!}</p>
+					<p>
+						Name: {{ $name }}
+					</p>
 
-					<img src="../images/organisations/{!! $org->id !!}">
-					<p>Display logo!</p>
+					<p>
+						{{ $email }}
+					</p>
+
+					<p>
+						{{ $user_message }}
+					</p>
 				</div>
 			</div>
 		</div>
