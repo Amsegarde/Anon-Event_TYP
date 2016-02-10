@@ -31,6 +31,8 @@ class EventController extends Controller {
 	 *
 	 * @return Response
 	 */
+
+	//not currently used
 	public function index()
 	{
 		return view('events.browse');
@@ -43,6 +45,7 @@ class EventController extends Controller {
 	 */
 	public function create()
 	{
+
 		$id = Auth::id();
 		$organisations = DB::table('organisations')
 								->whereIn('id', function($query) use ($id) {
@@ -53,9 +56,6 @@ class EventController extends Controller {
 								})->get();
 		
 		return view('events.create', compact('organisations'));
-
-		
-
 	}
 
 	/**
@@ -109,14 +109,17 @@ class EventController extends Controller {
 	 */
 	public function browse()
 	{
-		return view('events.browse');	
+		//needs users filters and scope filters and some kind of algorithm
+		//needs to be relevant events not just all.
+		$events = EventDetail::all();
+		return view('events.browse',compact('events'));	
 
 	}
 	public function show($id){
 
-		$eventDetails = EventDetail::findOrFail($id);
+		$event = EventDetail::findOrFail($id);
 		//return $eventDetails;
-		return view('events.event')->with('eventDetails',$eventDetails);
+		return view('events.event')->with('event',$event);
 	}
 	
 
