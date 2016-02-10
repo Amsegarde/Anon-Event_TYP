@@ -23,7 +23,7 @@ Route::get('events/create',
   ['as' => 'create', 'uses' => 'EventController@create']);
 Route::post('events/create', 
   ['as' => 'create_store', 'uses' => 'EventController@store']);
-
+Route::get('events/{id}','EventController@show');
 
 
 Route::get('organisation/create', 'OrganisationController@create');

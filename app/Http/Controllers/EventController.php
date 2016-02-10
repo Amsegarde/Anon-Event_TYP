@@ -33,7 +33,7 @@ class EventController extends Controller {
 	 */
 	public function index()
 	{
-		return view('events.event');
+		return view('events.browse');
 	}
 
 	/**
@@ -85,11 +85,11 @@ class EventController extends Controller {
 						'scope'=>$request->scope
 						]);
 		
-		$eventID = EventDetail::max('event_id');
+		$eventID = EventDetail::max('id');
 
 		$newOrganise = Organise::create(['event_id'=>$eventID, 'organisation_id'=>$request->organisation]);
 
-		return redirect('events')->with('message', 'Event Created!');
+		return redirect('events/'.$eventID)->with('message', 'Event Created!');
 	}
 
 	/**
@@ -111,6 +111,13 @@ class EventController extends Controller {
 	{
 		return view('events.browse');	
 
-}
+	}
+	public function show($id){
+
+		$eventDetails = EventDetail::findOrFail($id);
+		//return $eventDetails;
+		return view('events.event')->with('eventDetails',$eventDetails);
+	}
+	
 
 }

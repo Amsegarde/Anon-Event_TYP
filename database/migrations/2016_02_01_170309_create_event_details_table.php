@@ -14,7 +14,7 @@ class CreateEventDetailsTable extends Migration {
 	{
 		Schema::create('event_details', function(Blueprint $table)
 		{
-			$table->increments('event_id');
+			$table->increments('id');
 			$table->string('name');
 			$table->string('bio',500);
 			$table->string('image');
