@@ -147,10 +147,22 @@
 					              'class'=>'form-control', 
 					              'placeholder'=>'Enter a description of the event!')) !!}
 					</div>
-
+					<p>Optionally Add specific items to the Itinery</p>
+					
 					<div class="form-group">
-					    {!! Form::submit('Create Event!', 
-					      array('class'=>'btn btn-primary')) !!}
+						<div id="dynamicInput">
+         					 <label for="itemName1">Name</label>
+         					 <input type="text" name="itemName1" class="form-control">
+         					 <label for="itemDesc1">Description</label>
+         					 <input type="text" name="itemDesc1" class="form-control">
+         					 <label for="itemTime1">Time</label>
+         					 <input type="text" name="itemTime1" class="form-control">
+    					 </div>
+     					<input type="button" class="btn btn-secondary"value="Add another text input" onClick="addInput('dynamicInput');">
+					</div>
+					
+					<div class="form-group">
+						{!! Form::submit('Create Event!', array('class'=>'btn btn-primary')) !!}
 					</div>
 					{!! Form::close() !!}
 				</div>
@@ -158,4 +170,29 @@
 		</div>
 	</div>
 </div>
+
+<script src="/wp-includes/js/addInput.js" language="Javascript" type="text/javascript"></script>
+<script type="text/javascript">	
+	var counter = 1;
+	var limit = 3;
+	function addInput(divName){
+    	if (counter == limit)  {
+        	alert("You may only add " + counter + " inputs");
+		}
+     	else {
+        	var newdiv = document.createElement('div');
+       		counter++;
+        	newdiv.innerHTML ="<hr />"+
+        				"<label for='itemName"+counter+"'>Name</label>"+
+         				"<input type='text' name='itemName"+counter+"' class='form-control'>"+
+         				"	<label for='itemDesc"+counter+"'>Description</label>"+
+         				"	<input type='text' name='itemDesc"+counter+"' class='form-control'>"+
+         				"	<label for='itemTime"+counter+"'>Time</label>"+
+         				"	<input type='text' name='itemTime"+counter+"' class='form-control'>";
+
+        	document.getElementById(divName).appendChild(newdiv);      
+     }
+}
+</script>
+
 @endsection

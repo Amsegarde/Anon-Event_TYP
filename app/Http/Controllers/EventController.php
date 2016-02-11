@@ -88,8 +88,8 @@ class EventController extends Controller {
 		$eventID = EventDetail::max('id');
 
 		$newOrganise = Organise::create(['event_id'=>$eventID, 'organisation_id'=>$request->organisation]);
-
-		return redirect('events/'.$eventID)->with('message', 'Event Created!');
+return  $request;
+		//return redirect('events/'.$eventID)->with('message', 'Event Created!');
 	}
 
 	/**
