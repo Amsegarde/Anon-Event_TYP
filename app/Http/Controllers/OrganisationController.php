@@ -2,6 +2,7 @@
 
 use App\Organisation;
 use App\Admin;
+use App\FavouriteOrganisation;
 use Auth;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -31,11 +32,6 @@ class OrganisationController extends Controller {
 										->setBindings([$id]);
 								})->get();
 
-		/*$organisations = Organisations::whereIn('organisation_id', function($query) use ($id) {
-								$query->Auth::where('user_id', '=', '?')
-									  ->setBindings([$id])
-
-		 				})->get();*/
 		return view('organisation.index', compact('organisations'));
 	}
 
@@ -101,17 +97,33 @@ class OrganisationController extends Controller {
 	}
 
 	/**
-	 * Display the specified resource.
+	 * Displays favourite or unfavourite button on organisations 
+	 * for registered users, and no button if guest to website. 
 	 *
 	 * @param  int  $id
 	 * @return Response
 	 */
 	public function show($id)
 	{
-		//
+		$hasFavourited = false;
 
+		$userID = Auth::user()->id;
+		$favUserId = DB::table('favourite_organisations')
+										->select('user_id')
+										->where('organisation_id', '=', $id)
+										->get();
+
+		foreach($favUserId as $favUser) {
+			if ($userID === $favUser->user_id) {
+				$hasFavourited = true;
+				break;
+			} 
+		}
+		
 		$org = Organisation::findOrFail($id);
-		return view('organisation.organisation', array('org' => $org));
+		return view('organisation.organisation', array(
+						'org' => $org, 
+						'hasFavourited' => $hasFavourited));
 	}
 
 	public function dashboard()
@@ -129,6 +141,47 @@ class OrganisationController extends Controller {
 	public function edit($id)
 	{
 		//
+	}
+
+	public function favourite($id) {
+		$userID = Auth::user()->id;
+		$favUserId = DB::table('favourite_organisations')
+										->select('*')
+										->where('user_id', '=', $userID)
+										->where('organisation_id', '=', $id)
+										->get();
+
+		
+		if (count($favUserId) == 0) {
+			$favourite = new FavouriteOrganisation;
+			$favourite->user_id = Auth::user()->id;
+			$favourite->organisation_id = $id;
+			$favourite->save();	
+		} else {
+			DB::table('favourite_organisations')
+							->where('user_id', '=', $userID)
+							->where('organisation_id', '=', $id)
+							->delete();
+		}
+
+		return redirect('organisation/' . $id);
+	}
+
+	/**
+	 * Displays the users favourited organisations.
+	 *
+	 */
+	public function myFavourites() {
+		$id = Auth::user()->id;
+		DB::table('organisations')
+				->whereIn('id', function($query) use ($id) {
+										$query->select('organisation_id')
+										->from('favourite_organisations')
+										->where('user_id', '=', '?')
+										->setBindings([$id]);
+								})->get();
+
+		return view('organisation.favourites', compact('organisations'));
 	}
 
 	/**

@@ -39,7 +39,9 @@
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
 					<li><a href="{{ url('/') }}">Home</a></li>
-					<li><a href="{{ url('/events/browse') }}">Browse Events</a></li>
+
+					<li><a href="{{ url('/events') }}">Browse Events</a></li>
+
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right">
@@ -54,7 +56,7 @@
 							<ul class="dropdown-menu" role="menu">
 							    <!-- tickets page not created yet-->
 								<li><a href="{{ url('/tickets') }}">Tickets</a></li>
-								<li><a href="{{ url('/events') }}">Saved/Favourited</a></li>
+								<li><a href="{{ url('/organisations/favourite') }}">Saved/Favourited</a></li>
 								<hr />
 								
 								<li><a href="{{ url('/eventDashboard') }}">Manage Events</a></li>

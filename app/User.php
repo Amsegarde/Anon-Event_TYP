@@ -31,4 +31,18 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 */
 	protected $hidden = ['password', 'remember_token'];
 
+	public function favourited() {
+		return $this->belongsToMany('App\Organisation');
+	}
+/*
+	public function hasFavourited($id) {
+		foreach ($this->favourited()->get() as $org) {
+			if ($org->organisation_id == $id) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+*/
 }

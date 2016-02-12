@@ -88,6 +88,7 @@ figure {
   margin: 1em 40px;
 }
 hr {
+  
   box-sizing: content-box;
   height: 0;
 }
@@ -168,13 +169,15 @@ textarea {
 optgroup {
   font-weight: bold;
 }
-table {
+table, th, td {
   border-collapse: collapse;
   border-spacing: 0;
+  border: 1px solid black;
 }
 td,
 th {
-  padding: 0;
+
+  padding: 15px;
 }
 /*! Source: https://github.com/h5bp/html5-boilerplate/blob/master/src/css/main.css */
 @media print {

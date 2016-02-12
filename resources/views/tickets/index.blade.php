@@ -16,7 +16,7 @@
 						@foreach ($tickets as $ticket) 
 							<article style="background-color:red">
 								<h2>{{ $ticket->name }}</h2>
-								<h7>Date: {{ $ticket->date }} Ticket No: {{ $ticket->id }}</h7>
+								<h7>Date: {{ $ticket->start_date }} Ticket No: {{ $ticket->id }}</h7>
 								<h7></h7>
 								<h7>Details: {{ $ticket->Location }}</h7>
 							</article>
@@ -30,3 +30,4 @@
 </div>
 
 @endsection
+

@@ -12,8 +12,21 @@
 
 					<p>{!! $org->bio !!}</p>
 
-					<img src="../images/organisations/{!! $org->id !!}">
-					<p>Display logo!</p>
+					
+					
+					@if  (Auth::guest())
+	
+
+					@elseif ($hasFavourited === true) 
+						{!! Form::open(array('url' => 'organisation/'. $org->id)) !!}
+							{!! Form::submit('Unfavourite') !!}
+						{!! Form::close() !!}
+					@else
+						{!! Form::open(array('url' => 'organisation/'. $org->id)) !!}
+							{!! Form::submit('Favourite') !!}
+						{!! Form::close() !!}
+					@endif
+					
 				</div>
 			</div>
 		</div>

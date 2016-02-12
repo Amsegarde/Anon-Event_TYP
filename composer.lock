@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a33c3ee3409712ea9190220f0fc7aa52",
-    "content-hash": "a25fe39d0fffb20216a242c0d66863be",
+    "hash": "256f401011c11a34e7032dc3ee00ae2e",
+    "content-hash": "35db06e44a69214b4bbed99c60dcd4a1",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -66,6 +66,54 @@
                 "preload"
             ],
             "time": "2015-05-26 10:57:51"
+        },
+        {
+            "name": "cornford/googlmapper",
+            "version": "v2.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bradcornford/Googlmapper.git",
+                "reference": "3b9ed04c71040dbdd462e5b3aee73d453a7f0e69"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bradcornford/Googlmapper/zipball/3b9ed04c71040dbdd462e5b3aee73d453a7f0e69",
+                "reference": "3b9ed04c71040dbdd462e5b3aee73d453a7f0e69",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "0.9.1",
+                "phpspec/phpspec": "2.0.*@dev"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Cornford\\Googlmapper": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bradley Cornford",
+                    "email": "me@bradleycornford.co.uk"
+                }
+            ],
+            "description": "An easy way to integrate Google Maps with Laravel.",
+            "keywords": [
+                "google",
+                "laravel",
+                "map",
+                "mapping",
+                "maps",
+                "streetview"
+            ],
+            "time": "2016-01-12 08:13:28"
         },
         {
             "name": "danielstjules/stringy",
@@ -881,16 +929,16 @@
         },
         {
             "name": "paragonie/random_compat",
-            "version": "1.1.6",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "e6f80ab77885151908d0ec743689ca700886e8b0"
+                "reference": "b0e69d10852716b2ccbdff69c75c477637220790"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/e6f80ab77885151908d0ec743689ca700886e8b0",
-                "reference": "e6f80ab77885151908d0ec743689ca700886e8b0",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/b0e69d10852716b2ccbdff69c75c477637220790",
+                "reference": "b0e69d10852716b2ccbdff69c75c477637220790",
                 "shasum": ""
             },
             "require": {
@@ -925,7 +973,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2016-01-29 16:19:52"
+            "time": "2016-02-06 03:52:05"
         },
         {
             "name": "psr/log",
@@ -1035,50 +1083,6 @@
                 "shell"
             ],
             "time": "2015-03-26 18:43:54"
-        },
-        {
-            "name": "skydiver/laravel-materialize-css",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/skydiver/laravel-materialize-css.git",
-                "reference": "a30618793ed161f62b071d29401aad0d7e172d2c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/skydiver/laravel-materialize-css/zipball/a30618793ed161f62b071d29401aad0d7e172d2c",
-                "reference": "a30618793ed161f62b071d29401aad0d7e172d2c",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/support": "5.*",
-                "php": ">=5.4.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Skydiver\\LaravelMaterializeCSS\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Martin",
-                    "email": "labs@flydev.com"
-                }
-            ],
-            "description": "Add Materialize CSS Framework to Laravel",
-            "keywords": [
-                "css",
-                "css framework",
-                "laravel",
-                "material design",
-                "materialize"
-            ],
-            "time": "2015-12-27 01:33:54"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -3068,9 +3072,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "skydiver/laravel-materialize-css": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

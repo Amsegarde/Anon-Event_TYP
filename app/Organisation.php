@@ -18,4 +18,8 @@ class Organisation extends Model {
 	 */
 	protected $fillable = ['name', 'bio', 'scope', 'image'];
 
+	public function events() {
+		return $this->hasMany('App\EventDetail');
+	}
+
 }

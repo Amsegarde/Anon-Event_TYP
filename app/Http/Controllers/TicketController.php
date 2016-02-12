@@ -12,6 +12,7 @@ use Illuminate\Validation\Validator;
 use DB;
 use Input;
 use App\Ticket;
+use App\EventDetail;
 
 class TicketController extends Controller {
 
@@ -23,14 +24,16 @@ class TicketController extends Controller {
 	 */
 	public function index()
 	{
-		$id = Auth::user()->id;
+
+	 	$id = Auth::user()->id;
 
 		$tickets = DB::table('event_details')
 						->join('tickets','event_details.id', '=', 'tickets.event_id')
 						->join('users', 'tickets.user_id', '=', 'users.id')
 						->select(
 							'event_details.name', 
-							'event_details.date',
+							'event_details.start_date',
+							'event_details.end_date',
 							'event_details.Location',
 							'tickets.id')
 						->where('users.id', '=', '?')
@@ -64,25 +67,29 @@ class TicketController extends Controller {
 		$ticket = new Ticket;
 		$ticket->user_id = Auth::user()->id;
 		$ticket->event_id = $id;
+		$ticket->quantity = $id->quantity;
 		$ticket->save();
-		echo $ticket;
+		
+		$update = DB::table('event_details')
+								->where('id', '=', $id)
+								->decrement('avail_tickets');
+
+
 		return redirect('tickets');
 	}
 
 	/**
 	 * Display the specified resource.
+	 * Displays tickect confirmation page, to confirm user
+	 * wants the tickets requested.
 	 *
 	 * @param  int  $id
 	 * @return Response
 	 */
 	public function show($id)
 	{
-
-		echo '<button>';
-			echo '<a href="/events/{!! $event->id !!}/ticket/confirm">Get Ticket</a>';
-		echo '</button>';
-		return 'this is a tecket for event number' . $id;
-
+		$tickets = EventDetail::findOrFail($id);
+		return view('events.confirmation', compact('tickets'));
 	}
 
 	public function dashboard()
