@@ -16,9 +16,9 @@ class CreatePrebooksTable extends Migration {
 		{
 			$table->integer('user_id')->unsigned();
 			$table->integer('itinerary_id')->unsigned();
-			$table->primary(['user_id','itinerary_id']);
+			$table->unique(['user_id','itinerary_id']);
+			$table->increments('id');
 			
-			$table->rememberToken();
 			$table->timestamps();
 		});
 	}

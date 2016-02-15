@@ -15,8 +15,9 @@ class CreateOrganisesTable extends Migration {
 		Schema::create('organises', function(Blueprint $table)
 		{
 			$table->integer('event_id')->unsigned();
+			$table->increments('id');
 			$table->integer('organisation_id')->unsigned();
-			$table->primary(['event_id','organisation_id']);
+			$table->unique(['event_id','organisation_id']);
 			$table->timestamps();
 		});
 	}

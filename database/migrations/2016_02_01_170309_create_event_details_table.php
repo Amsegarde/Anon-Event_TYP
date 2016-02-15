@@ -25,7 +25,7 @@ class CreateEventDetailsTable extends Migration {
 			$table->integer('avail_tickets');
 			$table->integer('price');
 			$table->string('genre');
-			$table->string('keywords/tags');
+			
 			$table->boolean('active');
 			$table->string('scope'); // local, regional, national, international
 			$table->timestamps();

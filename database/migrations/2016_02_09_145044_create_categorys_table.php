@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEventContainsTable extends Migration {
+class CreateCategorysTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,13 +12,10 @@ class CreateEventContainsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('event_contains', function(Blueprint $table)
+		Schema::create('categorys', function(Blueprint $table)
 		{
-			$table->integer('event_id')->unsigned();
-		
 			$table->increments('id');
-			$table->integer('itinerary_id')->unsigned();
-			$table->unique(['event_id','itinerary_id']);
+			$table->string('type');
 			$table->timestamps();
 		});
 	}
@@ -30,7 +27,7 @@ class CreateEventContainsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('event_contains');
+		Schema::drop('categorys');
 	}
 
 }

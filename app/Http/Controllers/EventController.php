@@ -92,16 +92,25 @@ class EventController extends Controller {
 							'organisation_id'=>$request->organisation]);
 		//added by joe to handle incoming intinery items
 		$itins = $request->item;
+		//return $itins;
 		$size = count($itins);
-		for($i = 0; $i< $size; $i+=3){
+		for($i = 1; $i< $size; $i+=5){
+			if(isset($itins[$i+4])){
+				
+				$prebooked = 1;
+			}
+			else{
+				$prebooked = 0;
+			}
 			Itinerary::create([
 				'name'=>$itins[$i],
 				'blurb'=>$itins[$i+1],
-//				'time'=>$itins[$i+2];
+				//'time'=>$itins[$i+2],
+				'prebooked'=>$prebooked
 				]);
 			
 		}
-
+		
 		return redirect('events/'.$eventID)->with('message', 'Event Created!');
 	}
 
@@ -130,7 +139,16 @@ class EventController extends Controller {
 
 	public function show($id) {
 			$event = EventDetail::findOrFail($id);
-			$org = Organisation::findOrFail($id);
-			return view('events.event', array('event' => $event, 'org' => $org));
+			$organisations = DB::table('organisations')
+								->whereIn('id', function($query) use ($id) {
+										$query->select('organisation_id')
+										->from('organises')
+										->where('event_id', '=', '?')
+										->setBindings([$id]);
+								})->first();
+			
+			
+			$organisation = Organisation::findOrFail($organisations->id);
+			return view('events.event', array('event' => $event, 'org' => $organisation));
 	}	
 }

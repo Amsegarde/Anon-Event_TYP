@@ -15,8 +15,9 @@ class CreateFavouriteOrganisationsTable extends Migration {
 		Schema::create('favourite_organisations', function(Blueprint $table)
 		{
 			$table->integer('user_id')->unsigned();
+			$table->increments('id');
 			$table->integer('organisation_id')->unsigned();
-			$table->primary(['user_id','organisation_id']);
+			$table->unique(['user_id','organisation_id']);
 			$table->timestamps();
 		});
 	}
