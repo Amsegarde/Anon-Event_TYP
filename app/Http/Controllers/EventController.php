@@ -49,7 +49,7 @@ class EventController extends Controller {
 		$id = Auth::id();
 		$organisations = DB::table('organisations')
 								->whereIn('id', function($query) use ($id) {
-										$query->select('id')
+										$query->select('organisation_id')
 										->from('admins')
 										->where('user_id', '=', '?')
 										->setBindings([$id]);
@@ -129,8 +129,36 @@ class EventController extends Controller {
 	}
 
 	public function show($id) {
+			$isAdmin = false;
+			$userID = Auth::id();
 			$event = EventDetail::findOrFail($id);
-			$org = Organisation::findOrFail($id);
-			return view('events.event', array('event' => $event, 'org' => $org));
+
+			$organisations = DB::table('organisations')
+								->whereIn('id', function($query) use ($id) {
+										$query->select('organisation_id')
+										->from('organises')
+										->where('event_id', '=', '?')
+										->setBindings([$id]);
+								})->first();
+	
+			$organisation = Organisation::findOrFail($organisations->id);
+
+			$admins = DB::table('admins')
+								->where('organisation_id', '=', $organisations->id)
+								->where('user_id', '=', $userID)
+								->get();
+
+			foreach ($admins as $admin) {
+				if ($admin->user_id == $userID) {
+					$isAdmin = true;
+					break;
+				}
+			}
+
+			return view('events.event', compact(
+				'event', 
+				'organisation',
+				'isAdmin' 
+				));
 	}	
 }

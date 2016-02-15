@@ -26,7 +26,7 @@ class OrganisationController extends Controller {
 		$id = Auth::user()->id;
 		$organisations = DB::table('organisations')
 								->whereIn('id', function($query) use ($id) {
-										$query->select('id')
+										$query->select('organisation_id')
 										->from('admins')
 										->where('user_id', '=', '?')
 										->setBindings([$id]);
@@ -173,7 +173,7 @@ class OrganisationController extends Controller {
 	 */
 	public function myFavourites() {
 		$id = Auth::user()->id;
-		DB::table('organisations')
+		$organisations = DB::table('organisations')
 				->whereIn('id', function($query) use ($id) {
 										$query->select('organisation_id')
 										->from('favourite_organisations')
