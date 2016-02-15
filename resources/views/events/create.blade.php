@@ -160,8 +160,9 @@
          					<input type="text" name="item[3]" class="form-control">
          					<label for="itemTime1">Cost(optional)</label>
          					<input type="text" name="item[4]" class="form-control">
-
-         					<input type="checkbox" name="item[5]" value="True">Pre-booked?<br>
+							<label for="itemTime1">Capacity</label>
+         					<input type="text" name="item[5]" class="form-control">
+         					<input type="checkbox" name="item[6]" value="true">Pre-booked?<br>
 
          				</div>	 
      					<input type="button" class="btn btn-secondary"value="Add Itinery Item" onClick="addInput('dynamicInput');">
@@ -180,7 +181,7 @@
 
 <script src="/wp-includes/js/addInput.js" language="Javascript" type="text/javascript"></script>
 <script type="text/javascript">	
-	var itemElement = 6;
+	var itemElement = 7;
 	var counter = 1;
 	var limit = 3;
 	function addInput(divName){
@@ -193,16 +194,16 @@
         	newdiv.innerHTML ="<hr />"+
         				"<label for='itemName"+counter+"'>Name</label>"+
          				"<input type='text' name='item["+itemElement+"]' class='form-control'>"+
-         				"	<label for='itemDesc"+counter+"'>Description</label>"+
-         				"	<input type='text' name='item["+(itemElement+1)+"]' class='form-control'>"+
-         				"	<label for='itemTime"+counter+"'>Time</label>"+
-         				"	<input type='text' name='item["+(itemElement+2)+"]' class='form-control'>"+
+         				"<label for='itemDesc"+counter+"'>Description</label>"+
+         				"<input type='text' name='item["+(itemElement+1)+"]' class='form-control'>"+
+         				"<label for='itemTime"+counter+"'>Time</label>"+
+         				"<input type='text' name='item["+(itemElement+2)+"]' class='form-control'>"+
 						"<label for='itemTime"+counter+"'>Cost(optional)</label>"+
-         					"<input type='text' name='item["+(itemElement+3)+"]' class='form-control'>"+
-         					"<input type='checkbox' name='item["+(itemElement+4)+"]' value='true'>Pre-booked?<br>";
-
-
-         				itemElement+=5;
+         				"<input type='text' name='item["+(itemElement+3)+"]' class='form-control'>"+
+         				"<label for='itemTime1'>Capacity</label>"+
+         				"<input type='text' name='item["+(itemElement+4)+"]' class='form-control'>"+
+       					"<input type='checkbox' name='item["+(itemElement+5)+"]' value='true'>Pre-booked?<br>";
+			itemElement+=6;
         	document.getElementById(divName).appendChild(newdiv);      
      }
 }

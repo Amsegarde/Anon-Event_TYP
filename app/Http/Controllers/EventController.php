@@ -12,7 +12,7 @@ use App\EventDetail;
 use App\Organise;
 use Carbon\Carbon;
 use App\Itinerary;
-
+use App\EventContain;
 class EventController extends Controller {
 
 	//
@@ -94,21 +94,29 @@ class EventController extends Controller {
 		$itins = $request->item;
 		//return $itins;
 		$size = count($itins);
-		for($i = 1; $i< $size; $i+=5){
-			if(isset($itins[$i+4])){
+		for($i = 1; $i< $size; $i+=6){
+			if(isset($itins[$i+5])){
 				
 				$prebooked = 1;
 			}
 			else{
 				$prebooked = 0;
 			}
+			//need to sort out itinerary ids in db. theyre going in as 0;
 			Itinerary::create([
 				'name'=>$itins[$i],
 				'blurb'=>$itins[$i+1],
 				//'time'=>$itins[$i+2],
-				'prebooked'=>$prebooked
+				'prebooked'=>$prebooked,
+				'cost'=>$itins[$i+3]
 				]);
-			
+			$itineraryID = Itinerary::max('id');
+			//return $eventID;
+			EventContain::create([
+				'itineraryId'=>$itineraryID,
+				'event_id'=>$eventID
+				]);
+
 		}
 		
 		return redirect('events/'.$eventID)->with('message', 'Event Created!');
