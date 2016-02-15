@@ -12,8 +12,25 @@
 						<p>You must have an account in order to get tickets.</p>
 						<p><a href="{{ url('/auth/login') }}">Log in</a> or <a href="{{ url('/auth/register') }}">Register</a></p>
 					@else
-						<h3>Please click button to confirm purchase</h3>
-						<button><a href="{{ url('/events/' . $tickets->id . '/ticket/confirm/' . $tickets->quantity) }}">Confirm Ticket</a></button>
+						<h3>Confirm purchase</h3>
+						{!! Form::open(array('url' => 'tickets', 'class' => 'form')) !!}
+						{!!  Form::hidden('eventID', $event->id) !!}
+						{!!  Form::hidden('request', $request) !!}
+						{!!  Form::hidden('quantity', $quantity) !!}
+					
+
+							<a href="{{ url('/events/'.$event->id )}}"
+							<article id="confirmation">
+								<h2>{{ $event->name }}</h2>
+								<h7>Quantity: {{ $quantity }}</h7>
+								<h7>Date: {{ $event->start_date }}</h7>
+
+							</article></a>
+
+							<div class="form-group">
+								{!! Form::submit('Confirm', array('class'=>'btn btn-primary')) !!}
+							</div>
+						{!! Form::close() !!}
 					@endif
 
 				</div>

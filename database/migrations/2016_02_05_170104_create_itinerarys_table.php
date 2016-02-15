@@ -14,7 +14,8 @@ class CreateItinerarysTable extends Migration {
 	{
 		Schema::create('itinerarys', function(Blueprint $table)
 		{
-			$table->increments('itinerary_id');
+			$table->increments('id');
+			$table->integer('event_id');
 			$table->string('name');
 			$table->date('date');
 			$table->dateTime('time');

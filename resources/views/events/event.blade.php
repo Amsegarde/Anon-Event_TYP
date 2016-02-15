@@ -12,7 +12,8 @@
 					<h4><a href="{{ url('/organisation/' . $org->id) }}">{!! $org->name !!}</a></h4>
 					<hr />
 
-				
+					{!! Form::open(array('url' => 'events/' . $event->id . '/ticket/confirm', 'class' => 'form')) !!}
+					{!!  Form::hidden('eventID', $event->id) !!}
 						<table>
 							<tr>
 								<th>Ticket Type</th>
@@ -25,24 +26,32 @@
 								<td>Free</td>
 								<td>0</td>
 								<td>
-									<select name="quantity" class="form-control">
-										<option value="0">1 <?php $event->quantity = 1 ?> </option>	
-										<option value="1">2 <?php  $event->quantity = 2 ?> </option>
-									    <option value="2">3 <?php  $event->quantity = 2 ?> </option>		  
-									</select>
+									<div class='form-group'>
+										{!! Form::select('quantity', [
+														'1', 
+														'2', 
+														'3',
+														'4',
+														'5',
+														'6'], 
+														null, 
+														['class'=>'form-control']) !!}
+					</div>
 
 								</td>
 								<td>
 									@if (($event->avail_tickets) === 0 )
 										SOLD OUT
 									@else
-										<button><a href="{{ url('/events/' . $event->id . '/ticket') }}">Get Ticket</a></button> : {{ $event->avail_tickets }} Remaining
+										<div class="form-group">
+											{!! Form::submit('Get Tickets', array('class'=>'btn btn-primary')) !!}
+										</div> : {{ $event->avail_tickets }} Remaining
 									@endif
 									
 								</td>
 							</tr>
 						</table>
-				
+					{!! Form::close() !!}
 
 					<hr />
 

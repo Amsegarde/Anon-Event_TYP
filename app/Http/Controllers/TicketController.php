@@ -61,21 +61,38 @@ class TicketController extends Controller {
 	 * @return Response
 	 */
 
-	public function store(Request $request, $id)
+	public function store(Request $request)
 	{
+		$userID = Auth::user()->id;
 
-		$ticket = new Ticket;
-		$ticket->user_id = Auth::user()->id;
-		$ticket->event_id = $id;
-		$ticket->quantity = $id->quantity;
-		$ticket->save();
+		$newEvent = Ticket::create([
+						'user_id' 	=> $userID,
+						'event_id' 	=> $request->eventID,
+						'quantity'	=> $request->quantity
+						
+		]);
 		
 		$update = DB::table('event_details')
-								->where('id', '=', $id)
-								->decrement('avail_tickets');
+								->where('id', '=', $request->eventID)
+								->decrement('avail_tickets', $request->quantity
+						);
 
 
 		return redirect('tickets');
+	}
+
+
+	/**
+	 * Temporarely displays tickets.
+	 */
+	public function confirm(Request $request)
+	{
+		$event = EventDetail::findOrFail($request->eventID);
+		$quantity = $request->quantity + 1;
+		return view('events.confirmation', array(
+									'request' => $request, 
+									'event' => $event,
+									'quantity' => $quantity));	
 	}
 
 	/**

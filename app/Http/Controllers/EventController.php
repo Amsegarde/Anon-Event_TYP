@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\EventDetail;
 use App\Organise;
 use Carbon\Carbon;
+use App\Itinerary;
 
 class EventController extends Controller {
 
@@ -86,7 +87,20 @@ class EventController extends Controller {
 		
 		$eventID = EventDetail::max('id');
 
-		$newOrganise = Organise::create(['event_id'=>$eventID, 'organisation_id'=>$request->organisation]);
+		$newOrganise = Organise::create([
+							'event_id'=>$eventID, 
+							'organisation_id'=>$request->organisation]);
+		//added by joe to handle incoming intinery items
+		$itins = $request->item;
+		$size = count($itins);
+		for($i = 0; $i< $size; $i+=3){
+			Itinerary::create([
+				'name'=>$itins[$i],
+				'blurb'=>$itins[$i+1],
+//				'time'=>$itins[$i+2];
+				]);
+			
+		}
 
 		return redirect('events/'.$eventID)->with('message', 'Event Created!');
 	}
