@@ -15,8 +15,11 @@ class CreateEventContainsTable extends Migration {
 		Schema::create('event_contains', function(Blueprint $table)
 		{
 			$table->integer('event_id')->unsigned();
+		
+			$table->increments('id');
 			$table->integer('itinerary_id')->unsigned();
-			$table->primary(['event_id','itinerary_id']);
+			//commented out by joe to remove a mysql conflict when creating event with itinerary items.
+			//$table->unique(['event_id','itinerary_id']);
 			$table->timestamps();
 		});
 	}

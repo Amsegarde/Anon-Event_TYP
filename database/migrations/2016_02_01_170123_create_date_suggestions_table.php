@@ -15,8 +15,10 @@ class CreateDateSuggestionsTable extends Migration {
 		Schema::create('date_suggestions', function(Blueprint $table)
 		{
 			$table->integer('event_id')->unsigned();
+			$table->integer('votes');
+			$table->increments('id');
 			$table->integer('start_date')->unsigned();
-			$table->primary(['event_id','start_date']);
+			$table->unique(['event_id','start_date']);
 			$table->timestamps();
 		});
 	}

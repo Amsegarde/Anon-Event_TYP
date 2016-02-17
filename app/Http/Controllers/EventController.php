@@ -12,7 +12,9 @@ use App\EventDetail;
 use App\Organise;
 use Carbon\Carbon;
 use App\Itinerary;
-
+use App\EventContain;
+use App\TicketType;
+use App\EventTicket;
 class EventController extends Controller {
 
 	//
@@ -92,16 +94,77 @@ class EventController extends Controller {
 							'organisation_id'=>$request->organisation]);
 		//added by joe to handle incoming intinery items
 		$itins = $request->item;
+		//return $itins;
 		$size = count($itins);
-		for($i = 0; $i< $size; $i+=3){
+		for($i = 1; $i< $size; $i+=6){
+			if(isset($itins[$i+5])){
+				
+				$prebooked = 1;
+			}
+			else{
+				$prebooked = 0;
+			}
+			//need to sort out itinerary ids in db. theyre going in as 0;
 			Itinerary::create([
 				'name'=>$itins[$i],
 				'blurb'=>$itins[$i+1],
-//				'time'=>$itins[$i+2];
+				//'time'=>$itins[$i+2],
+				'prebooked'=>$prebooked,
+				'cost'=>$itins[$i+3]
 				]);
-			
+			$itineraryID = Itinerary::max('id');
+			//return $eventID;
+			EventContain::create([
+				'itineraryId'=>$itineraryID,
+				'event_id'=>$eventID
+				]);
 		}
 
+		$row = $request->ticket_price;
+		$ticketTypeNum = $request->ticket_type;
+		//return $itins;
+		$size = count($row);
+		for($i = 1; $i < $size; $i++){
+			
+			$ticketType = "";
+			$ticketPrice = 0;
+
+			if ($ticketTypeNum[$i] == 0) {
+				$ticketType = 'Free';
+			} elseif ($ticketTypeNum[$i] == 1) {
+				$ticketType = 'Paid';
+			} elseif ($ticketTypeNum[$i] == 2) {
+				$ticketType = 'Student';
+			} elseif ($ticketTypeNum[$i] == 3) {
+				$ticketType = 'OAP';
+			} elseif ($ticketTypeNum[$i] == 4) {
+				$ticketType = 'Early Bird';
+			} elseif ($ticketTypeNum[$i] == 5) {
+				$ticketType = 'R.S.V.P';
+			} else {
+				$ticketType = 'Custom';
+			} 
+
+			if ($ticketTypeNum[$i] == 0 ) {
+				$newTicket = TicketType::create([
+					'type' => 'Paid',
+					'price' => 0
+				]);	
+			} else {
+				$newTicket = TicketType::create([
+					'type' => 'Paid',
+					'price' => $row[$i]
+				]);
+			}
+
+			$ticketID = TicketType::max('id');
+
+			$newEventTickets = EventTicket::create([
+				'ticket_type_id' => $ticketID,
+				'event_id' => $eventID
+			]);
+		}		
+	
 		return redirect('events/'.$eventID)->with('message', 'Event Created!');
 	}
 
@@ -140,6 +203,7 @@ class EventController extends Controller {
 										->where('event_id', '=', '?')
 										->setBindings([$id]);
 								})->first();
+
 	
 			$organisation = Organisation::findOrFail($organisations->id);
 
@@ -160,5 +224,10 @@ class EventController extends Controller {
 				'organisation',
 				'isAdmin' 
 				));
+
+			
+			
+			$organisation = Organisation::findOrFail($organisations->id);
+			return view('events.event', array('event' => $event, 'org' => $organisation));
 	}	
 }

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAdminsTable extends Migration {
+class CreateEventTicketsTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,12 +12,11 @@ class CreateAdminsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('admins', function(Blueprint $table)
+		Schema::create('event_tickets', function(Blueprint $table)
 		{
-			$table->integer('user_id')->unsigned();
-			$table->increments('id');
-			$table->integer('organisation_id')->unsigned();
-			$table->unique(['user_id','organisation_id']);
+			$table->integer('ticket_type_id')->unsigned();
+			$table->integer('event_id')->unsigned();
+			$table->unique(['ticket_type_id','event_id']);
 			$table->timestamps();
 		});
 	}
@@ -29,7 +28,7 @@ class CreateAdminsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('admins');
+		Schema::drop('event_tickets');
 	}
 
 }

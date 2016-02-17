@@ -15,15 +15,13 @@ class CreateItinerarysTable extends Migration {
 		Schema::create('itinerarys', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('event_id');
 			$table->string('name');
 			$table->date('date');
 			$table->dateTime('time');
 			$table->string('blurb');
 			$table->boolean('prebooked');
-			$table->integer('additional cost');
+			$table->integer('cost');
 			$table->integer('capacity');
-			$table->rememberToken();
 			$table->timestamps();
 		});
 	}

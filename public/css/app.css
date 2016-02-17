@@ -6235,10 +6235,15 @@ label,
   font-weight: 300;
 }
 
-table, th, td {
-    border: 1px solid black;
-    border-collapse: collapse;
+table.ticket-table {
+  border: none;
 }
-th, td {
+
+table.ticket-table th {
+  padding: 15px;
+}
+
+table.ticket-table td {
     padding: 15px;
 }
+
