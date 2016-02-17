@@ -140,48 +140,14 @@
 					    {!! Form::label('Select your tickets') !!}
 					</div>
 
-					<table class="ticket-table">
-						<tr>
-							<th>Type</th><th>Price</th>
-							
-						</tr>
-						<tr>
-							<td>	
-								{!! Form::select('ticket_type[1]', ['Free', 'Paid', "Students", "OAP", 'Early Bird', 'R.S.V.P', 'Custom'], null, ['class'=>'form-control']) !!}
-							</td>	
-							<td>
-								<div class="form-group">
-									<input type="number" name="ticket_price[1]" step="0.50" class="form-control" />
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>	
-								{!! Form::select('ticket_type[2]', ['Free', 'Paid'], null, ['class'=>'form-control']) !!}
-							</td>	
-							<td>
-								<div class="form-group">
-									<input type="number" name="ticket_price[2]" step="0.50" class="form-control" />
-								</div>
-							</td>
-						</tr>
-					</table>
-					
-					<a href="#" title="" class="add-ticket">Add Another Ticket Type</a>
+				
+						<table id="dynamic-tickets" class="ticket-table">
+						
 
-					<script type="text/javascript">
-						jQuery(function(){
-						    var counter = 1;
-						    jQuery('a.add-ticket').click(function(event){
-						        event.preventDefault();
-							    counter++;
-							    var newRow = jQuery('<tr><td><input type="text" name="first_name' +
-							    counter + '"/></td><td><input type="number" name="ticket_type' +
-							    counter + '"/></td></tr>');
-							    jQuery('table.ticket-table').append(newRow);
-							});
-						});
-					</script>
+						</table>
+					<input type="button" class="btn btn-secondary"value="Add Ticket" onClick="addTicket('dynamic-tickets');">
+						
+
 					<!--Added by joe to handle itinery Items.-->
 					<p>Optionally Add specific items to the Itinery</p>
 					
@@ -203,11 +169,14 @@
 	</div>
 </div>
 
-<script src="/wp-includes/js/addInput.js" language="Javascript" type="text/javascript"></script>
 <script type="text/javascript">	
+
+	var nextTicket = 1;
+	var ticketCounter = 0;
 	var itemElement = 1;
 	var counter = 1;
 	var limit = 3;
+
 	function addInput(divName){
     	if (counter == limit)  {
         	alert("You may only add " + counter + " inputs");
@@ -234,13 +203,69 @@
         	document.getElementById(divName).appendChild(newdiv);      
     	}
  
-}
+	}
  function removeInput(e){
  		e.remove();
-    	counter--;
-    	//console.log(document.getElementById(e));
-    	//.remove(this);
     }
+ 
+    // *********************************************add and remove tickets *************************************
+    function addTicket(divName){
+    	if (ticketCounter == 10)  {
+        	alert("You may only add " + counter + " tickets");
+		}
+     	else {
+     		var newhead = document.createElement('tr');
+        	var newrow = document.createElement('tr');
+        	newrow.setAttribute('id','ticket' + nextTicket);	
+        	newhead.setAttribute('id','tickethead');
+       		}
+       	if (ticketCounter == 0) {
+       		newhead.innerHTML ='<th>Type</th><th>Price</th><th>Remove</th>';
+				document.getElementById(divName).appendChild(newhead);				
+
+       	} 
+       	newrow.innerHTML =	'<td>'+
+       							'<select name="tickets[]">'+
+									'<option value="free">Free</option>'+
+									'<option value="paid">Paid</option>'+
+									'<option value="students">Students</option>'+
+									'<option value="oap">OAP</option>'+
+									'<option value="early_bird">Early Bird</option>'+
+									'<option value="rsvp">R.S.V.P</option>'+
+								'</select>'+
+							'</td>	'+
+							'<td>'+
+								'<div class="form-group">'+
+									'<input type="number" name="tickets[]" step="0.50" class="form-control" />'+
+								'</div>'+
+							'</td>'+
+							'<td>'+
+								'<input type="button" step="0.50" class="form-control" value="-" onClick="removeTicket(ticket'+ nextTicket+');" />'+
+								
+							'</td>';
+       	
+        console.log("Ticket number " + nextTicket + " added");	
+       				
+		//itemElement+=6;
+        document.getElementById(divName).appendChild(newrow);  
+        
+        ticketCounter++;
+       	nextTicket++;
+       	console.log("Next ticket will be " + nextTicket);
+	}
+
+	function removeTicket(e){
+		console.log("counter value is " + ticketCounter);
+		console.log("ticket number " + ticketCounter + "removed");
+ 		e.remove();
+ 		if(ticketCounter ==1){
+ 			document.getElementById('tickethead').remove();
+ 		} 
+ 		
+ 		ticketCounter--;
+ 		console.log("There is now " + ticketCounter + " tickets remaining");
+    }
+ 
 </script>
 
 @endsection

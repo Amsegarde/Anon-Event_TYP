@@ -120,40 +120,19 @@ class EventController extends Controller {
 				]);
 		}
 
-		$row = $request->ticket_price;
-		$ticketTypeNum = $request->ticket_type;
-		//return $itins;
-		$size = count($row);
-		for($i = 1; $i < $size; $i++){
-			
-			$ticketType = "";
-			$ticketPrice = 0;
+		$tickets = $request->tickets;
+		$size = count($tickets);
+		for($i = 0; $i < $size; $i += 2) {
 
-			if ($ticketTypeNum[$i] == 0) {
-				$ticketType = 'Free';
-			} elseif ($ticketTypeNum[$i] == 1) {
-				$ticketType = 'Paid';
-			} elseif ($ticketTypeNum[$i] == 2) {
-				$ticketType = 'Student';
-			} elseif ($ticketTypeNum[$i] == 3) {
-				$ticketType = 'OAP';
-			} elseif ($ticketTypeNum[$i] == 4) {
-				$ticketType = 'Early Bird';
-			} elseif ($ticketTypeNum[$i] == 5) {
-				$ticketType = 'R.S.V.P';
-			} else {
-				$ticketType = 'Custom';
-			} 
-
-			if ($ticketTypeNum[$i] == 0 ) {
+			if ($tickets[$i] == 'free' ) {
 				$newTicket = TicketType::create([
-					'type' => 'Paid',
+					'type' => $tickets[$i],
 					'price' => 0
 				]);	
 			} else {
 				$newTicket = TicketType::create([
-					'type' => 'Paid',
-					'price' => $row[$i]
+					'type' => $tickets[$i],
+					'price' => $tickets[$i + 1]
 				]);
 			}
 
