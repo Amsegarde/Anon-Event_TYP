@@ -16,6 +16,7 @@ class CreateItinerarysTable extends Migration {
 		{
 			$table->increments('id');
 			$table->string('name');
+			//consider removing date. it is redundant with datetime below
 			$table->date('date');
 			$table->dateTime('time');
 			$table->string('blurb');

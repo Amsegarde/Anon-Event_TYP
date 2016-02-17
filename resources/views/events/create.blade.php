@@ -152,21 +152,10 @@
 					
 					<div class="form-group">
 						<div id="dynamicInput">
-         					<label for="itemName1">Name</label>
-         					<input type="text" name="item[1]" class="form-control">
-         					<label for="itemDesc1">Description</label>
-         					<input type="text" name="item[2]" class="form-control">
-         					<label for="itemTime1">Time</label>
-         					<input type="text" name="item[3]" class="form-control">
-         					<label for="itemTime1">Cost(optional)</label>
-         					<input type="text" name="item[4]" class="form-control">
-							<label for="itemTime1">Capacity</label>
-         					<input type="text" name="item[5]" class="form-control">
-         					<input type="checkbox" name="item[6]" value="true">Pre-booked?<br>
-
+         				   <!--  Itinerary From divs will go here  -->
          				</div>	 
-     					<input type="button" class="btn btn-secondary"value="Add Itinery Item" onClick="addInput('dynamicInput');">
-					
+     					<input type="button" class="btn btn-secondary"value="Add Itinerary Item" onClick="addInput('dynamicInput');">
+						
 					</div>
 					
 					<div class="form-group">
@@ -181,7 +170,7 @@
 
 <script src="/wp-includes/js/addInput.js" language="Javascript" type="text/javascript"></script>
 <script type="text/javascript">	
-	var itemElement = 7;
+	var itemElement = 1;
 	var counter = 1;
 	var limit = 3;
 	function addInput(divName){
@@ -190,7 +179,8 @@
 		}
      	else {
         	var newdiv = document.createElement('div');
-       		counter++;
+        	newdiv.setAttribute('id','itinItem'+counter);
+       		//counter++;
         	newdiv.innerHTML ="<hr />"+
         				"<label for='itemName"+counter+"'>Name</label>"+
          				"<input type='text' name='item["+itemElement+"]' class='form-control'>"+
@@ -202,11 +192,20 @@
          				"<input type='text' name='item["+(itemElement+3)+"]' class='form-control'>"+
          				"<label for='itemTime1'>Capacity</label>"+
          				"<input type='text' name='item["+(itemElement+4)+"]' class='form-control'>"+
-       					"<input type='checkbox' name='item["+(itemElement+5)+"]' value='true'>Pre-booked?<br>";
+       					"<input type='checkbox' name='item["+(itemElement+5)+"]' value='true'>Pre-booked?<br>"+
+						"<input type='button' class='btn btn-secondary'value='Remove Itinerary Item' onClick='removeInput(itinItem"+counter+");'>";
+       		counter++;			
 			itemElement+=6;
         	document.getElementById(divName).appendChild(newdiv);      
-     }
+    	}
+ 
 }
+ function removeInput(e){
+ 		e.remove();
+    	counter--;
+    	//console.log(document.getElementById(e));
+    	//.remove(this);
+    }
 </script>
 
 @endsection
