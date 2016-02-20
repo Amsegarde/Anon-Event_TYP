@@ -12,7 +12,7 @@ use Illuminate\Validation\Validator;
 use DB;
 use Input;
 use App\Ticket;
-use App\EventDetail;
+use App\Event;
 
 class TicketController extends Controller {
 
@@ -27,14 +27,14 @@ class TicketController extends Controller {
 
 	 	$id = Auth::user()->id;
 
-		$tickets = DB::table('event_details')
-						->join('tickets','event_details.id', '=', 'tickets.event_id')
+		$tickets = DB::table('events')
+						->join('tickets','events.id', '=', 'tickets.event_id')
 						->join('users', 'tickets.user_id', '=', 'users.id')
 						->select(
-							'event_details.name', 
-							'event_details.start_date',
-							'event_details.end_date',
-							'event_details.Location',
+							'events.name', 
+							'events.start_date',
+							'events.end_date',
+							'events.location',
 							'tickets.id')
 						->where('users.id', '=', '?')
 						->setBindings([$id])								
@@ -72,7 +72,7 @@ class TicketController extends Controller {
 						
 		]);
 		
-		$update = DB::table('event_details')
+		$update = DB::table('events')
 								->where('id', '=', $request->eventID)
 								->decrement('avail_tickets', $request->quantity
 						);
@@ -87,7 +87,7 @@ class TicketController extends Controller {
 	 */
 	public function confirm(Request $request)
 	{
-		$event = EventDetail::findOrFail($request->eventID);
+		$event = Event::findOrFail($request->eventID);
 		$quantity = $request->quantity + 1;
 		return view('events.confirmation', array(
 									'request' => $request, 

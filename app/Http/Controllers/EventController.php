@@ -8,7 +8,7 @@ use App\Admin;
 use App\Organisation;
 use DB;
 use Illuminate\Http\Request;
-use App\EventDetail;
+use App\Event;
 use App\Organise;
 use Carbon\Carbon;
 use App\Itinerary;
@@ -71,13 +71,13 @@ class EventController extends Controller {
 		//$carbonStart = $carbon->createFromFormat('d-m-Y', $start_date)->toDateString();
 		//$carbonEnd = $carbon->createFromFormat('d-m-Y', $end_date)->toDateString();
 
-		$newEvent = EventDetail::create([
+		$newEvent = Event::create([
 						'name'=>$request->name,
 						'bio'=>$request->bio,
 						'image'=>$request->image,
 						'start_date'=>$start_date->toDateTimeString(),
 						'end_date'=>$end_date->toDateTimeString(),
-						'Location'=>$request->location,
+						'location'=>$request->location,
 						'no_tickets'=>$request->no_tickets,
 						'avail_tickets'=>$request->no_tickets,
 						'price'=>$request->price, 
@@ -87,7 +87,7 @@ class EventController extends Controller {
 						'scope'=>$request->scope
 						]);
 		
-		$eventID = EventDetail::max('id');
+		$eventID = Event::max('id');
 
 		$newOrganise = Organise::create([
 							'event_id'=>$eventID, 
@@ -166,14 +166,14 @@ class EventController extends Controller {
 	{
 		//needs users filters and scope filters and some kind of algorithm
 		//needs to be relevant events not just all.
-			$events = EventDetail::all();
+			$events = Event::all();
 			return view('events.browse', compact('events'));
 	}
 
 	public function show($id) {
 			$isAdmin = false;
 			$userID = Auth::id();
-			$event = EventDetail::findOrFail($id);
+			$event = Event::findOrFail($id);
 
 			$organisations = DB::table('organisations')
 								->whereIn('id', function($query) use ($id) {
