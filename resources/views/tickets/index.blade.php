@@ -18,7 +18,7 @@
 								<h2>{{ $ticket->name }}</h2>
 								<h7>Date: {{ $ticket->start_date }} Ticket No: {{ $ticket->id }}</h7>
 								
-								<h7>Details: {{ $ticket->Location }}</h7>
+								<h7>Details: {{ $ticket->location }}</h7>
 							</article>
 						@endforeach
 
