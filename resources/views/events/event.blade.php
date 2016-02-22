@@ -20,44 +20,60 @@
 							@else
 								{!! Form::open(array('url' => 'events/' . $event->id . '/ticket/confirm', 'class' => 'form')) !!}
 									{!!  Form::hidden('eventID', $event->id) !!}
-									<table>
-										<tr>
-											<th>Ticket Type</th>
-											<th>Price</th>
-											<th>Quantity</th>
-											<th>Get Ticket</th>
-										</tr>
-										
-										<tr>
-											<td>Free</td>
-											<td>0</td>
-											<td>
-												<div class='form-group'>
-													{!! Form::select('quantity', [
-																	'1', 
-																	'2', 
-																	'3',
-																	'4',
-																	'5',
-																	'6'], 
-																	null, 
-																	['class'=>'form-control']) !!}
-												</div>
 
-											</td>
-											<td>
-												@if (($event->avail_tickets) === 0 )
-													SOLD OUT
-												@else
-													<div class="form-group">
-														{!! Form::submit('Get Tickets', array('class'=>'btn btn-primary')) !!}
-													</div> : {{ $event->avail_tickets }} Remaining
-												@endif
-												
-											</td>
-										</tr>
-									</table>
-								{!! Form::close() !!}
+									<div class="row">
+										<div class="input-field col s4">
+								        	<input readonly value="Type" id="disabled" type="text">
+								        </div>
+
+										<div class="input-field col s4">
+								        	<input readonly value="Price" id="disabled" type="text">
+								        </div>
+
+								        <div class="input-field col s4">
+								        	<input readonly value="Quantity" id="disabled" type="text">
+								        </div>
+									</div>
+
+									@foreach ($tickets as $ticket)
+									<div class="row">
+										<div class="input-field col s4">
+								        	<input readonly name="type[]" value="{!! $ticket->type !!}" id="disabled" type="text" class="validate">
+								        </div>
+
+										<div class="input-field col s4">
+								        	<input readonly name="price[]" value="{{ $ticket->price }}" id="disabled" type="text" class="validate">
+								        </div>
+
+								        <div class='input-field col s4'>
+											{!! Form::select('quantity[]', [
+												'0',
+												'1', 
+												'2', 
+												'3',
+												'4',
+												'5',
+												'6'], 
+												null,
+												['class'=>'ticketSelect']) !!}
+										</div>
+									</div>
+
+
+									@endforeach
+	
+		
+								@if (($event->avail_tickets) === 0 )
+									SOLD OUT
+								@else
+									<div class="input-field">
+										{!! Form::submit('Get Tickets', array('class'=>'btn btn-primary')) !!}
+									</div> : {{ $event->avail_tickets }} Remaining
+								@endif
+
+						{!! $event->id !!}
+
+					{!! Form::close() !!}
 
 							@endif
 						

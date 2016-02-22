@@ -216,11 +216,16 @@ class EventController extends Controller {
 				}
 			}
 
+
+			// get the tickets to the event
+			$e = Event::findOrFail($id);
+			$tickets = TicketType::where('event_id', '=', $e->id)->get();
 			return view('events.event', compact(
 				'event', 
 				'organisation',
-				'isAdmin' 
-				));
+				'isAdmin',
+				'tickets' 
+			));
 
 			
 			

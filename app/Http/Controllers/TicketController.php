@@ -12,6 +12,7 @@ use Illuminate\Validation\Validator;
 use DB;
 use Input;
 use App\Ticket;
+use App\TicketType; 
 use App\Event;
 
 class TicketController extends Controller {
@@ -88,11 +89,28 @@ class TicketController extends Controller {
 	public function confirm(Request $request)
 	{
 		$event = Event::findOrFail($request->eventID);
-		$quantity = $request->quantity + 1;
+		//$quantity = $request->quantity + 1;
+		$type = $request->type;
+		$price = $request->price;
+		$quantity = $request->quantity;
+
+
+		$tickets = TicketType::where('event_id', '=', $event->id)->get();
+
+		$totals = array();
+		$size = count($type);
+		for ($i = 0; $i < $size; $i++) {
+			$sum = $price[$i] * $quantity[$i];
+			array_push($totals, $sum);
+		};
+
 		return view('events.confirmation', array(
 									'request' => $request, 
 									'event' => $event,
-									'quantity' => $quantity));	
+									'type' => $type,
+									'price' => $price,
+		 							'quantity' => $quantity,
+		 							'totals' => $totals));	
 	}
 
 	/**
@@ -105,7 +123,7 @@ class TicketController extends Controller {
 	 */
 	public function show($id)
 	{
-		$tickets = EventDetail::findOrFail($id);
+		$tickets = Event::findOrFail($id);
 		return view('events.confirmation', compact('tickets'));
 	}
 
