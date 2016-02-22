@@ -16,16 +16,17 @@
 						{!! Form::open(array('url' => 'tickets', 'class' => 'form')) !!}
 						{!!  Form::hidden('eventID', $event->id) !!}
 						{!!  Form::hidden('request', $request) !!}
-						{!!  Form::hidden('quantity', $quantity) !!}
-					
+						<h2>{{ $event->name }}</h2>
+						@for ($i = 0; $i < count($totals); $i++)
+								<article id="confirmation">
+									
+									<p>Type: {{ $type[$i] }}</p>
+									<p>Quantity: {{ $quantity[$i] }}</p>
+									<p>Subtotal: {{  $totals[$i] }}</p>
+									<p>Date: {{ $event->start_date }}</p>
 
-							<a href="{{ url('/events/'.$event->id )}}"
-							<article id="confirmation">
-								<h2>{{ $event->name }}</h2>
-								<h7>Quantity: {{ $quantity }}</h7>
-								<h7>Date: {{ $event->start_date }}</h7>
-
-							</article></a>
+								</article>
+						@endfor
 
 							<div class="form-group">
 								{!! Form::submit('Confirm', array('class'=>'btn btn-primary')) !!}

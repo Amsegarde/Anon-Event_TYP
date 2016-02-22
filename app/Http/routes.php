@@ -24,7 +24,6 @@ Route::get('events/create','EventController@create');
 Route::post('events/create', 
   ['as' => 'create_store', 'uses' => 'EventController@store']);
 
-Route::get('events/{id}/ticket/confirm', 'TicketController@tempTicket');
 Route::post('events/{id}/ticket/confirm', 'TicketController@confirm');
 Route::get('events/{id}/ticket', 'TicketController@show');
 Route::get('events/{id}','EventController@show');
