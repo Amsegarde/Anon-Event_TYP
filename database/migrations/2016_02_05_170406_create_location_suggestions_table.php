@@ -14,9 +14,11 @@ class CreateLocationSuggestionsTable extends Migration {
 	{
 		Schema::create('location_suggestions', function(Blueprint $table)
 		{
+			$table->integer('event_id');
+			$table->integer('votes');
 			$table->increments('id');
 			$table->string('location');
-			$table->integer('votes');
+			$table->unique(['event_id','location']);
 			$table->timestamps();
 		});
 	}
