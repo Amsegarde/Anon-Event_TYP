@@ -12,25 +12,43 @@
 						<p>You must have an account in order to get tickets.</p>
 						<p><a href="{{ url('/auth/login') }}">Log in</a> or <a href="{{ url('/auth/register') }}">Register</a></p>
 					@else
-						<h3>Confirm purchase</h3>
 						{!! Form::open(array('url' => 'tickets', 'class' => 'form')) !!}
-						{!!  Form::hidden('eventID', $event->id) !!}
-						{!!  Form::hidden('request', $request) !!}
-						<h2>{{ $event->name }}</h2>
-						@for ($i = 0; $i < count($totals); $i++)
-								<article id="confirmation">
-									
-									<p>Type: {{ $type[$i] }}</p>
-									<p>Quantity: {{ $quantity[$i] }}</p>
-									<p>Subtotal: {{  $totals[$i] }}</p>
-									<p>Date: {{ $event->start_date }}</p>
+							{!! Form::hidden('eventID', $event->id) !!}
+							{!! Form::hidden('request', $request) !!}
+							{!! Form::hidden('request', $tickets) !!}
+							{!!	Form::hidden('totalQuantity', $totalQuantity) !!}
 
-								</article>
-						@endfor
+							<h2>{{ $event->name }}</h2>
+							<p>Date: {{ $event->start_date }}</p>
 
-							<div class="form-group">
-								{!! Form::submit('Confirm', array('class'=>'btn btn-primary')) !!}
-							</div>
+
+							<table>
+								<tr>
+									<th>Type</th><th>Price</th><th>Quantity</th><th>Subtotal</th>
+								</tr>
+
+								@for ($i = 0; $i < count($totals); $i++)
+									@if ($quantity[$i] > 0)
+
+										{!!	Form::hidden('type[]', $type[$i]) !!}
+										{!!	Form::hidden('price[]', $price[$i]) !!}
+										{!!	Form::hidden('quantity[]', $quantity[$i]) !!}
+
+										<tr>
+											<td>{{ $type[$i] }}</td>
+											<td>{{ $price[$i] }}</td>
+											<td>{{ $quantity[$i] }}</td>
+											<td>{{ $totals[$i] }}</td>
+										</tr>
+									@endif
+								@endfor
+
+								<tr><td></td><td>Total:</td><td>{{ $totalQuantity }}</td><td>{{ $totalPrice }}</td></tr>
+							</table>
+						
+			
+							{!! Form::submit('Confirm', array('class'=>'btn btn-primary')) !!}
+				
 						{!! Form::close() !!}
 					@endif
 

@@ -39,9 +39,6 @@ Route::get('organisations/favourite', 'OrganisationController@myFavourites');
 Route::get('tickets', 'TicketController@index');
 Route::post('tickets', 'TicketController@store');
 
-
-
-
 Route::get('contact', 
   ['as' => 'contact', 'uses' => 'AboutController@create']);
 Route::post('contact', 
