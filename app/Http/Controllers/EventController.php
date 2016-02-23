@@ -17,6 +17,8 @@ use App\EventContain;
 use App\TicketType;
 use App\EventTicket;
 use App\LocationSuggestion;
+use App\Ticket;
+
 class EventController extends Controller {
 
 	//
@@ -77,8 +79,8 @@ class EventController extends Controller {
 
 		$newEvent->name = $request->name;
 		$newEvent->bio = $request->bio;
-		// $newEvent->start_date = $start_date->toDateTimeString();
-		// $newEvent->end_date = $end_date->toDateTimeString();
+		$newEvent->start_date = $start_date->toDateTimeString();
+		$newEvent->end_date = $end_date->toDateTimeString();
 		// $newEvent->Location = $request->location;
 		$newEvent->no_tickets = $request->no_tickets;
 		$newEvent->avail_tickets = $request->no_tickets;
@@ -234,12 +236,17 @@ class EventController extends Controller {
 
 			// get the tickets to the event
 			$e = Event::findOrFail($id);
-			$tickets = TicketType::where('event_id', '=', $e->id)->get();
+			$types = TicketType::where('event_id', '=', $e->id)->get();
+
+			// Adding user purchase information here
+			$tickets = Ticket::where('event_id', '=', $e->id)->get();
+
 			return view('events.event', compact(
 				'event', 
 				'organisation',
 				'isAdmin',
-				'tickets' 
+				'types',
+				'tickets'
 			));
 
 	}	

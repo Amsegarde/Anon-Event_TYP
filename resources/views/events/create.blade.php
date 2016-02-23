@@ -49,7 +49,7 @@
 					<input type="date" class="end_datepicker" name="end_date" placeholder="End Date">
 				</div>					
 
-				<div class="location" id="x">
+				<div class="location[]" id="x">
 					<div class="input-field col s12">
 						{!! Form::label('Enter The Location Of Your Event') !!}
 						{!! Form::text('location', 
