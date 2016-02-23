@@ -15,9 +15,6 @@ $app = new Illuminate\Foundation\Application(
 	realpath(__DIR__.'/../')
 );
 
-/* REGISTER DOMpdf PROVIDER */S
-$app->register(\Barryvdh\DomPDF\ServiceProvider::class);
-
 /*
 |--------------------------------------------------------------------------
 | Bind Important Interfaces

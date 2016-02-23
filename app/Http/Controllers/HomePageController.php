@@ -2,6 +2,7 @@
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Event;
 
 use Illuminate\Http\Request;
 
@@ -19,7 +20,8 @@ class HomePageController extends Controller {
 	 */
 	public function index()
 	{
-		return view('home');
+		$event = Event::all();
+		return view('home', array('events'=>$event));
 		//return view('welcome');
 	}
 	public function test()

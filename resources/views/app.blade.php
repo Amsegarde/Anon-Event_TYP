@@ -6,12 +6,30 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="theme-color" content="#42a5f5">
 		<title>Anon-Event</title>
+		<style>
+	        .alert.parsley {
+	            margin-top: 5px;
+	            margin-bottom: 0px;
+	            padding: 10px 15px 10px 15px;
+	        }
 
+	        .check .alert {
+	            margin-top: 20px;
+	        }
+    	</style>
+
+		<!-- Including the jQuery libraries -->
+		<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+
+	    <!-- Latest compiled and minified Bootstrap JavaScript library -->
+	    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 		{!! MaterializeCSS::include_css() !!}
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+		<!-- This is the js for the textarea -->
+		<script src="//cdn.ckeditor.com/4.5.7/basic/ckeditor.js"></script>
+
   		<!-- TICKET PAGE CANCEL ORDER BOOTSTRAP -->
-		
 
 		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -203,6 +221,61 @@
 			</div>
 		</footer>
 
+		<script>
+        window.ParsleyConfig = {
+            errorsWrapper: '<div></div>',
+            errorTemplate: '<div class="alert alert-danger parsley" role="alert"></div>',
+            errorClass: 'has-error',
+            successClass: 'has-success'
+        };
+    </script>
+    <script src="http://parsleyjs.org/dist/parsley.js"></script>
+
+    <!-- Inlude Stripe.js -->
+    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+    <script>
+        // This identifies your website in the createToken call below
+        Stripe.setPublishableKey('{!! env('STRIPE_PK') !!}');
+
+        jQuery(function($) {
+            $('#payment-form').submit(function(event) {
+                var $form = $(this);
+
+                // Before passing data to Stripe, trigger Parsley Client side validation
+                $form.parsley().subscribe('parsley:form:validate', function(formInstance) {
+                    formInstance.submitEvent.preventDefault();
+                    return false;
+                });
+
+                // Disable the submit button to prevent repeated clicks
+                $form.find('#submitBtn').prop('disabled', true);
+
+                Stripe.card.createToken($form, stripeResponseHandler);
+
+                // Prevent the form from submitting with the default action
+                return false;
+            });
+        });
+
+        function stripeResponseHandler(status, response) {
+            var $form = $('#payment-form');
+
+            if (response.error) {
+                // Show the errors on the form
+                $form.find('.payment-errors').text(response.error.message);
+                $form.find('.payment-errors').addClass('alert alert-danger');
+                $form.find('#submitBtn').prop('disabled', false);
+                $('#submitBtn').button('reset');
+            } else {
+                // response contains id and card, which contains additional card details
+                var token = response.id;
+                // Insert the token into the form so it gets submitted to the server
+                $form.append($('<input type="hidden" name="stripeToken" />').val(token));
+                // and submit
+                $form.get(0).submit();
+            }
+        };
+    </script>
 
 	</body>
 </html>

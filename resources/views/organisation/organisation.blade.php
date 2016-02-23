@@ -1,7 +1,6 @@
 @extends('app')
 
 @section('content')
-<div class="container">
 	<div class="row">
 		<div class="col-md-10 col-md-offset-1">
 			<div class="panel panel-default">
@@ -12,10 +11,9 @@
 
 					<p>{!! $org->bio !!}</p>
 
-					
+					<img style="max-width:500px; max-height:500px;" src="{{ asset('images/organisations/').'/'.$org->id.'.'.$org->image }}">
 					
 					@if  (Auth::guest())
-	
 
 					@elseif ($hasFavourited === true) 
 						{!! Form::open(array('url' => 'organisation/'. $org->id)) !!}
@@ -31,5 +29,4 @@
 			</div>
 		</div>
 	</div>
-</div>
 @endsection

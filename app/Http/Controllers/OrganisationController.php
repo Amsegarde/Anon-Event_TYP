@@ -78,7 +78,9 @@ class OrganisationController extends Controller {
 
 			$destinationPath = base_path() . '/public/images/organisations/';
 
-			Input::file('image')->move($destinationPath, $imageName);	
+			Input::file('image')->move($destinationPath, $imageName);
+			$org->image=$imageFile->getClientOriginalExtension();
+			$org->save();
 		}
 		
 		// End of Image save!!

@@ -7,6 +7,7 @@ use Auth;
 use App\Admin;
 use App\Organisation;
 use DB;
+use Input;
 use Illuminate\Http\Request;
 use App\Event;
 use App\Organise;
@@ -47,8 +48,7 @@ class EventController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function create()
-	{
+	public function create(){
 		$id = Auth::id();
 		$organisations = DB::table('organisations')
 								->whereIn('id', function($query) use ($id) {
@@ -73,18 +73,36 @@ class EventController extends Controller {
 		//$carbonEnd = $carbon->createFromFormat('d-m-Y', $end_date)->toDateString();
 		
 		$newEvent = new Event;
-					$newEvent->name=$request->name;
-						$newEvent->bio=$request->bio;
-						//newEvent=>'image'=>$request->image,
-						$newEvent->start_date=$start_date->toDateTimeString();
-						// $newEvent->end_date=$end_date->toDateTimeString();
-						// $newEvent->location=$location;
-						$newEvent->no_tickets=$request->no_tickets;
-						$newEvent->avail_tickets=$request->no_tickets;
-						$newEvent->genre=$request->genre;
-					//	'keywords/tags'=>$request->keywords_tags,
-						//$newEvent->active=$active;
-						$newEvent->scope=$request->scope;
+
+		$newEvent->name = $request->name;
+		$newEvent->bio = $request->bio;
+		// $newEvent->start_date = $start_date->toDateTimeString();
+		// $newEvent->end_date = $end_date->toDateTimeString();
+		// $newEvent->Location = $request->location;
+		$newEvent->no_tickets = $request->no_tickets;
+		$newEvent->avail_tickets = $request->no_tickets;
+		$newEvent->price = $request->price;
+		$newEvent->genre = $request->genre;
+		$newEvent->scope = $request->scope;
+
+		$newEvent->save();
+
+		/**
+		* change the name of the file and save it !!!! :D
+		*
+		*/
+
+		if (Input::hasFile('image')){
+			$imageFile = Input::file('image');
+			$imageName = $newEvent->id . '.' . $imageFile->getClientOriginalExtension(); 
+
+			$destinationPath = base_path() . '/public/images/events/';
+
+			Input::file('image')->move($destinationPath, $imageName);
+			$newEvent->image = $imageFile->getClientOriginalExtension();	
+		} else {
+			$newEvent->image = null;
+		}
 		$newEvent->save();
 
 		$eventID = $newEvent->id;
@@ -177,8 +195,7 @@ class EventController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function browse()
-	{
+	public function browse(){
 		//needs users filters and scope filters and some kind of algorithm
 		//needs to be relevant events not just all.
 			$events = Event::all();
@@ -210,11 +227,19 @@ class EventController extends Controller {
 			// get the tickets to the event
 			$e = Event::findOrFail($id);
 			$tickets = TicketType::where('event_id', '=', $e->id)->get();
+			//decide on showing location poll
+			$locations = $e->location;
+			$locationSuggs = null;
+			if($locations=="To Be Decided"){
+				$locationSuggs = LocationSuggestion::where('event_id', '=',$e->id)->get();
+
+			}
 			return view('events.event', compact(
 				'event', 
 				'organisation',
 				'isAdmin',
-				'tickets' 
+				'tickets',
+				'locationSuggs'
 			));
 
 	}	
