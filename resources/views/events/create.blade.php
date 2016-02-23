@@ -81,18 +81,19 @@
 				            </div>
 				        </div>
     				</div>
-					<div class="location" id="x">
+				
 
-					<div class="form-group">
+					<div class="form-group" id="x">
 					    {!! Form::label('Enter The Location Of Your Event') !!}
 					    {!! Form::text('location[]', 
 					    				null, 
 					      				array('required', 
 					         		    'class'=>'form-control', 
 					          		    'placeholder'=>'Enter The Location Of Your Event')) !!}
+					 <input type="button" class="btn btn-secondary"value="Open to suggestions" onClick="togglePoll(x);">
+					
 					</div>
-					 <input type="button" class="btn btn-secondary"value="Open to suggestions" onClick="togglePoll(location);">
-					</div>
+					
     				
 					<div class="form-group">
 					    {!! Form::label('Enter The Number Of Tickets') !!}
@@ -237,83 +238,64 @@
 								
 							'</td>';
        	
-        console.log("Ticket number " + nextTicket + " added");	
-       				
-		//itemElement+=6;
         document.getElementById(divName).appendChild(newrow);  
-        
         ticketCounter++;
        	nextTicket++;
-       	console.log("Next ticket will be " + nextTicket);
 	}
 
 	function removeTicket(e){
-		console.log("counter value is " + ticketCounter);
-		console.log("ticket number " + ticketCounter + "removed");
  		e.remove();
  		if(ticketCounter ==1){
  			document.getElementById('tickethead').remove();
  		} 
- 		
  		ticketCounter--;
  		console.log("There is now " + ticketCounter + " tickets remaining");
     }
  
     var locationPolled = false;
     var numOfSuggestions = 0;
-
+    var next_ID = 1;
 
     function togglePoll(e){
     	console.log("add location to poll");
     	if(!locationPolled){
     		locationPolled = true;
     		numOfSuggestions = 1;
-    	document.getElementById('x').innerHTML="<div class='form-group' id='locationSuggestion'>"
-    										+"<div id='locationSuggestion"+numOfSuggestions+"'>"
+    	document.getElementById('x').innerHTML=
+    										"<div id='locationSuggestion"+next_ID+"'>"
     										+"<label for='location'>Enter Location Suggestions</label>"
          									+"<input type='text' name='location[]' class='form-control'>"
-         									+"<input type='button' class='btn btn-secondary'value='remove Suggestion' onClick='removeSuggestion(locationSuggestion"+numOfSuggestions+");'>"
            									+"</div>"
-           									+"<input type='button' class='btn btn-secondary'value='Add Suggestion' onClick='addSuggestion(locationSuggestion"+numOfSuggestions+");'>"
-         									+"</div>"
-         									+"<input type='button' class='btn btn-secondary'value='Remove Poll' onClick='togglePoll(location);'>";
-    	
+           									+"<input type='button' id='addButton' class='btn btn-secondary'value='Add Suggestion' onClick='addSuggestion(x);'>"
+					 						+"<input type='button' class='btn btn-secondary'value='Remove Poll' onClick='togglePoll(x);'>";
     	}else{
     		locationPolled = false;
     		numOfSuggestions = 0;
-    		document.getElementById('x').innerHTML="<div class='form-group' id='locationSuggestions'>"
-    										+"<label for='location'>Enter Location</label>"
+    		document.getElementById('x').innerHTML=
+    										"<label for='location'>Enter Location</label>"
          									+"<input type='text' name='location[]' class='form-control'>"
-         									+"</div>"
-         									+"<input type='button' class='btn btn-secondary'value='Open to suggestions' onClick='togglePoll(location);'>";
-
+              								+"<input type='button' class='btn btn-secondary'value='Open to suggestions' onClick='togglePoll(x);'>";
     	}
+    	next_ID++;
 	}
+
     function addSuggestion(num){
-    		numOfSuggestions++;
-    		var nextSuggestion = document.createElement('div');
-    		nextSuggestion.innerHTML="<div id='locationSuggestion"+numOfSuggestions+"'>"
-    										
-         									+"<input type='text' name='location[]' class='form-control'>"
-         									+"<input type='button' class='btn btn-secondary'value='remove Suggestion' onClick='removeSuggestion(locationSuggestion"+numOfSuggestions+");'>"
-           									+"</div>";
-
-
-
-    		num.appendChild(nextSuggestion);
-    		console.log("adding suggestiuon");
+    	numOfSuggestions++;
+    	var nextSuggestion = document.createElement('div');
+    	nextSuggestion.innerHTML="<div id='locationSuggestion"+next_ID+"'>"								
+         						+"<input type='text' name='location[]' class='form-control'>"
+         						+"<input type='button' class='btn btn-secondary'value='remove Suggestion' onClick='removeSuggestion(locationSuggestion"+next_ID+");'>"
+           						+"</div>";         									
+           	next_ID++;
+    		num.insertBefore(nextSuggestion, addButton);
     }
    	
    	function removeSuggestion(num){
    		if(numOfSuggestions>1){
-   			console.log(num);
    			num.remove();
    			numOfSuggestions--;
    		}
-   	}
-    
-
-
+   	}   
 </script>
 
 @endsection
