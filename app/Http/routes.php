@@ -45,7 +45,10 @@ Route::get('organisations/favourite', 'OrganisationController@myFavourites');
 Route::get('tickets', 'TicketController@index');
 Route::post('tickets', 'TicketController@store');
 Route::get('tickets/{id}', 'TicketController@show');
-Route::get('tickets/{id}/cancel', 'TicketController@destroy');
+
+Route::post('tickets/{id}/cancel', 'TicketController@confirmCancelation');
+Route::post('tickets', 
+	['as' => 'cancel_order', 'uses' => 'TicketController@destroy']);
 
 Route::get('contact', 
   ['as' => 'contact', 'uses' => 'AboutController@create']);

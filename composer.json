@@ -8,7 +8,11 @@
 		"laravel/framework": "5.0.*",
 		"illuminate/html": "5.0",
 		"cornford/googlmapper": "^2.7",
+<<<<<<< HEAD
+		"Barryvdh/laravel-dompdf": "^0.6.1"
+=======
 		"stripe/stripe-php": "3.*"
+>>>>>>> fb1fd5ae4c3744a220fbf1a8bc5a02fa37bc50d3
 	},
 	"require-dev": {
 		"phpunit/phpunit": "~4.0",

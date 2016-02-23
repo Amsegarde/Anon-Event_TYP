@@ -21,8 +21,10 @@
 							<h5>Location: {{ $event->location }}</h5>
 
 							<div class="input-field">
-								
-								{!! Form::submit('Cancel Order', array('class'=>'btn btn-primary', 'url' => 'tickets/' . $ticket->id . '/cancel')) !!}
+								{!! Form::open(array('url' => 'tickets/' . $ticket->id . '/cancel', 'class' => 'form')) !!}
+									{!!  Form::hidden('ticketID', $ticket->id) !!}
+									{!! Form::submit('Cancel Order', array('class'=>'btn btn-primary')) !!}
+								{!! Form::close() !!}
 							</div> 
 
 							<div class="input-field">
