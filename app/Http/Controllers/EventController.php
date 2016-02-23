@@ -48,8 +48,7 @@ class EventController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function create()
-	{
+	public function create(){
 		$id = Auth::id();
 		$organisations = DB::table('organisations')
 								->whereIn('id', function($query) use ($id) {
@@ -196,8 +195,7 @@ class EventController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function browse()
-	{
+	public function browse(){
 		//needs users filters and scope filters and some kind of algorithm
 		//needs to be relevant events not just all.
 			$events = Event::all();
@@ -232,11 +230,19 @@ class EventController extends Controller {
 			// get the tickets to the event
 			$e = Event::findOrFail($id);
 			$tickets = TicketType::where('event_id', '=', $e->id)->get();
+			//decide on showing location poll
+			$locations = $e->location;
+			$locationSuggs = null;
+			if($locations=="To Be Decided"){
+				$locationSuggs = LocationSuggestion::where('event_id', '=',$e->id)->get();
+
+			}
 			return view('events.event', compact(
 				'event', 
 				'organisation',
 				'isAdmin',
-				'tickets' 
+				'tickets',
+				'locationSuggs'
 			));
 
 	}	
