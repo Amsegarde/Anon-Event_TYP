@@ -13,7 +13,7 @@ class CreateEventFormRequest extends Request {
 	public function authorize()
 	{
 		//Make sure the user is logged in and is an admin
-		$isUserAdmin = Admin::where('user_id', Auth::user()->id)->first();
+		$isUserAdmin = Admin::where('user_id','=', Auth::user()->id)->first();
 		
 		if(Auth::check() && !is_null($isUserAdmin) ){
 			return true;
@@ -33,7 +33,7 @@ class CreateEventFormRequest extends Request {
 		return [
 			'name' => 'required',
     		'organisation' => 'required',
-    		'bio' => 'required',
+    		'bio' => 'required'
 		];
 	}
 

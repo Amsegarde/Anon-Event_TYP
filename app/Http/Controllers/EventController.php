@@ -149,19 +149,16 @@ class EventController extends Controller {
 		for($i = 0; $i < $size; $i += 2) {
 			$newTicket = new TicketType;
 			$newTicket->type = $tickets[$i];
+			$newTicket->event_id = $eventID;
 			if ($tickets[$i] == 'free' ) {
 				$newTicket->price =0;
 			} else {
 				$newTicket->price = $tickets[$i + 1];
 			}
 			$newTicket->save();
-			$ticketID = $newTicket->id;
+			
+		}
 
-			$newEventTickets = EventTicket::create([
-				'ticket_type_id' => $ticketID,
-				'event_id' => $eventID
-			]);
-		}		
 		if(count($request->location)>1){
 			$active = 1;
 			$location = "To Be Decided";
