@@ -15,6 +15,7 @@ use App\Itinerary;
 use App\EventContain;
 use App\TicketType;
 use App\EventTicket;
+use App\LocationSuggestion;
 class EventController extends Controller {
 
 	//
@@ -70,24 +71,23 @@ class EventController extends Controller {
 		$end_date = new Carbon($request->end_date);
 		//$carbonStart = $carbon->createFromFormat('d-m-Y', $start_date)->toDateString();
 		//$carbonEnd = $carbon->createFromFormat('d-m-Y', $end_date)->toDateString();
-
-		$newEvent = Event::create([
-						'name'=>$request->name,
-						'bio'=>$request->bio,
-						'image'=>$request->image,
-						'start_date'=>$start_date->toDateTimeString(),
-						'end_date'=>$end_date->toDateTimeString(),
-						'location'=>$request->location,
-						'no_tickets'=>$request->no_tickets,
-						'avail_tickets'=>$request->no_tickets,
-						'price'=>$request->price, 
-						'genre'=>$request->genre,
-					//	'keywords/tags'=>$request->keywords_tags,
-					//	'active'=>$request->active, 
-						'scope'=>$request->scope
-						]);
 		
-		$eventID = Event::max('id');
+		$newEvent = new Event;
+					$newEvent->name=$request->name;
+						$newEvent->bio=$request->bio;
+						//newEvent=>'image'=>$request->image,
+						$newEvent->start_date=$start_date->toDateTimeString();
+						// $newEvent->end_date=$end_date->toDateTimeString();
+						// $newEvent->location=$location;
+						$newEvent->no_tickets=$request->no_tickets;
+						$newEvent->avail_tickets=$request->no_tickets;
+						$newEvent->genre=$request->genre;
+					//	'keywords/tags'=>$request->keywords_tags,
+						//$newEvent->active=$active;
+						$newEvent->scope=$request->scope;
+		$newEvent->save();
+
+		$eventID = $newEvent->id;
 
 		$newOrganise = Organise::create([
 							'event_id'=>$eventID, 
@@ -105,45 +105,63 @@ class EventController extends Controller {
 				$prebooked = 0;
 			}
 			//need to sort out itinerary ids in db. theyre going in as 0;
-			Itinerary::create([
-				'name'=>$itins[$i],
-				'blurb'=>$itins[$i+1],
-				//'time'=>$itins[$i+2],
-				'prebooked'=>$prebooked,
-				'cost'=>$itins[$i+3]
-				]);
-			$itineraryID = Itinerary::max('id');
+			
+			$itinerary = new Itinerary;
+			$itinerary->name = $itins[$i];
+			$itinerary->blurb = $itins[$i+1];
+			//$itinerary->time = $itins[$i+2];
+			$itinerary->prebooked = $prebooked;
+			$itinerary->cost = $itins[$i+3];
+
+			$itinerary->save();
+			$itineraryID = $itinerary->id;
 			//return $eventID;
 			EventContain::create([
 				'itineraryId'=>$itineraryID,
 				'event_id'=>$eventID
 				]);
+
+
+
 		}
 
 		$tickets = $request->tickets;
 		$size = count($tickets);
 		for($i = 0; $i < $size; $i += 2) {
-
+			$newTicket = new TicketType;
+			$newTicket->type = $tickets[$i];
 			if ($tickets[$i] == 'free' ) {
-				$newTicket = TicketType::create([
-					'type' => $tickets[$i],
-					'price' => 0
-				]);	
+				$newTicket->price =0;
 			} else {
-				$newTicket = TicketType::create([
-					'type' => $tickets[$i],
-					'price' => $tickets[$i + 1]
-				]);
+				$newTicket->price = $tickets[$i + 1];
 			}
-
-			$ticketID = TicketType::max('id');
+			$newTicket->save();
+			$ticketID = $newTicket->id;
 
 			$newEventTickets = EventTicket::create([
 				'ticket_type_id' => $ticketID,
 				'event_id' => $eventID
 			]);
 		}		
-	
+		if(count($request->location)>1){
+			$active = 1;
+			$location = "To Be Decided";
+			$suggestions = $request->location;
+			for($i = 0; $i <count($suggestions); $i++){
+				LocationSuggestion::create(['location'=>$suggestions[$i],
+					'votes'=>0,
+					'event_id'=>$eventID]);
+
+			}
+
+		}else{
+			$active = 0;
+			$location = $request->location[0];
+		}
+		$newEvent->active = $active;
+		$newEvent->location= $location;
+		$newEvent->save();
+
 		return redirect('events/'.$eventID)->with('message', 'Event Created!');
 	}
 

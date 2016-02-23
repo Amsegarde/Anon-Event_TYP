@@ -25,8 +25,8 @@ class CreateEventsTable extends Migration {
 			$table->integer('avail_tickets');
 			$table->integer('price');
 			$table->string('genre');
-			
-			$table->boolean('active');
+			//active is zero if polls arent used. one if polls are in progress and 2 if poll is closed
+			$table->integer('active');
 			$table->string('scope'); // local, regional, national, international
 			$table->timestamps();
 		});

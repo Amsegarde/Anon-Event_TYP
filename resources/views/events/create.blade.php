@@ -32,7 +32,7 @@
 							{!! Form::label('organisation', 'Select Organisation') !!}
 								<select name="organisation" class="form-control">
 								    <option value="0">Select an Organisation</option>
-								    	<!--look into passing org id along with form even though its not displayed-->
+								    	
 								    @foreach ($organisations as $organisation)
 
 								    	<option value="{{$organisation->id}}">{{$organisation->name}}</option>
@@ -81,29 +81,22 @@
 				            </div>
 				        </div>
     				</div>
+					<div class="location" id="x">
 
 					<div class="form-group">
 					    {!! Form::label('Enter The Location Of Your Event') !!}
-					    {!! Form::text('location', 
+					    {!! Form::text('location[]', 
 					    				null, 
 					      				array('required', 
 					         		    'class'=>'form-control', 
 					          		    'placeholder'=>'Enter The Location Of Your Event')) !!}
-					    
+					</div>
+					 <input type="button" class="btn btn-secondary"value="Open to suggestions" onClick="togglePoll(location);">
 					</div>
     				
 					<div class="form-group">
 					    {!! Form::label('Enter The Number Of Tickets') !!}
 					    {!! Form::input('number', 'no_tickets', 
-					    				0, 
-					      				array('required', 
-					         		    'class'=>'form-control')) !!}
-					    
-					</div>
-
-					<div class="form-group">
-					    {!! Form::label('Enter The Price Of A Ticket') !!}
-					    {!! Form::input('number', 'price', 
 					    				0, 
 					      				array('required', 
 					         		    'class'=>'form-control')) !!}
@@ -266,6 +259,61 @@
  		console.log("There is now " + ticketCounter + " tickets remaining");
     }
  
+    var locationPolled = false;
+    var numOfSuggestions = 0;
+
+
+    function togglePoll(e){
+    	console.log("add location to poll");
+    	if(!locationPolled){
+    		locationPolled = true;
+    		numOfSuggestions = 1;
+    	document.getElementById('x').innerHTML="<div class='form-group' id='locationSuggestion'>"
+    										+"<div id='locationSuggestion"+numOfSuggestions+"'>"
+    										+"<label for='location'>Enter Location Suggestions</label>"
+         									+"<input type='text' name='location[]' class='form-control'>"
+         									+"<input type='button' class='btn btn-secondary'value='remove Suggestion' onClick='removeSuggestion(locationSuggestion"+numOfSuggestions+");'>"
+           									+"</div>"
+           									+"<input type='button' class='btn btn-secondary'value='Add Suggestion' onClick='addSuggestion(locationSuggestion"+numOfSuggestions+");'>"
+         									+"</div>"
+         									+"<input type='button' class='btn btn-secondary'value='Remove Poll' onClick='togglePoll(location);'>";
+    	
+    	}else{
+    		locationPolled = false;
+    		numOfSuggestions = 0;
+    		document.getElementById('x').innerHTML="<div class='form-group' id='locationSuggestions'>"
+    										+"<label for='location'>Enter Location</label>"
+         									+"<input type='text' name='location[]' class='form-control'>"
+         									+"</div>"
+         									+"<input type='button' class='btn btn-secondary'value='Open to suggestions' onClick='togglePoll(location);'>";
+
+    	}
+	}
+    function addSuggestion(num){
+    		numOfSuggestions++;
+    		var nextSuggestion = document.createElement('div');
+    		nextSuggestion.innerHTML="<div id='locationSuggestion"+numOfSuggestions+"'>"
+    										
+         									+"<input type='text' name='location[]' class='form-control'>"
+         									+"<input type='button' class='btn btn-secondary'value='remove Suggestion' onClick='removeSuggestion(locationSuggestion"+numOfSuggestions+");'>"
+           									+"</div>";
+
+
+
+    		num.appendChild(nextSuggestion);
+    		console.log("adding suggestiuon");
+    }
+   	
+   	function removeSuggestion(num){
+   		if(numOfSuggestions>1){
+   			console.log(num);
+   			num.remove();
+   			numOfSuggestions--;
+   		}
+   	}
+    
+
+
 </script>
 
 @endsection

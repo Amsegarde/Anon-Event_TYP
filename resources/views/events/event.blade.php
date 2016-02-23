@@ -84,7 +84,7 @@
 					<p>{{ $event->bio }}</p>
 
 					<h4>Where</h4>
-					<p>{{ $event->Location }}</p>
+					<p>{{ $event->location }}</p>
 
 					<h4>When</h4>
 					<p>{{ $event->start_date }}</p>
