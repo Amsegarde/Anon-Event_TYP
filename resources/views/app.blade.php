@@ -26,8 +26,10 @@
 		{!! MaterializeCSS::include_css() !!}
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+		<!-- This is the js for the textarea -->
+		<script src="//cdn.ckeditor.com/4.5.7/basic/ckeditor.js"></script>
+
   		<!-- TICKET PAGE CANCEL ORDER BOOTSTRAP -->
-		
 
 		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

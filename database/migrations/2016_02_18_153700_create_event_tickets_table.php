@@ -1,10 +1,7 @@
 <?php
-
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-
-class CreateScopesTable extends Migration {
-
+class CreateEventTicketsTable extends Migration {
 	/**
 	 * Run the migrations.
 	 *
@@ -12,14 +9,14 @@ class CreateScopesTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('scopes', function(Blueprint $table)
+		Schema::create('event_tickets', function(Blueprint $table)
 		{
-			$table->increments('id');
-			$table->string('type');
+			$table->integer('ticket_type_id')->unsigned();
+			$table->integer('event_id')->unsigned();
+			$table->unique(['ticket_type_id','event_id']);
 			$table->timestamps();
 		});
 	}
-
 	/**
 	 * Reverse the migrations.
 	 *
@@ -27,7 +24,6 @@ class CreateScopesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('scopes');
+		Schema::drop('event_tickets');
 	}
-
 }
