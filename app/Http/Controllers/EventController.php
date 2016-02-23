@@ -135,13 +135,10 @@ class EventController extends Controller {
 			} else {
 				$newTicket->price = $tickets[$i + 1];
 			}
+			$newTicket->event_id = $eventID;
 			$newTicket->save();
-			$ticketID = $newTicket->id;
+			
 
-			$newEventTickets = EventTicket::create([
-				'ticket_type_id' => $ticketID,
-				'event_id' => $eventID
-			]);
 		}		
 		if(count($request->location)>1){
 			$active = 1;
@@ -192,9 +189,6 @@ class EventController extends Controller {
 			$isAdmin = false;
 			$userID = Auth::id();
 			$event = Event::findOrFail($id);
-
-	
-
 			$organises = Organise::findOrFail($event->id);
 
 	

@@ -155,6 +155,12 @@ class TicketController extends Controller {
 		return view('tickets.ticket', compact('ticket', 'event', 'organisation'));
 	}
 
+	public function confirmCancelation(Request $request) {
+		$ticketID = $request->ticketID;
+		return view('tickets.cancel', compact('ticketID'));
+
+	}
+
 	public function dashboard()
 	{
 		//
@@ -189,9 +195,11 @@ class TicketController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id)
+	public function destroy(Request $request)
 	{
-		//
+		DB::table('tickets')->where('id', '=', $request->ticketID)->delete();
+		return redirect('tickets');
+
 	}
 
 

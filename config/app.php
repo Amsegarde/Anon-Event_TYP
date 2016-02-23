@@ -137,6 +137,7 @@ return [
 		'Illuminate\Validation\ValidationServiceProvider',
 		'Illuminate\View\ViewServiceProvider',
 		'Skydiver\LaravelMaterializeCSS\MaterializeCSSServiceProvider',
+		'Barryvdh\DomPDF\ServiceProvider::class',
 		
 		/*
 		 * Application Service Providers...
@@ -198,6 +199,7 @@ return [
 		'URL'       => 'Illuminate\Support\Facades\URL',
 		'Validator' => 'Illuminate\Support\Facades\Validator',
 		'View'      => 'Illuminate\Support\Facades\View',
+		'PDF' 		=> 'Barryvdh\DomPDF\Facade::class',
 		'MaterializeCSS' => 'Skydiver\LaravelMaterializeCSS\MaterializeCSS',
 
 	],
