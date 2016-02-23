@@ -17,6 +17,8 @@ use App\EventContain;
 use App\TicketType;
 use App\EventTicket;
 use App\LocationSuggestion;
+use App\Ticket;
+
 class EventController extends Controller {
 
 	//
@@ -76,8 +78,8 @@ class EventController extends Controller {
 
 		$newEvent->name = $request->name;
 		$newEvent->bio = $request->bio;
-		// $newEvent->start_date = $start_date->toDateTimeString();
-		// $newEvent->end_date = $end_date->toDateTimeString();
+		$newEvent->start_date = $start_date->toDateTimeString();
+		$newEvent->end_date = $end_date->toDateTimeString();
 		// $newEvent->Location = $request->location;
 		$newEvent->no_tickets = $request->no_tickets;
 		$newEvent->avail_tickets = $request->no_tickets;
@@ -236,14 +238,20 @@ class EventController extends Controller {
 			$locationSuggs = null;
 			if($locations=="To Be Decided"){
 				$locationSuggs = LocationSuggestion::where('event_id', '=',$e->id)->get();
-
 			}
+
+			// Get itinerary for the events;
+			$itin = DB::table('itinerarys')
+				->join('event_contains', 'itinerarys.id', '=', 'event_contains.itinerary_id')
+				->where('event_contains.event_id', '=', $e->id)->get();
+			
 			return view('events.event', compact(
 				'event', 
 				'organisation',
 				'isAdmin',
 				'tickets',
-				'locationSuggs'
+				'locationSuggs',
+				'itin'
 			));
 
 	}	
