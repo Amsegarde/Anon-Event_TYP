@@ -68,10 +68,9 @@
 								@else
 									<div class="input-field">
 										{!! Form::submit('Get Tickets', array('class'=>'btn btn-primary')) !!}
-									</div> : {{ $event->avail_tickets }} Remaining
+									</div>
+									<p>{{ $event->avail_tickets }} Remaining</p>
 								@endif
-
-						{!! $event->id !!}
 
 					{!! Form::close() !!}
 

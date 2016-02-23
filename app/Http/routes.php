@@ -25,7 +25,7 @@ Route::post('events/create',
   ['as' => 'create_store', 'uses' => 'EventController@store']);
 
 Route::post('events/{id}/ticket/confirm', 'TicketController@confirm');
-Route::get('events/{id}/ticket', 'TicketController@show');
+// Route::get('events/{id}/ticket', 'TicketController@show');
 Route::get('events/{id}','EventController@show');
 
 Route::get('organisation/create', 'OrganisationController@create');
@@ -38,6 +38,8 @@ Route::get('organisations/favourite', 'OrganisationController@myFavourites');
 
 Route::get('tickets', 'TicketController@index');
 Route::post('tickets', 'TicketController@store');
+Route::get('tickets/{id}', 'TicketController@show');
+Route::get('tickets/{id}/cancel', 'TicketController@destroy');
 
 Route::get('contact', 
   ['as' => 'contact', 'uses' => 'AboutController@create']);

@@ -14,14 +14,16 @@
 						<p><a href="{{ url('/auth/login') }}">Log in</a> or <a href="{{ url('/auth/register') }}">Register</a></p>
 					@else
 						@foreach ($tickets as $ticket) 
-							<article style="background-color:pink">
-								<h2>{{ $ticket->name }}</h2>
-								<p>{{ $ticket->type }}</p>
-								<p>{{ $ticket->quantity }}</p>
-								<h7>Date: {{ $ticket->start_date }} Ticket No: {{ $ticket->id }}</h7>
-								
-								<h7>Details: {{ $ticket->location }}</h7>
-							</article>
+							<a href="{{ url('/tickets/'.$ticket->id )}}">
+								<article style="background-color:pink">
+									<h2>{{ $ticket->name }}</h2>
+									<p>{{ $ticket->type }}</p>
+									<p>{{ $ticket->quantity }}</p>
+									<h7>Date: {{ $ticket->start_date }} Ticket No: {{ $ticket->id }}</h7>
+									
+									<h7>Details: {{ $ticket->location }}</h7>
+								</article>
+							</a>
 						@endforeach
 
 					@endif

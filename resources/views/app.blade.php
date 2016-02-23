@@ -10,6 +10,9 @@
 		{!! MaterializeCSS::include_css() !!}
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+  		<!-- TICKET PAGE CANCEL ORDER BOOTSTRAP -->
+		
+
 		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 		<!--[if lt IE 9]>
@@ -106,6 +109,7 @@
 					<a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
 					<ul class="right hide-on-med-and-down">
 						<li><a href="{{ url('/') }}">Home</a></li>
+						<li><a href="{{ url('/events') }}">Browse Events</a></li>
 						@if (Auth::guest())
 								<li><a href="{{ url('/auth/login') }}">Login</a></li>
 								<li><a href="{{ url('/auth/register') }}">Register</a></li>

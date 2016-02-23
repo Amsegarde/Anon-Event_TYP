@@ -11,6 +11,8 @@ use Illuminate\Validation\Validator;
 //use Request;
 use DB;
 use Input;
+use App\Organise;
+
 use App\Ticket;
 use App\TicketType; 
 use App\Event;
@@ -146,8 +148,11 @@ class TicketController extends Controller {
 	 */
 	public function show($id)
 	{
-		$tickets = Event::findOrFail($id);
-		return view('events.confirmation', compact('tickets'));
+		$ticket = Ticket::findOrFail($id);
+		$event = Event::findOrFail($ticket->event_id);
+		$organises = Organise::findOrFail($event->id);
+		$organisation = Organisation::findOrFail($organises->organisation_id);
+		return view('tickets.ticket', compact('ticket', 'event', 'organisation'));
 	}
 
 	public function dashboard()
