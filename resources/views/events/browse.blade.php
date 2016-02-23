@@ -2,28 +2,25 @@
 
 @section('content')
 
-<div class="container">
+	<div>
+		<h5>Browse Events</h5>
+	</div>
+
 	<div class="row">
-		<div class="col-md-10 col-md-offset-1">
-			<div class="panel panel-default">
-				<div class="panel-heading">Browse Events</div>
-						@foreach ($events as $event) 
-
-							<a href="{{ url('/events/'.$event->id )}}"
-							<article id="events">
-								<h2>{{ $event->name }}</h2>
-								<h7>Date: {{ $event->start_date }}</h7>
-								<button type="button"><a href="{{ url('/events/'.$event->id )}}">Get Tickets</a></button>
-
-							</article></a>
-						@endforeach
-
+		@foreach ($events as $event)
+		<div class="card small col s4">
+			<div class="card-image">
+				<img class="responsive-img" src="{{ asset('images/events/').'/'.$event->id.'.'.$event->image }}">
+				<span class="card-title">{{ $event->name }}</span>
+			</div>
+				<div class="card-content">
+				<p>{{ $event->bio }}</p>
+			</div>
+			<div class="card-action">
+				<a href="">Favourite link</a>
+				<a href="{{ url('/events/'.$event->id) }}">Get Tickets</a>
 			</div>
 		</div>
+		@endforeach
 	</div>
-</div>
-
-
-@endsection
-
 @endsection
