@@ -36,34 +36,40 @@
 									array('required'
 									)) !!}
 				</div>
+				
+					<div class="input-field col s12">
+						<textarea name="bio" id="bio" class="materialize-textarea" length="2000"></textarea>
+					</div>
+				<div id="dates">
+					<div class="input-field col s6">
+					<input type="date" class="start_datepicker" name="start_date[]" placeholder="Start Date">
+					</div>
+	
+					<div class="input-field col s6">
+						<input type="date" class="end_datepicker" name="end_date[]" placeholder="End Date">
+					</div>	
+									
+					 <input type="button" id="addDateButton"class="btn btn-secondary"value="Open Dates to Voting" onClick="toggleDatePoll(dates);">				
 
-				<div class="input-field col s12">
-					<textarea name="bio" id="bio" class="materialize-textarea" length="2000"></textarea>
 				</div>
-
-				<div class="input-field col s6">
-					<input type="date" class="start_datepicker" name="start_date" placeholder="Start Date">
-				</div>
-
-				<div class="input-field col s6">
-					<input type="date" class="end_datepicker" name="end_date" placeholder="End Date">
-				</div>					
 
 				<div class="location[]" id="x">
 					<div class="input-field col s12">
-						{!! Form::label('Enter The Location Of Your Event') !!}
-						{!! Form::text('location', 
-										null, 
-										array('required')) !!}
-					</div>
+					    {!! Form::label('Enter The Location Of Your Event') !!}
+					    {!! Form::text('location[]', 
+					    				null, 
+					      				array('required', 
+					         		    'class'=>'form-control', 
+					          		    'placeholder'=>'Enter The Location Of Your Event')) !!}
+						<input type="button" class="btn btn-secondary"value="Open Location to Polling" onClick="togglePoll(locations);">
 					
-					<input type="button" class="btn" value="Open to suggestions" onClick="togglePoll(location);">
-				</div>
+					</div>
 
 				<div class='input-field col s6'>
 					{!! Form::select('scope', ['Select a Scope', 'None', 'Local', 'Regional', 
 							'National'], null) !!}
 				</div>
+
 
 				<div class='input-field col s6'>
 					{!! Form::select('genre', ['Select a Category', 'Music', 'Sport', 
@@ -134,6 +140,7 @@
 			</div>
 		{!! Form::close() !!}
 	</div>
+</div>
 
 <script type="text/javascript">	
 	// For the Rich Text Editor
@@ -243,24 +250,16 @@
 								'<input type="button" step="0.50" class="btn" value="-" onClick="removeTicket(ticket'+ nextTicket+');" />'+
 							'</td>';
        	
-        console.log("Ticket number " + nextTicket + " added");	
-       				
-		//itemElement+=6;
         document.getElementById(divName).appendChild(newrow);  
-        
         ticketCounter++;
        	nextTicket++;
-       	console.log("Next ticket will be " + nextTicket);
 	}
 
 	function removeTicket(e){
-		console.log("counter value is " + ticketCounter);
-		console.log("ticket number " + ticketCounter + "removed");
  		e.remove();
  		if(ticketCounter ==1){
  			document.getElementById('tickethead').remove();
  		} 
- 		
  		ticketCounter--;
  		console.log("There is now " + ticketCounter + " tickets remaining");
     }
@@ -269,56 +268,147 @@
  
     var locationPolled = false;
     var numOfSuggestions = 0;
-
+    var next_ID = 1;
 
     function togglePoll(e){
+
+
+
+
+
     	console.log("add location to poll");
     	if(!locationPolled){
     		locationPolled = true;
     		numOfSuggestions = 1;
-    	document.getElementById('x').innerHTML="<div class='form-group' id='locationSuggestion'>"
-    										+"<div id='locationSuggestion"+numOfSuggestions+"'>"
+    	document.getElementById('locations').innerHTML=
+    										"<div id='locationSuggestion"+next_ID+"'>"
     										+"<label for='location'>Enter Location Suggestions</label>"
-         									+"<input type='text' name='location[]' class='form-control'>"
-         									+"<input type='button' class='btn btn-secondary'value='remove Suggestion' onClick='removeSuggestion(locationSuggestion"+numOfSuggestions+");'>"
+         									+"<input type='text' name='location[]'>"
            									+"</div>"
-           									+"<input type='button' class='btn btn-secondary'value='Add Suggestion' onClick='addSuggestion(locationSuggestion"+numOfSuggestions+");'>"
-         									+"</div>"
-         									+"<input type='button' class='btn btn-secondary'value='Remove Poll' onClick='togglePoll(location);'>";
-    	
+           									+"<input type='button' id='addButton' class='btn'value='Add Suggestion' onClick='addSuggestion(locations);'>"
+					 						+"<input type='button' class='btn'value='Remove Poll' onClick='togglePoll(locations);'>";
     	}else{
     		locationPolled = false;
     		numOfSuggestions = 0;
-    		document.getElementById('x').innerHTML="<div class='form-group' id='locationSuggestions'>"
-    										+"<label for='location'>Enter Location</label>"
-         									+"<input type='text' name='location[]' class='form-control'>"
-         									+"</div>"
-         									+"<input type='button' class='btn btn-secondary'value='Open to suggestions' onClick='togglePoll(location);'>";
-
+    		document.getElementById('locations').innerHTML=
+    										"<label for='location'>Enter Location</label>"
+         									+"<input type='text' name='location[]'>"
+              								+"<input type='button' class='btn' value='Open to suggestions' onClick='togglePoll(locations);'>";
     	}
+    	next_ID++;
+
 	}
+
     function addSuggestion(num){
-    		numOfSuggestions++;
-    		var nextSuggestion = document.createElement('div');
-    		nextSuggestion.innerHTML="<div id='locationSuggestion"+numOfSuggestions+"'>"
-    										
-         									+"<input type='text' name='location[]' class='form-control'>"
-         									+"<input type='button' class='btn btn-secondary'value='remove Suggestion' onClick='removeSuggestion(locationSuggestion"+numOfSuggestions+");'>"
-           									+"</div>";
-
-
-
-    		num.appendChild(nextSuggestion);
-    		console.log("adding suggestiuon");
+    	
+    	numOfSuggestions++;
+    	var nextSuggestion = document.createElement('div');
+    	nextSuggestion.innerHTML="<div id='locationSuggestion"+next_ID+"'>"								
+         						+"<input type='text' name='location[]' class='form-control'>"
+         						+"<input type='button' class='btn btn-secondary'value='remove Suggestion' onClick='removeSuggestion(locationSuggestion"+next_ID+");'>"
+           						+"</div>";         									
+           	next_ID++;
+    		num.insertBefore(nextSuggestion, addButton);
     }
    	
    	function removeSuggestion(num){
    		if(numOfSuggestions>1){
-   			console.log(num);
    			num.remove();
    			numOfSuggestions--;
    		}
-   	}
+
+   	}   
+
+//***************************Date Toggle, add and remove********************    	
+	var datePolled = false;
+	var numDateSugg = 0;
+	var nextDateID = 1;
+
+	function toggleDatePoll(e){
+
+
+		if(!datePolled){
+			datePolled = true;
+			numDateSugg = 1
+			document.getElementById('dates').innerHTML="<div id='dateSuggestion"+nextDateID+"'>"
+    										+	"<div class='input-field col s6'>"
+											+		"<input type='date' class='start_datepicker' name='start_date[]' placeholder='Start Date'>"
+											+	"</div>"
+											+	"<div class='input-field col s6'>"
+											+		"<input type='date' class='end_datepicker' name='end_date[]' placeholder='End Date'>"
+											+	"</div>"	
+           									+"</div>"
+           									+"<input type='button' id='addDateButton' class='btn btn-secondary'value='Add Date Suggestion' onClick='addDateSuggestion(dates);'>"
+					 						+"<input type='button' class='btn btn-secondary'value='Remove Poll' onClick='toggleDatePoll(dates);'>";
+    	}else{
+			datePolled = false;
+			numDateSugg = 0;
+			document.getElementById('dates').innerHTML="<div class='input-field col s6'>"
+											+		"<input type='date' class='start_datepicker' name='start_date[]' placeholder='Start Date'>"
+											+	"</div>"
+											+	"<div class='input-field col s6'>"
+											+		"<input type='date' class='end_datepicker' name='end_date[]' placeholder='End Date'>"
+											+	"</div>"	
+           								
+					 						+"<input type='button' class='btn btn-secondary'value='Create Poll' onClick='toggleDatePoll(dates);'>";
+			//nextDateID++;
+		}
+
+$('.start_datepicker').pickadate({
+			selectMonths: false, // Creates a dropdown to control month
+			selectYears: 15, // Creates a dropdown of 15 years to control year
+			min: true
+		});
+
+		$('.end_datepicker').pickadate({
+			selectMonths: false, // Creates a dropdown to control month
+			selectYears: 15, // Creates a dropdown of 15 years to control year
+			min: true
+		});
+
+
+			nextDateID++;
+
+	}
+	function addDateSuggestion(num){
+		numDateSugg++;
+		var nextDateSugg = document.createElement('div');
+		nextDateSugg.setAttribute('id','dateSuggestion'+nextDateID);
+
+		nextDateSugg.innerHTML="<div class='input-field col s6'>"
+											+		"<input type='date' class='start_datepicker' name='start_date[]' placeholder='Start Date'>"
+											+	"</div>"
+											+	"<div class='input-field col s6'>"
+											+		"<input type='date' class='end_datepicker' name='end_date[]' placeholder='End Date'>"
+					 						+"<input type='button' class='btn btn-secondary' value='Remove Suggestion put here by add' onClick='removeDateSuggestion(dateSuggestion"+nextDateID+");'/>";
+											+	"</div>"
+        nextDateID++;   									
+		num.insertBefore(nextDateSugg, addDateButton);
+		$('.start_datepicker').pickadate({
+			selectMonths: false, // Creates a dropdown to control month
+			selectYears: 15, // Creates a dropdown of 15 years to control year
+			min: true
+		});
+
+		$('.end_datepicker').pickadate({
+			selectMonths: false, // Creates a dropdown to control month
+			selectYears: 15, // Creates a dropdown of 15 years to control year
+			min: true
+		});
+	}
+	
+	function removeDateSuggestion(num){
+		console.log("getting to function");
+		if(numDateSugg>1){
+			num.remove();
+			numDateSugg--;
+		}
+	}
+
+	function test(){
+		console.log("test works");
+	}
+
 
 
 </script>

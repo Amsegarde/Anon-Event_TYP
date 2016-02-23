@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTicketTypesTable extends Migration {
+class CreateUserPurchasesTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,14 +12,13 @@ class CreateTicketTypesTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('ticket_types', function(Blueprint $table)
+		Schema::create('user_purchases', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('event_id');
-			$table->string('type');
-			
-			$table->decimal('price', 5, 2);
-			
+			$table->string('first_name');
+            $table->string('last_name');
+            $table->string('email')->unique();
+            $table->string('stripe_customer_id')->unique();
 			$table->timestamps();
 		});
 	}
@@ -31,7 +30,7 @@ class CreateTicketTypesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('ticket_types');
+		Schema::drop('user_purchases');
 	}
 
 }
