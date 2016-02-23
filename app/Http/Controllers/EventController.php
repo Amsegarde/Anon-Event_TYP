@@ -7,6 +7,7 @@ use Auth;
 use App\Admin;
 use App\Organisation;
 use DB;
+use Input;
 use Illuminate\Http\Request;
 use App\Event;
 use App\Organise;
@@ -72,18 +73,36 @@ class EventController extends Controller {
 		//$carbonEnd = $carbon->createFromFormat('d-m-Y', $end_date)->toDateString();
 		
 		$newEvent = new Event;
-					$newEvent->name=$request->name;
-						$newEvent->bio=$request->bio;
-						//newEvent=>'image'=>$request->image,
-						$newEvent->start_date=$start_date->toDateTimeString();
-						// $newEvent->end_date=$end_date->toDateTimeString();
-						// $newEvent->location=$location;
-						$newEvent->no_tickets=$request->no_tickets;
-						$newEvent->avail_tickets=$request->no_tickets;
-						$newEvent->genre=$request->genre;
-					//	'keywords/tags'=>$request->keywords_tags,
-						//$newEvent->active=$active;
-						$newEvent->scope=$request->scope;
+
+		$newEvent->name = $request->name;
+		$newEvent->bio = $request->bio;
+		// $newEvent->start_date = $start_date->toDateTimeString();
+		// $newEvent->end_date = $end_date->toDateTimeString();
+		// $newEvent->Location = $request->location;
+		$newEvent->no_tickets = $request->no_tickets;
+		$newEvent->avail_tickets = $request->no_tickets;
+		$newEvent->price = $request->price;
+		$newEvent->genre = $request->genre;
+		$newEvent->scope = $request->scope;
+
+		$newEvent->save();
+
+		/**
+		* change the name of the file and save it !!!! :D
+		*
+		*/
+
+		if (Input::hasFile('image')){
+			$imageFile = Input::file('image');
+			$imageName = $newEvent->id . '.' . $imageFile->getClientOriginalExtension(); 
+
+			$destinationPath = base_path() . '/public/images/events/';
+
+			Input::file('image')->move($destinationPath, $imageName);
+			$newEvent->image = $imageFile->getClientOriginalExtension();	
+		} else {
+			$newEvent->image = null;
+		}
 		$newEvent->save();
 
 		$eventID = $newEvent->id;
@@ -191,19 +210,15 @@ class EventController extends Controller {
 			$userID = Auth::id();
 			$event = Event::findOrFail($id);
 
-			$organisations = DB::table('organisations')
-								->whereIn('id', function($query) use ($id) {
-										$query->select('organisation_id')
-										->from('organises')
-										->where('event_id', '=', '?')
-										->setBindings([$id]);
-								})->first();
+	
+
+			$organises = Organise::findOrFail($event->id);
 
 	
-			$organisation = Organisation::findOrFail($organisations->id);
+			$organisation = Organisation::findOrFail($organises->organisation_id);
 
 			$admins = DB::table('admins')
-								->where('organisation_id', '=', $organisations->id)
+								->where('organisation_id', '=', $organisation->id)
 								->where('user_id', '=', $userID)
 								->get();
 
@@ -232,8 +247,6 @@ class EventController extends Controller {
 				'tickets',
 				'locationSuggs'
 			));
-				
-			//$organisation = Organisation::findOrFail($organisations->id);
-			//return view('events.event', array('event' => $event, 'org' => $organisation));
+
 	}	
 }

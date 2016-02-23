@@ -1,45 +1,63 @@
 @extends('app')
 
 @section('content')
-
-<div class="container">
 	<div class="row">
-		<div class="col-md-10 col-md-offset-1">
-			<div class="panel panel-default">
+		<h1>Create a New Event</h1>
+		<ul>
+			@foreach($errors->all() as $error)
+				<li>{{ $error }}</li>
+			@endforeach
+		</ul>
 
-				<div class="panel-body">
-					<h1>Create Event</h1>
+		{!! Form::open(array('route' => 'create_store', 'class' => 'form', 'files'=>true)) !!}
+			<div class="row">
+				<!-- Select Organisation -->
+				<h5 class="title col s12">Select an Organisation</h5>
+				<div class="divider col s12"></div>
 
-					<ul>
-					    @foreach($errors->all() as $error)
-					        <li>{{ $error }}</li>
-					    @endforeach
-					</ul>
+				<div class="input-field col s12">
+					<select name="organisation">
+						<option value="">Select an Organisation</option>
+						<!--look into passing org id along with form even though its not displayed-->
+						@foreach ($organisations as $organisation)
+							<option value="{{$organisation->id}}">{{$organisation->name}}</option>
+						@endforeach
+					</select>		
+				</div>
 
-					{!! Form::open(array('route' => 'create_store', 'class' => 'form')) !!}
+				<!-- Event Information -->
+				<h5 class="title col s12">Event Information</h5>
+				<div class="divider col s12"></div>
 
-					<div class="form-group">
-					    {!! Form::label('Event Name') !!}
-					    {!! Form::text('name', 
-					    				null, 
-					      				array('required', 
-					         		    'class'=>'form-control', 
-					          		    'placeholder'=>'Event Name')) !!}
-					</div>
+				<div class="input-field col s12">
+					{!! Form::label('Event Name') !!}
+					{!! Form::text('name', 
+									null, 
+									array('required'
+									)) !!}
+				</div>
 
+				<div class="input-field col s12">
+					<textarea name="bio" id="bio" class="materialize-textarea" length="2000"></textarea>
+				</div>
 
-					<div class="form-group">
-							{!! Form::label('organisation', 'Select Organisation') !!}
-								<select name="organisation" class="form-control">
-								    <option value="0">Select an Organisation</option>
-								    	
-								    @foreach ($organisations as $organisation)
+				<div class="input-field col s6">
+					<input type="date" class="start_datepicker" name="start_date" placeholder="Start Date">
+				</div>
 
-								    	<option value="{{$organisation->id}}">{{$organisation->name}}</option>
-								    @endforeach
-								</select>		
+				<div class="input-field col s6">
+					<input type="date" class="end_datepicker" name="end_date" placeholder="End Date">
+				</div>					
+
+				<div class="location" id="x">
+					<div class="input-field col s12">
+						{!! Form::label('Enter The Location Of Your Event') !!}
+						{!! Form::text('location', 
+										null, 
+										array('required')) !!}
 					</div>
 					
+
 					<script type="text/javascript">
 					    $(function () {
 					        $('#datetimepicker6').datetimepicker({
@@ -104,71 +122,111 @@
 					    
 					</div>
 
-					<div class='form-group'>
-								{!! Form::label('scope', 'Event Scope: ' ) !!}
-								{!! Form::select('scope', ['Select a Category', 'Local', 'Regional', 
-								'National'], null, ['class'=>'form-control']) !!}
-					</div>
+					<input type="button" class="btn" value="Open to suggestions" onClick="togglePoll(location);">
+				</div>
 
-					<div class='form-group'>
-						{!! Form::label('genre', 'Event Type: ' ) !!}
-						{!! Form::select('genre', ['Select a Category', 'Music', 'Sport', 
-							'Theatre', 'Convention',
-							'Course', 'Conference', 'Seminar', 'Gaming', 'Party', 'Screening', 
-							'Tour', 'Other'], null, ['class'=>'form-control']) !!}
-					</div>
+				<div class='input-field col s6'>
+					{!! Form::select('scope', ['Select a Scope', 'None', 'Local', 'Regional', 
+							'National'], null) !!}
+				</div>
 
-					<div class='form-group'>
-								{!! Form::label('logo', 'Logo: ' ) !!}
-								{!! Form::file('image',null, ['class'=>'form-control']) !!}
-					</div>
 
-					<div class="form-group">
-					    {!! Form::textarea('bio', null, 
-					        array('required', 
-					              'class'=>'form-control', 
-					              'placeholder'=>'Enter a description of the event!')) !!}
+				<div class='input-field col s6'>
+					{!! Form::select('genre', ['Select a Category', 'Music', 'Sport', 
+						'Theatre', 'Convention',
+						'Course', 'Conference', 'Seminar', 'Gaming', 'Party', 'Screening', 
+						'Tour', 'Other'], null) !!}
+				</div>
+
+				<!-- Event Image upload -->
+				<h5 class="title col s12">Upload Event Image</h5>
+				<div class="divider col s12"></div>
+
+				<div class="file-field input-field col s12">
+					<div class="btn indigo lighten-1">
+						<span>Upload Event Image</span>
+						<input name="image" type="file">
+					</div>				
+					<div class="file-path-wrapper">
+						<input class="file-path validate type="text>
 					</div>
+				</div>
+
+				<!-- Tickets -->
+				<h5 class="title col s12">Tickets Information</h5>
+				<div class="divider col s12"></div>
+
+				<div class="input-field col s6">
+					{!! Form::label('Enter The Number Of Tickets') !!}
+					{!! Form::input('number', 'no_tickets', 
+								0, 
+								array('required')) !!}
+				</div>
+
+				<div class="input-field col s6">
+					{!! Form::label('Enter The Price Of A Ticket') !!}
+					{!! Form::input('number', 'price', 
+									0, 
+									array('required')) !!}
+					
+				</div>
+
+				<div class="input-field col s12">
+					<table id="dynamic-tickets" class="ticket-table col s12"></table>
+					<input type="button" class="btn"value="Add Ticket" onClick="addTicket('dynamic-tickets');">
+				</div>
 
 					<div class="form-group">
 					    {!! Form::label('Select your tickets') !!}
 					</div>
 
-				
-						<table id="dynamic-tickets" class="ticket-table">
-						
 
-						</table>
-					<input type="button" class="btn btn-secondary"value="Add Ticket" onClick="addTicket('dynamic-tickets');">
-						
 
-					<!--Added by joe to handle itinery Items.-->
-					<p>Optionally Add specific items to the Itinery</p>
+					<!-- Itinery Items -->
+				<h5 class="title col s12">Optional Itinerary</h5>
+				<div class="divider col s12"></div>
+
+				<div class="input-field col s12">
+					<div id="dynamicInput">
+					   <!--  Itinerary From divs will go here  -->
+					</div>	 
+					<input type="button" class="btn"value="Add Itinerary Item" onClick="addInput('dynamicInput');">
+				</div>
 					
-					<div class="form-group">
-						<div id="dynamicInput">
-         				   <!--  Itinerary From divs will go here  -->
-         				</div>	 
-     					<input type="button" class="btn btn-secondary"value="Add Itinerary Item" onClick="addInput('dynamicInput');">
-						
-					</div>
-					
-					<div class="form-group">
-						{!! Form::submit('Create Event!', array('class'=>'btn btn-primary')) !!}
-					</div>
-					{!! Form::close() !!}
+					<!-- Submit Button -->
+				<div class="input-field col s12">
+					{!! Form::submit('Create Event!', array('class'=>'btn indigo lighten-1')) !!}
 				</div>
 			</div>
-		</div>
+		{!! Form::close() !!}
 	</div>
-</div>
 
 <script type="text/javascript">	
+	// For the Rich Text Editor
+	CKEDITOR.replace( 'bio' );
+
+    // Select Menu woring
+	$(document).ready(function() {
+		$('select').material_select();
+
+		// Datepicker working - uses pickadate.js
+		$('.start_datepicker').pickadate({
+			selectMonths: false, // Creates a dropdown to control month
+			selectYears: 15, // Creates a dropdown of 15 years to control year
+			min: true
+		});
+
+		$('.end_datepicker').pickadate({
+			selectMonths: false, // Creates a dropdown to control month
+			selectYears: 15, // Creates a dropdown of 15 years to control year
+			min: true
+		});
+	});
 
 	var nextTicket = 1;
 	var ticketCounter = 0;
 	var itemElement = 1;
-	var counter = 1;
+	var counter = 0;
 	var limit = 3;
 
 	function addInput(divName){
@@ -179,20 +237,33 @@
         	var newdiv = document.createElement('div');
         	newdiv.setAttribute('id','itinItem'+counter);
        		//counter++;
-        	newdiv.innerHTML ="<hr />"+
-        				"<label for='itemName"+counter+"'>Name</label>"+
-         				"<input type='text' name='item["+itemElement+"]' class='form-control'>"+
-         				"<label for='itemDesc"+counter+"'>Description</label>"+
-         				"<input type='text' name='item["+(itemElement+1)+"]' class='form-control'>"+
-         				"<label for='itemTime"+counter+"'>Time</label>"+
-         				"<input type='text' name='item["+(itemElement+2)+"]' class='form-control'>"+
-						"<label for='itemTime"+counter+"'>Cost(optional)</label>"+
-         				"<input type='text' name='item["+(itemElement+3)+"]' class='form-control'>"+
-         				"<label for='itemTime1'>Capacity</label>"+
-         				"<input type='text' name='item["+(itemElement+4)+"]' class='form-control'>"+
-       					"<input type='checkbox' name='item["+(itemElement+5)+"]' value='true'>Pre-booked?<br>"+
-						"<input type='button' class='btn btn-secondary'value='Remove Itinerary Item' onClick='removeInput(itinItem"+counter+");'>";
-       		counter++;			
+        	newdiv.innerHTML =
+        				"<div class='input-field col s12'>"+
+						"<label for='item["+itemElement+"]'>Name</label>"+
+						"<input type='text' name='item["+itemElement+"]'></div>"+
+						
+						"<div class='input-field col s12'>"+
+						"<label for='item["+(itemElement+1)+"]'>Description</label>"+
+						"<input type='text' name='item["+(itemElement+1)+"]'></div>"+
+						
+						"<div class='input-field col s12'>"+
+						"<label for='item["+(itemElement+2)+"]'>Time</label>"+
+						"<input type='text' name='item["+(itemElement+2)+"]'></div>"+
+
+						"<div class='input-field col s6'>"+
+						"<label for='item["+(itemElement+3)+"]'>Cost(optional)</label>"+
+						"<input type='number' name='item["+(itemElement+3)+"]'></div>"+
+
+						"<div class='input-field col s6'>"+
+						"<label for='item["+(itemElement+4)+"]'>Capacity</label>"+
+						"<input type='number' name='item["+(itemElement+4)+"]'></div>"+
+
+						"<div class='input-field col s6'>"+
+						"<input type='checkbox' id='checkbox' name='item["+(itemElement+5)+"]' value='true'><label for='checkbox'>Pre-booked?</label></div>"+
+
+						"<div class='input-field col s6'>"+
+						"<input type='button' class='btn' value='Remove Itinerary Item' onClick='removeInput(itinItem"+counter+");'></div>";
+			counter++;
 			itemElement+=6;
         	document.getElementById(divName).appendChild(newdiv);      
     	}
@@ -200,6 +271,7 @@
 	}
  function removeInput(e){
  		e.remove();
+ 		counter--;
     }
  
     // *********************************************add and remove tickets *************************************
@@ -219,7 +291,7 @@
 
        	} 
        	newrow.innerHTML =	'<td>'+
-       							'<select name="tickets[]">'+
+       							'<select class="ticketSelect" name="tickets[]">'+
 									'<option value="free">Free</option>'+
 									'<option value="paid">Paid</option>'+
 									'<option value="students">Students</option>'+
@@ -234,8 +306,7 @@
 								'</div>'+
 							'</td>'+
 							'<td>'+
-								'<input type="button" step="0.50" class="form-control" value="-" onClick="removeTicket(ticket'+ nextTicket+');" />'+
-								
+								'<input type="button" step="0.50" class="btn" value="-" onClick="removeTicket(ticket'+ nextTicket+');" />'+
 							'</td>';
        	
         document.getElementById(divName).appendChild(newrow);  
@@ -251,6 +322,8 @@
  		ticketCounter--;
  		console.log("There is now " + ticketCounter + " tickets remaining");
     }
+
+    // From here on, styling needs to be added.
  
     var locationPolled = false;
     var numOfSuggestions = 0;
@@ -295,7 +368,13 @@
    			num.remove();
    			numOfSuggestions--;
    		}
+
    	}   
+
+   	}
+
+
+
 </script>
 
 @endsection

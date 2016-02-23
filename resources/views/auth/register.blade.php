@@ -1,65 +1,52 @@
 @extends('app')
 
 @section('content')
-<div class="container-fluid">
+
 	<div class="row">
-		<div class="col-md-8 col-md-offset-2">
-			<div class="panel panel-default">
-				<div class="panel-heading">Register</div>
-				<div class="panel-body">
-					@if (count($errors) > 0)
-						<div class="alert alert-danger">
-							<strong>Whoops!</strong> There were some problems with your input.<br><br>
-							<ul>
-								@foreach ($errors->all() as $error)
-									<li>{{ $error }}</li>
-								@endforeach
-							</ul>
-						</div>
-					@endif
+		@if (count($errors) > 0)
+			<div class="alert alert-danger">
+				<strong>Whoops!</strong> There were some problems with your input.<br><br>
+				<ul>
+					@foreach ($errors->all() as $error)
+						<li>{{ $error }}</li>
+					@endforeach
+				</ul>
+			</div>
+		@endif
 
-					<form class="form-horizontal" role="form" method="POST" action="{{ url('/auth/register') }}">
-						<input type="hidden" name="_token" value="{{ csrf_token() }}">
+		{!! Form::open(array('url'=>'/auth/register','method'=>'POST', 'class'=>'col s12')) !!}
+		<input type="hidden" name="_token" value="{{ csrf_token() }}">
+			<div class="row">
+				<div class="input-field col s6">
+					{!! Form::label('firstname', 'Firstname', ["class"=>"validate"]) !!}
+					{!! Form::text('firstname', null) !!}
+				</div>
+				
+				<div class="input-field col s6">
+					{!! Form::label('lastname', 'Lastname', ["class"=>"validate"]) !!}
+					{!! Form::text('lastname', null) !!}
+				</div>
 
-						<div class="form-group">
-							<label class="col-md-4 control-label">Name</label>
-							<div class="col-md-6">
-								<input type="text" class="form-control" name="firstname" value="{{ old('firstname') }}">
-							</div>
-						</div>
+				<div class="input-field col s12">
+					{!! Form::label('email', 'E-mail Address', ["class"=>"validate"]) !!}
+					{!! Form::email('email', null) !!}
+				</div>
 
-						<div class="form-group">
-							<label class="col-md-4 control-label">E-Mail Address</label>
-							<div class="col-md-6">
-								<input type="email" class="form-control" name="email" value="{{ old('email') }}">
-							</div>
-						</div>
+				<div class="input-field col s12">
+					{!! Form::label('password', 'Password', ["class"=>"validate"]) !!}
+					{!! Form::password('password', null) !!}
+				</div>
 
-						<div class="form-group">
-							<label class="col-md-4 control-label">Password</label>
-							<div class="col-md-6">
-								<input type="password" class="form-control" name="password">
-							</div>
-						</div>
+				<div class="input-field col s12">
+					{!! Form::label('password_confirmation', 'Confirm Password', ["class"=>"validate"]) !!}
+					{!! Form::password('password_confirmation', null) !!}
+				</div>
 
-						<div class="form-group">
-							<label class="col-md-4 control-label">Confirm Password</label>
-							<div class="col-md-6">
-								<input type="password" class="form-control" name="password_confirmation">
-							</div>
-						</div>
-
-						<div class="form-group">
-							<div class="col-md-6 col-md-offset-4">
-								<button type="submit" class="btn btn-primary">
-									Register
-								</button>
-							</div>
-						</div>
-					</form>
+				<div class="input-field col s12">
+					{!! Form::submit('Register', ['class'=>'btn indigo lighten-1']) !!}
 				</div>
 			</div>
-		</div>
+		{!! Form:: close() !!}
 	</div>
-</div>
+
 @endsection
