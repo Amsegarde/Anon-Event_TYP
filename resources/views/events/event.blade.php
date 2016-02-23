@@ -82,18 +82,18 @@
 											['class'=>'ticketSelect']) !!}
 									</div>
 								</div>
+							@endforeach
 
+								@if (($event->avail_tickets) === 0 )
+									<p>SOLD OUT</p>
+								@else
+									<div class="input-field">
+										{!! Form::submit('Get Tickets', array('class'=>'btn')) !!}
+									</div>
+									<p>{{ $event->avail_tickets }} Remaining</p>
+								@endif
 
-								@endforeach
-							@if (($event->avail_tickets) === 0 )
-								<p>SOLD OUT</p>
-							@else
-								<div class="input-field">
-									{!! Form::submit('Get Tickets', array('class'=>'btn btn-primary')) !!}
-								</div>  {{ $event->avail_tickets }} Remaining
-							@endif
-							
-				{!! Form::close() !!}
+					{!! Form::close() !!}
 
 						@endif
 					

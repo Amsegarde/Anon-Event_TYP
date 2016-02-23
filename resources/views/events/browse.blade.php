@@ -1,7 +1,6 @@
 @extends('app')
 
 @section('content')
-
 	<div>
 		<h5>Browse Events</h5>
 	</div>
@@ -14,6 +13,7 @@
 				<span class="card-title">{{ $event->name }}</span>
 			</div>
 				<div class="card-content">
+				<p>Date: {{ $event->start_date }}</p>
 				<p>{{ $event->bio }}</p>
 			</div>
 			<div class="card-action">

@@ -212,19 +212,15 @@ class EventController extends Controller {
 			$userID = Auth::id();
 			$event = Event::findOrFail($id);
 
-			$organisations = DB::table('organisations')
-								->whereIn('id', function($query) use ($id) {
-										$query->select('organisation_id')
-										->from('organises')
-										->where('event_id', '=', '?')
-										->setBindings([$id]);
-								})->first();
+	
+
+			$organises = Organise::findOrFail($event->id);
 
 	
-			$organisation = Organisation::findOrFail($organisations->id);
+			$organisation = Organisation::findOrFail($organises->organisation_id);
 
 			$admins = DB::table('admins')
-								->where('organisation_id', '=', $organisations->id)
+								->where('organisation_id', '=', $organisation->id)
 								->where('user_id', '=', $userID)
 								->get();
 
@@ -246,9 +242,5 @@ class EventController extends Controller {
 				'tickets' 
 			));
 
-			
-			
-			$organisation = Organisation::findOrFail($organisations->id);
-			return view('events.event', array('event' => $event, 'org' => $organisation));
 	}	
 }

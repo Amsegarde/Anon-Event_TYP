@@ -11,6 +11,8 @@ use Illuminate\Validation\Validator;
 //use Request;
 use DB;
 use Input;
+use App\Organise;
+
 use App\Ticket;
 use App\TicketType; 
 use App\Event;
@@ -27,6 +29,9 @@ class TicketController extends Controller {
 	{
 
 	 	$id = Auth::user()->id;
+	 	// $tickets = Ticket::where('user_id', '=', $id);
+	 	// $userTickets = EventTickets::findOrFail($id);
+	 	// $events = Event::where('id', '=', $userTickets->event_id);
 
 		$tickets = DB::table('events')
 						->join('tickets','events.id', '=', 'tickets.event_id')
@@ -36,6 +41,8 @@ class TicketController extends Controller {
 							'events.start_date',
 							'events.end_date',
 							'events.location',
+							'tickets.type',
+							'tickets.quantity',
 							'tickets.id')
 						->where('users.id', '=', '?')
 						->setBindings([$id])								
@@ -65,19 +72,28 @@ class TicketController extends Controller {
 	public function store(Request $request)
 	{
 		$userID = Auth::user()->id;
+		$type = $request->type;
+		$price = $request->price;
+		$quantity = $request->quantity;
+		$totalQuantity = $request->totalQuantity;
 
-		$newEvent = Ticket::create([
+		$size = count($type);
+		for($i = 0; $i< $size; $i++) { 
+			$newTicket = Ticket::create([
 						'user_id' 	=> $userID,
 						'event_id' 	=> $request->eventID,
-						'quantity'	=> $request->quantity
+						'type'		=> $type[$i],
+						'quantity'	=> $quantity[$i]
 						
-		]);
+			]);
 		
-		$update = DB::table('events')
-								->where('id', '=', $request->eventID)
-								->decrement('avail_tickets', $request->quantity
-						);
+			$update = DB::table('events')
+							->where('id', '=', $request->eventID)
+							->decrement('avail_tickets', $totalQuantity);
 
+		}
+
+		
 
 		return redirect('tickets');
 	}
@@ -99,18 +115,27 @@ class TicketController extends Controller {
 
 		$totals = array();
 		$size = count($type);
+
+		$totalPrice = 0;
+		$totalQuantity = 0;
+
 		for ($i = 0; $i < $size; $i++) {
 			$sum = $price[$i] * $quantity[$i];
+			$totalPrice += $sum;
+			$totalQuantity += $quantity[$i];
 			array_push($totals, $sum);
 		};
 
 		return view('events.confirmation', array(
-									'request' => $request, 
-									'event' => $event,
-									'type' => $type,
-									'price' => $price,
-		 							'quantity' => $quantity,
-		 							'totals' => $totals));	
+									'request' 		=> $request, 
+									'event' 		=> $event,
+									'type' 			=> $type,
+									'price' 		=> $price,
+		 							'quantity' 		=> $quantity,
+		 							'totals' 		=> $totals,
+		 							'totalPrice' 	=> $totalPrice,
+		 							'totalQuantity' => $totalQuantity,
+		 							'tickets' 		=> $tickets));	
 	}
 
 	/**
@@ -123,8 +148,11 @@ class TicketController extends Controller {
 	 */
 	public function show($id)
 	{
-		$tickets = Event::findOrFail($id);
-		return view('events.confirmation', compact('tickets'));
+		$ticket = Ticket::findOrFail($id);
+		$event = Event::findOrFail($ticket->event_id);
+		$organises = Organise::findOrFail($event->id);
+		$organisation = Organisation::findOrFail($organises->organisation_id);
+		return view('tickets.ticket', compact('ticket', 'event', 'organisation'));
 	}
 
 	public function dashboard()
