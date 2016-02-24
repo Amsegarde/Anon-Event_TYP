@@ -4,10 +4,9 @@ use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Model;
 
-class UserPurchases extends Model implements AuthenticatableContract{
+class UserPurchase extends Model implements AuthenticatableContract{
 
 use Authenticatable;
-	protected $table = 'users';
 
     /**
      * The attributes that are mass assignable.

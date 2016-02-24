@@ -16,6 +16,8 @@ use App\Organise;
 use App\Ticket;
 use App\TicketType; 
 use App\Event;
+use App\UserPurchase;
+use App\Purchase;
 
 class TicketController extends Controller {
 
@@ -104,7 +106,7 @@ class TicketController extends Controller {
 	 */
 	public function confirm(Request $request)
 	{
-		$event = Event::findOrFail($request->eventID);
+		$event = Event::find($request->eventID);
 		//$quantity = $request->quantity + 1;
 		$type = $request->type;
 		$price = $request->price;
@@ -141,13 +143,30 @@ class TicketController extends Controller {
 
 	}
 
-	public function getOrder()
-    {
-        return view('events.confirmation');
-    }
 
-   public function postOrder(Request $request)
-    {
+   	public function postOrder(Request $request)
+   	{
+   		$userID = Auth::user()->id;
+		$type = $request->type;
+		$price = $request->price;
+		$quantity = $request->quantity;
+		$totalQuantity = $request->totalQuantity;
+
+		$size = count($type);
+		for($i = 0; $i< $size; $i++) { 
+			$newTicket = Ticket::create([
+						'user_id' 	=> $userID,
+						'event_id' 	=> $request->eventID,
+						'type'		=> $type[$i],
+						'quantity'	=> $quantity[$i]
+						
+			]);
+		}	
+		
+			$update = DB::table('events')
+							->where('id', '=', $request->eventID)
+							->decrement('avail_tickets', $totalQuantity);
+
         $validator = \Validator::make(\Input::all(), [
             'first_name' => 'required|string|min:2|max:32',
             'last_name' => 'required|string|min:2|max:32',
@@ -159,21 +178,21 @@ class TicketController extends Controller {
                 ->withErrors($validator)
                 ->withInput();
         }
-        return $request->totalPrice;
+        //return $request->totalPrice;
         // Checking is product valid
-        $amount = $request->totalPrice;
-        
+        $temp = $request->totalPrice;
+        $amount = $temp * 100;
 
         $token = $request->input('stripeToken');
         $first_name = $request->input('first_name');
         $last_name = $request->input('last_name');
         $email = $request->input('email');
-        $emailCheck = User::where('email', $email)->value('email');
-
+        // $temp = UserPurchase::where('email', $email)->first();//->value('email');
+        // $emailCheck = $temp->email;
         \Stripe\Stripe::setApiKey(env('STRIPE_SK'));
 
         // If the email doesn't exist in the database create new customer and user record
-        if (!isset($emailCheck)) {
+        if (/*!isset($emailCheck)*/ UserPurchase::where('email', $email)->get()) {
             // Create a new Stripe customer
             try {
                 $customer = \Stripe\Customer::create([
@@ -200,38 +219,36 @@ class TicketController extends Controller {
             'stripe_customer_id' => $customerID,
             ]);
         } else {
-            $customerID = UserPurchase::where('email', $email)->value('stripe_customer_id');
+            $temp = UserPurchase::where('email', $email)->first();//->value('stripe_customer_id');
+            $customerID = $temp->stripe_customer_id;
             $user = UserPurchase::where('email', $email)->first();
         }
 
         // Charging the Customer with the selected amount
         try {
             $charge = \Stripe\Charge::create([
-                'price' => $price,
-                'currency' => 'usd',
+                'amount' => $amount,
+                'currency' => 'eur',
                 'customer' => $customerID,
-                'metadata' => [
-                    'product_name' => $product
-                ]
                 ]);
         } catch (\Stripe\Error\Card $e) {
-            return redirect()->route('order')
+            return redirect()->route('display')
                 ->withErrors($e->getMessage())
                 ->withInput();
         }
 
-        $ticket = Ticket::id();
+        $ticket = new Ticket;
         // Create purchase record in the database
         Purchase::create([
             'user_id' => $user->id,
-            'ticket_id'=> $ticket->id,
-            'ticket_type' => $ticket_type,
-            'price' => $price,
-            'quantity' => $quantity,
+            'ticket_id' => $request->id,
+            'ticket_type' => $request->type,
+            'price' => $amount/100,
+            'quantity' => $request->quantity,
             'stripe_transaction_id' => $charge->id,
         ]);
 
-        return redirect()->route('order')
+        return redirect()->route('display')
             ->with('successful', 'Your purchase was successful!');
     }
 
