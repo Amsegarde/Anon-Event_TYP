@@ -51,15 +51,6 @@
               ]) !!}
       </div>
 
-      <div class="form-group" id="product-group">
-          {!! Form::label('product', 'Select product:') !!}
-          {!! Form::select('product', ['book' => 'Book ($10)', 'game' => 'Game ($20)', 'movie' => 'Movie ($15)'], 'Book', [
-              'class'                       => 'form-control',
-              'required'                    => 'required',
-              'data-parsley-class-handler'  => '#product-group'
-              ]) !!}
-      </div>
-
       <div class="form-group" id="cc-group">
           {!! Form::label(null, 'Credit card number:') !!}
           {!! Form::text(null, null, [
@@ -86,8 +77,7 @@
               ]) !!}
       </div>
 
-      <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-6">
           <div class="form-group" id="exp-m-group">
               {!! Form::label(null, 'Ex. Month') !!}
               {!! Form::selectMonth(null, null, [
@@ -97,7 +87,7 @@
               ], '%m') !!}
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
           <div class="form-group" id="exp-y-group">
               {!! Form::label(null, 'Ex. Year') !!}
               {!! Form::selectYear(null, date('Y'), date('Y') + 10, null, [
@@ -107,7 +97,7 @@
                   ]) !!}
           </div>
         </div>
-      </div>
+
 
         <div class="form-group">
             {!! Form::submit('Place order!', ['class' => 'btn btn-primary btn-order', 'id' => 'submitBtn', 'style' => 'margin-bottom: 10px;']) !!}

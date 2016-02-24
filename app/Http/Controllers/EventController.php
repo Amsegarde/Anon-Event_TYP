@@ -143,6 +143,7 @@ class EventController extends Controller {
 		for($i = 0; $i < $size; $i += 2) {
 			$newTicket = new TicketType;
 			$newTicket->type = $tickets[$i];
+			$newTicket->event_id = $eventID;
 			if ($tickets[$i] == 'free' ) {
 				$newTicket->price =0;
 			} else {
@@ -151,6 +152,11 @@ class EventController extends Controller {
 			$newTicket->event_id = $eventID;
 			$newTicket->save();
 		}		
+
+			
+
+		
+
 		if(count($request->location)>1){
 			$active = 1;
 			$location = "To Be Decided";

@@ -12,7 +12,7 @@
 						<p>You must have an account in order to get tickets.</p>
 						<p><a href="{{ url('/auth/login') }}">Log in</a> or <a href="{{ url('/auth/register') }}">Register</a></p>
 					@else
-						{!! Form::open(array('url' => 'tickets.order', 'class' => 'form')) !!}
+						{!! Form::open(array('url' => 'tickets', 'class' => 'form')) !!}
 							{!! Form::hidden('eventID', $event->id) !!}
 							{!! Form::hidden('request', $request) !!}
 							{!! Form::hidden('request', $tickets) !!}
@@ -49,16 +49,19 @@
 						
 							@if($totalPrice==0)			
 								{!! Form::submit('Confirm', array('class'=>'btn btn-primary')) !!}
+								
 							@else
-								<div class="row">
-								    <div class="col-md-8 col-md-offset-2">
-								        <h1 class="text-primary" style="text-align: center;">Create order</h1>
-								    </div>
-								</div>
+								{!! Form::close() !!}
 
 								<div class="row">
 								  <div class="col-md-6 col-md-offset-3">
-								    {!! Form::open(['url' => route('order-post'), 'data-parsley-validate', 'id' => 'payment-form']) !!}
+								    {!! Form::open(['url' => route('order-post'), 'method' => 'post' ,'data-parsley-validate', 'id' => 'payment-form']) !!}
+										{!! Form::hidden('eventID', $event->id) !!}
+										{!! Form::hidden('request', $request) !!}
+										{!! Form::hidden('request', $tickets) !!}
+										{!!	Form::hidden('totalQuantity', $totalQuantity) !!}
+										{!!	Form::hidden('totalPrice', $totalPrice) !!}
+
 
 								      <div class="form-group" id="first-name-group">
 								          {!! Form::label('firstName', 'First Name:') !!}
@@ -100,15 +103,6 @@
 								              ]) !!}
 								      </div>
 
-								      <div class="form-group" id="product-group">
-								          {!! Form::label('product', 'Select product:') !!}
-								          {!! Form::select('product', ['book' => 'Book ($10)', 'game' => 'Game ($20)', 'movie' => 'Movie ($15)'], 'Book', [
-								              'class'                       => 'form-control',
-								              'required'                    => 'required',
-								              'data-parsley-class-handler'  => '#product-group'
-								              ]) !!}
-								      </div>
-
 								      <div class="form-group" id="cc-group">
 								          {!! Form::label(null, 'Credit card number:') !!}
 								          {!! Form::text(null, null, [
@@ -140,7 +134,8 @@
 								          <div class="form-group" id="exp-m-group">
 								              {!! Form::label(null, 'Ex. Month') !!}
 								              {!! Form::selectMonth(null, null, [
-								                  'class'                 => 'form-control',
+								                  'style' => 'display: inherit !important',
+								                  'id'				  => 'ticketSelect',
 								                  'required'              => 'required',
 								                  'data-stripe'           => 'exp-month'
 								              ], '%m') !!}
@@ -150,7 +145,8 @@
 								          <div class="form-group" id="exp-y-group">
 								              {!! Form::label(null, 'Ex. Year') !!}
 								              {!! Form::selectYear(null, date('Y'), date('Y') + 10, null, [
-								                  'class'             => 'form-control',
+								                  'style' => 'display: inherit !important',
+								                  'id'				  => 'ticketSelect',
 								                  'required'          => 'required',
 								                  'data-stripe'       => 'exp-year'
 								                  ]) !!}
@@ -168,7 +164,7 @@
 								          </div>
 								        </div>
 
-								    {!! Form::close() !!}
+								    
 
 								  </div>
 								  {{-- Show $request errors after back-end validation --}}
@@ -189,7 +185,7 @@
 								</div>
 								</div>
 							@endif
-						{!! Form::close() !!}
+							{!! Form::close() !!}
 					@endif
 
 				</div>

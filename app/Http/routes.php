@@ -25,13 +25,13 @@ Route::post('events/create',
   ['as' => 'create_store', 'uses' => 'EventController@store']);
 
 Route::post('events/{id}/ticket/confirm', 'TicketController@confirm');
-Route::get('events/{id}/ticket/confirm/purchase', function () {
-    return redirect()->route('order');
-});
+// Route::post('events/{id}/ticket/confirm', function () {
+//     return redirect()->route('order');
+// });
+//Route::get('events/{id}/ticket/confirm/order', ['as' => 'order', 'uses' => 'TicketController@store']);
+Route::post('events/{id}/ticket/confirm/order', ['as' => 'order-post', 'uses' => 'TicketController@postOrder']);
 
-Route::get('order', ['as' => 'order', 'uses' => 'TicketController@getOrder']);
-Route::post('order', ['as' => 'order-post', 'uses' => 'TicketController@postOrder']);
-// Route::get('events/{id}/ticket', 'TicketController@show');
+Route::get('events/{id}/ticket', 'TicketController@show');
 Route::get('events/{id}','EventController@show');
 
 Route::get('organisation/create', 'OrganisationController@create');
@@ -42,13 +42,13 @@ Route::get('organisation/{id}', 'OrganisationController@show');
 Route::post('organisation/{id}', 'OrganisationController@favourite');
 Route::get('organisations/favourite', 'OrganisationController@myFavourites');
 
-Route::get('tickets', 'TicketController@index');
+Route::get('tickets',['as' => 'display', 'uses' => 'TicketController@index']);
 Route::post('tickets', 'TicketController@store');
 Route::get('tickets/{id}', 'TicketController@show');
 
 Route::post('tickets/{id}/cancel', 'TicketController@confirmCancelation');
-Route::post('tickets', 
-	['as' => 'cancel_order', 'uses' => 'TicketController@destroy']);
+// Route::post('tickets', 
+// 	['as' => 'cancel_order', 'uses' => 'TicketController@destroy']);
 
 Route::get('contact', 
   ['as' => 'contact', 'uses' => 'AboutController@create']);
