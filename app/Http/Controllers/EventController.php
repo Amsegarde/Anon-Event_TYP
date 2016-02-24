@@ -69,8 +69,8 @@ class EventController extends Controller {
 	 * @return Redirect
 	 */
 	public function store(CreateEventFormRequest $request){
-		$start_date = new Carbon($request->start_date);
-		$end_date = new Carbon($request->end_date);
+		// $start_date = new Carbon($request->start_date);
+		// $end_date = new Carbon($request->end_date);
 		//$carbonStart = $carbon->createFromFormat('d-m-Y', $start_date)->toDateString();
 		//$carbonEnd = $carbon->createFromFormat('d-m-Y', $end_date)->toDateString();
 		
@@ -78,8 +78,8 @@ class EventController extends Controller {
 
 		$newEvent->name = $request->name;
 		$newEvent->bio = $request->bio;
-		$newEvent->start_date = $start_date->toDateTimeString();
-		$newEvent->end_date = $end_date->toDateTimeString();
+		// $newEvent->start_date = $start_date->toDateTimeString();
+		// $newEvent->end_date = $end_date->toDateTimeString();
 		// $newEvent->Location = $request->location;
 		$newEvent->no_tickets = $request->no_tickets;
 		$newEvent->avail_tickets = $request->no_tickets;
