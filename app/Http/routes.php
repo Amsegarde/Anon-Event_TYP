@@ -18,7 +18,7 @@ Route::get('/', 'HomePageController@index');
 Route::get('events', 'EventController@browse');
 
 
-
+Route::post('events/filter', 'EventController@filter');
 Route::get('events/past', 'EventController@browsePast');
 Route::get('events/create','EventController@create');
 Route::post('events/create', 

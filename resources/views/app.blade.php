@@ -219,7 +219,13 @@
 			</div>
 		</footer>
 
-		<script>
+	<script>
+		$(document).ready(function() {
+			$('select').material_select();
+		});
+	</script>
+
+	<script>
         window.ParsleyConfig = {
             errorsWrapper: '<div></div>',
             errorTemplate: '<div class="alert alert-danger parsley" role="alert"></div>',

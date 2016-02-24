@@ -197,7 +197,7 @@ class EventController extends Controller {
 	}
 
 	/**
-	 * Show the application welcome screen to the user.
+	 * Show the events available
 	 *
 	 * @return Response
 	 */
@@ -205,7 +205,35 @@ class EventController extends Controller {
 		//needs users filters and scope filters and some kind of algorithm
 		//needs to be relevant events not just all.
 			$events = Event::all();
-			return view('events.browse', compact('events'));
+			$search = Event::all();
+			return view('events.browse', compact('events', 'search'));
+	}
+
+	/**
+	 * Apply the filters to the browse
+	 *
+	 * @return Response
+	 */
+	public function filter(Request $request) {
+		$events = new Event;
+
+		if ($request->location){
+			$events = $events->where('location', '=', $request->location)->get();
+		}
+
+		if ($request->genre) {
+			$events = Event::where('genre','=', $request->genre)->get();
+		}
+
+		if ($request->price) {
+			$events = Event::where('price', '<=', $request->price)->get();
+		}
+
+		$search = Event::all();
+
+		return redirect('events')->with(compact('events','search'));
+		// return redirect('events')->with(array($search, $events));
+		// return redirect::action('',array('events','search'));
 	}
 
 	public function show($id) {
