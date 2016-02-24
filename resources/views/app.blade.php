@@ -6,18 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="theme-color" content="#42a5f5">
 		<title>Anon-Event</title>
-		<style>
-	        .alert.parsley {
-	            margin-top: 5px;
-	            margin-bottom: 0px;
-	            padding: 10px 15px 10px 15px;
-	        }
-
-	        .check .alert {
-	            margin-top: 20px;
-	        }
-    	</style>
-
+		
 		<!-- Including the jQuery libraries -->
 		<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 
@@ -73,8 +62,6 @@
 				padding-top: 64px;
 			}
 
-
-
 			.parallax img {
 				display: inherit !important;
 			}
@@ -94,6 +81,17 @@
 			.ticketSelect {
 				display: inherit !important;
 			}
+
+			/* Added by Jonny */
+			.alert.parsley {
+	            margin-top: 5px;
+	            margin-bottom: 0px;
+	            padding: 10px 15px 10px 15px;
+	        }
+
+	        .check .alert {
+	            margin-top: 20px;
+	        }
 		</style>
 
 	</head>
@@ -220,6 +218,11 @@
 				</div>
 			</div>
 		</footer>
+
+		<script type="text/javascript">
+			$(document).ready(function() {
+			$('select').material_select();}
+		</script>
 
 		<script>
         window.ParsleyConfig = {

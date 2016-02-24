@@ -17,6 +17,9 @@ use App\EventContain;
 use App\TicketType;
 use App\EventTicket;
 use App\LocationSuggestion;
+use App\Ticket;
+use App\DateSuggestion;
+
 class EventController extends Controller {
 
 	//
@@ -67,8 +70,7 @@ class EventController extends Controller {
 	 * @return Redirect
 	 */
 	public function store(CreateEventFormRequest $request){
-		$start_date = new Carbon($request->start_date);
-		$end_date = new Carbon($request->end_date);
+		
 		//$carbonStart = $carbon->createFromFormat('d-m-Y', $start_date)->toDateString();
 		//$carbonEnd = $carbon->createFromFormat('d-m-Y', $end_date)->toDateString();
 		
@@ -76,9 +78,6 @@ class EventController extends Controller {
 
 		$newEvent->name = $request->name;
 		$newEvent->bio = $request->bio;
-		// $newEvent->start_date = $start_date->toDateTimeString();
-		// $newEvent->end_date = $end_date->toDateTimeString();
-		// $newEvent->Location = $request->location;
 		$newEvent->no_tickets = $request->no_tickets;
 		$newEvent->avail_tickets = $request->no_tickets;
 		$newEvent->price = $request->price;
@@ -122,7 +121,6 @@ class EventController extends Controller {
 			else{
 				$prebooked = 0;
 			}
-			//need to sort out itinerary ids in db. theyre going in as 0;
 			
 			$itinerary = new Itinerary;
 			$itinerary->name = $itins[$i];
@@ -138,9 +136,6 @@ class EventController extends Controller {
 				'itineraryId'=>$itineraryID,
 				'event_id'=>$eventID
 				]);
-
-
-
 		}
 
 		$tickets = $request->tickets;
@@ -148,6 +143,7 @@ class EventController extends Controller {
 		for($i = 0; $i < $size; $i += 2) {
 			$newTicket = new TicketType;
 			$newTicket->type = $tickets[$i];
+			$newTicket->event_id = $eventID;
 			if ($tickets[$i] == 'free' ) {
 				$newTicket->price =0;
 			} else {
@@ -155,9 +151,12 @@ class EventController extends Controller {
 			}
 			$newTicket->event_id = $eventID;
 			$newTicket->save();
+		}		
+
 			
 
-		}		
+		
+
 		if(count($request->location)>1){
 			$active = 1;
 			$location = "To Be Decided";
@@ -166,13 +165,37 @@ class EventController extends Controller {
 				LocationSuggestion::create(['location'=>$suggestions[$i],
 					'votes'=>0,
 					'event_id'=>$eventID]);
-
 			}
 
 		}else{
 			$active = 0;
 			$location = $request->location[0];
 		}
+		if(count($request->start_date)>1){
+			
+			$start_date = null;
+			$end_date = null;
+			$start_dateSuggs = $request->start_date;
+			$end_dateSuggs = $request->end_date;
+			
+			for($i = 0; $i <count($start_dateSuggs); $i+=2){
+				DateSuggestion::create(['start_date'=>new Carbon($start_dateSuggs[$i]),
+										'end_date'=>new Carbon($end_dateSuggs[$i]),
+										'event_id'=>$eventID]);
+
+			}
+
+		}else{
+			return "only one apparantly";
+			$start_date = new Carbon($request->start_date[0]);
+			$end_date = new Carbon($request->end_date[0]);
+			$newEvent->start_date = $start_date->toDateTimeString();
+		$newEvent->end_date = $end_date->toDateTimeString();
+			
+			//TODO: ensure that dates are coming from event.blade correctly
+			//store dates in db (update db first)
+		}
+
 		$newEvent->active = $active;
 		$newEvent->location= $location;
 		$newEvent->save();
@@ -232,14 +255,20 @@ class EventController extends Controller {
 			$locationSuggs = null;
 			if($locations=="To Be Decided"){
 				$locationSuggs = LocationSuggestion::where('event_id', '=',$e->id)->get();
-
 			}
+
+			// Get itinerary for the events;
+			$itin = DB::table('itinerarys')
+				->join('event_contains', 'itinerarys.id', '=', 'event_contains.itinerary_id')
+				->where('event_contains.event_id', '=', $e->id)->get();
+			
 			return view('events.event', compact(
 				'event', 
 				'organisation',
 				'isAdmin',
 				'tickets',
-				'locationSuggs'
+				'locationSuggs',
+				'itin'
 			));
 
 	}	

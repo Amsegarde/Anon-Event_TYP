@@ -30,7 +30,8 @@
 			<span class="card-title">{{ $event->name }}</span>
 		</div>
 			<div class="card-content">
-			<p>{{ $event->bio }}</p>
+				<p>{!! $event->start_date !!}</p>
+				<p>{!! $event->bio !!}</p>
 		</div>
 		<div class="card-action">
 			<a href="">Favourite link</a>
