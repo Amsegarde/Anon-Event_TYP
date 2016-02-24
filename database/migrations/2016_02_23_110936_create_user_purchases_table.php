@@ -17,8 +17,8 @@ class CreateUserPurchasesTable extends Migration {
 			$table->increments('id');
 			$table->string('first_name');
             $table->string('last_name');
-            $table->string('email')->unique();
-            $table->string('stripe_customer_id')->unique();
+            $table->string('email');
+            $table->string('stripe_customer_id');
 			$table->timestamps();
 		});
 	}

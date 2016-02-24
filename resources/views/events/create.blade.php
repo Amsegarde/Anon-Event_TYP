@@ -53,8 +53,8 @@
 
 				</div>
 
-				<div class="location[]" id="x">
-					<div class="input-field col s12">
+				
+					<div class="input-field col s12" id="locations">
 					    {!! Form::label('Enter The Location Of Your Event') !!}
 					    {!! Form::text('location[]', 
 					    				null, 

@@ -18,6 +18,7 @@ class CreateDateSuggestionsTable extends Migration {
 			$table->integer('votes');
 			$table->increments('id');
 			$table->date('start_date');
+			$table->date('end_date');
 			$table->unique(['event_id','start_date']);
 			$table->timestamps();
 		});
