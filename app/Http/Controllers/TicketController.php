@@ -126,6 +126,7 @@ class TicketController extends Controller {
 			array_push($totals, $sum);
 		};
 
+
 		return view('events.confirmation', array(
 									'request' 		=> $request, 
 									'event' 		=> $event,
@@ -136,6 +137,8 @@ class TicketController extends Controller {
 		 							'totalPrice' 	=> $totalPrice,
 		 							'totalQuantity' => $totalQuantity,
 		 							'tickets' 		=> $tickets));	
+
+
 	}
 
 	public function getOrder()
@@ -148,8 +151,7 @@ class TicketController extends Controller {
         $validator = \Validator::make(\Input::all(), [
             'first_name' => 'required|string|min:2|max:32',
             'last_name' => 'required|string|min:2|max:32',
-            'email' => 'required|email',
-            'product' => 'required|string',
+            'email' => 'required|email'
         ]);
 
         if ($validator->fails()) {
@@ -157,24 +159,10 @@ class TicketController extends Controller {
                 ->withErrors($validator)
                 ->withInput();
         }
-
+        return $request->totalPrice;
         // Checking is product valid
-        $product = $request->input('product');
-        switch ($product) {
-            case 'book':
-                $amount = 1000;
-                break;
-            case 'game':
-                $amount = 2000;
-                break;
-            case 'movie':
-                $amount = 1500;
-                break;
-            default:
-                return redirect()->route('order')
-                    ->withErrors('Product not valid!')
-                    ->withInput();
-        }
+        $amount = $request->totalPrice;
+        
 
         $token = $request->input('stripeToken');
         $first_name = $request->input('first_name');
@@ -248,11 +236,11 @@ class TicketController extends Controller {
     }
 
 
-	/**
-	 * Display the specified resource.
+	 /**
+	  * Display the specified resource.
 	 * Displays tickect confirmation page, to confirm user
-	 * wants the tickets requested.
-	 *
+	  * wants the tickets requested.
+	  *
 	 * @param  int  $id
 	 * @return Response
 	 */
@@ -263,12 +251,6 @@ class TicketController extends Controller {
 		$organises = Organise::findOrFail($event->id);
 		$organisation = Organisation::findOrFail($organises->organisation_id);
 		return view('tickets.ticket', compact('ticket', 'event', 'organisation'));
-	}
-
-	public function confirmCancelation(Request $request) {
-		$ticketID = $request->ticketID;
-		return view('tickets.cancel', compact('ticketID'));
-
 	}
 
 	public function dashboard()
@@ -305,11 +287,9 @@ class TicketController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy(Request $request)
+	public function destroy($id)
 	{
-		DB::table('tickets')->where('id', '=', $request->ticketID)->delete();
-		return redirect('tickets');
-
+		//
 	}
 
 

@@ -12,7 +12,7 @@
 						<p>You must have an account in order to get tickets.</p>
 						<p><a href="{{ url('/auth/login') }}">Log in</a> or <a href="{{ url('/auth/register') }}">Register</a></p>
 					@else
-						{!! Form::open(array('url' => 'tickets.order', 'class' => 'form')) !!}
+						{!! Form::open(array('url' => route('order-post'), 'data-parsley-validate', 'id' => 'payment-form')) !!}
 							{!! Form::hidden('eventID', $event->id) !!}
 							{!! Form::hidden('request', $request) !!}
 							{!! Form::hidden('request', $tickets) !!}
@@ -50,15 +50,13 @@
 							@if($totalPrice==0)			
 								{!! Form::submit('Confirm', array('class'=>'btn btn-primary')) !!}
 							@else
-								<div class="row">
-								    <div class="col-md-8 col-md-offset-2">
-								        <h1 class="text-primary" style="text-align: center;">Create order</h1>
-								    </div>
-								</div>
+								
 
 								<div class="row">
 								  <div class="col-md-6 col-md-offset-3">
-								    {!! Form::open(['url' => route('order-post'), 'data-parsley-validate', 'id' => 'payment-form']) !!}
+								   <!--  {!! Form::open(['url' => route('order-post'), 'data-parsley-validate', 'id' => 'payment-form']) !!}
+ -->
+
 
 								      <div class="form-group" id="first-name-group">
 								          {!! Form::label('firstName', 'First Name:') !!}
@@ -97,15 +95,6 @@
 								              'data-parsley-required-message' => 'Email name is required',
 								              'data-parsley-trigger'          => 'change focusout',
 								              'data-parsley-class-handler'    => '#email-group'
-								              ]) !!}
-								      </div>
-
-								      <div class="form-group" id="product-group">
-								          {!! Form::label('product', 'Select product:') !!}
-								          {!! Form::select('product', ['book' => 'Book ($10)', 'game' => 'Game ($20)', 'movie' => 'Movie ($15)'], 'Book', [
-								              'class'                       => 'form-control',
-								              'required'                    => 'required',
-								              'data-parsley-class-handler'  => '#product-group'
 								              ]) !!}
 								      </div>
 

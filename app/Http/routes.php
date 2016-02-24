@@ -25,12 +25,12 @@ Route::post('events/create',
   ['as' => 'create_store', 'uses' => 'EventController@store']);
 
 Route::post('events/{id}/ticket/confirm', 'TicketController@confirm');
-Route::get('events/{id}/ticket/confirm/purchase', function () {
+Route::get('events/{id}/ticket/confirm', function () {
     return redirect()->route('order');
 });
 
 Route::get('order', ['as' => 'order', 'uses' => 'TicketController@getOrder']);
-Route::post('order', ['as' => 'order-post', 'uses' => 'TicketController@postOrder']);
+Route::post('order', ['as' => 'order-post', 'uses' => 'TicketController@confirm']);
 // Route::get('events/{id}/ticket', 'TicketController@show');
 Route::get('events/{id}','EventController@show');
 
