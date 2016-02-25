@@ -279,9 +279,6 @@
 	</div>
 
 	<script type="text/javascript">
-		// For the Rich Text Editor
-		// CKEDITOR.replace( 'bio' );
-		
 		$(document).ready(function(){
 			// the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
 			$('.modal-trigger').leanModal();
@@ -291,5 +288,7 @@
 			$('ul.tabs').tabs('select_tab', 'tab_id');
 		});
 
+		// For the Rich Text Editor
+		CKEDITOR.replace( 'bio' );
 	</script>
 @endsection
