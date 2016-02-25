@@ -28,6 +28,7 @@
 						<li class="tab col s3"><a href="#desc">Description</a></li>
 						<li class="tab col s3"><a href="#tix">Ticket Information</a></li>
 						<li class="tab col s3"><a href="#edit">Editor</a></li>
+						<li class="tab col s3"><a class="waves-effect waves-light btn modal-trigger" href="#modal2">Contact Attendees</a></li>
 						
 					</ul>
 				@endif
@@ -208,6 +209,48 @@
 								</div>
 							{!! Form::close() !!}
 						</div>
+					</div>
+
+					<!-- Modal Trigger -->
+					<!-- Modal Structure -->
+					<div id="modal2" class="modal">
+				    	<div class="modal-content">
+					    	<h4>Contact Attendees</h4>
+
+							<ul>
+							    @foreach($errors->all() as $error)
+							        <li>{{ $error }}</li>
+							    @endforeach
+							</ul>
+
+							{!! Form::open(array('route' => 'contact_attendees', 'class' => 'form')) !!}
+								{!! Form::hidden('eventID', $event->id) !!}
+								{!! Form::hidden('organisationID', $organisation->id) !!}
+
+								<div class="form-group">
+								    {!! Form::label('title') !!}
+								    {!! Form::text('title', null, 
+								        array('required', 
+								              'class'=>'form-control', 
+								              'placeholder'=>'Your name')) !!}
+								</div>
+
+								<div class="form-group">
+								    {!! Form::label('Message') !!}
+								    {!! Form::textarea('message', null, 
+								        array('required', 
+								              'class'=>'form-control', 
+								              'placeholder'=>'message')) !!}
+								</div>
+
+								<div class="form-group">
+								    {!! Form::submit('Send', 
+								      array('class'=>'btn btn-primary')) !!}
+								      <a href="{{ url('/events/'.$event->id) }}">Cancel</a>
+								</div>
+
+							{!! Form::close() !!}
+					    </div>
 					</div>
 
 					@else

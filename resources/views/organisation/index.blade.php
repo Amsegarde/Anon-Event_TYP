@@ -10,9 +10,9 @@
 
 					@foreach ($organisations as $organisation) 
 							<article >
-								<h2>{{ $organisation->name }}</h2>
-
-								
+								<a href="{{ url('/organisation/' . $organisation->id) }}">
+									<h2>{{ $organisation->name }}</h2>		
+								</a>
 							</article>
 
 

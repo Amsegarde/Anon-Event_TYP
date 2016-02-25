@@ -12,6 +12,8 @@ use Illuminate\Validation\Validator;
 //use Request;
 use DB;
 use Input;
+use Mail;
+use App\user;
 
 class OrganisationController extends Controller {
 
@@ -108,6 +110,7 @@ class OrganisationController extends Controller {
 	public function show($id)
 	{
 		$hasFavourited = false;
+		$isAdmin = false;
 
 		$userID = Auth::user()->id;
 		$favUserId = DB::table('favourite_organisations')
@@ -121,11 +124,28 @@ class OrganisationController extends Controller {
 				break;
 			} 
 		}
+
 		
+
+				
 		$org = Organisation::findOrFail($id);
+		$admins = DB::table('admins')
+								->where('organisation_id', '=', $org->id)
+								->where('user_id', '=', $userID)
+								->get();
+
+		foreach ($admins as $admin) {
+				if ($admin->user_id == $userID) {
+					$isAdmin = true;
+					break;
+				}
+		}
+
+
 		return view('organisation.organisation', array(
 						'org' => $org, 
-						'hasFavourited' => $hasFavourited));
+						'hasFavourited' => $hasFavourited,
+						'isAdmin' => $isAdmin));
 	}
 
 	public function dashboard()
@@ -184,6 +204,28 @@ class OrganisationController extends Controller {
 								})->get();
 
 		return view('organisation.favourites', compact('organisations'));
+	}
+
+	public function contactFollowers(Request $request, $id) {
+		$followers = FavouriteOrganisation::where('organisation_id', '=', $request->organisationID)->get();
+
+		foreach($followers as $follower) {
+
+			$user = User::findOrFail($follower->user_id);
+
+			Mail::send('emails.followers',
+		       array(
+		            'title' => $request->title,
+		            'msg' => $request->message
+		        ), function($message) use ($user, $request)  {
+		       			
+	       				$message->to($user->email, $user->firstname)
+	       						->from('anonevent.cs@gmail.com')
+	       						->subject($request->title);
+		    });
+		}
+
+		return redirect('organisation/' . $request->organisationID);
 	}
 
 	/**

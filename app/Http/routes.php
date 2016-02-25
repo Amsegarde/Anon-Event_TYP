@@ -35,7 +35,6 @@ Route::get('events/{id}/ticket', 'TicketController@show');
 
 
 Route::get('events/{id}','EventController@show');
-Route::get('events/{id}/contact', 'EventController@contact');
 Route::post('events/{id}', 
 	['as' => 'contact_attendees', 'uses' => 'EventController@sendMessage']);
 
@@ -44,8 +43,11 @@ Route::get('organisation/dashboard', 'OrganisationController@dashboard');
 Route::get('organisation', 'OrganisationController@index');
 Route::post('organisation', 'OrganisationController@store');
 Route::get('organisation/{id}', 'OrganisationController@show');
-Route::post('organisation/{id}', 'OrganisationController@favourite');
-Route::get('organisations/favourite', 'OrganisationController@myFavourites');
+Route::post('organisation/{id}/favourite', 'OrganisationController@favourite');
+Route::post('organisation/{id}', 
+	['as' => 'contact_followers', 'uses' => 'OrganisationController@contactFollowers']);
+Route::get('organisation/favourite', 'OrganisationController@myFavourites');
+
 
 Route::get('tickets',['as' => 'display', 'uses' => 'TicketController@index']);
 Route::post('tickets', 

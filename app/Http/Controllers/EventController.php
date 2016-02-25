@@ -333,17 +333,9 @@ class EventController extends Controller {
 		return view('events.manage', compact('events'));
 	}
 
-	public function contact($id) {
-		$organises = Organise::findOrFail($id);
-		$organisation = Organisation::findOrFail($organises->organisation_id);
-		return view('events.contact', compact('organises'));
-		
-	}
-
 	public function sendMessage(Request $request) {
 
 		$tickets = Ticket::where('event_id', '=', $request->eventID)->get();
-
 
 		foreach($tickets as $ticket) {
 
@@ -352,7 +344,7 @@ class EventController extends Controller {
 			Mail::send('emails.attendees',
 		       array(
 		            'title' => $request->title,
-		            'message' => $request->message
+		            'msg' => $request->message
 		        ), function($message) use ($user, $request)  {
 		       			
 	       				$message->to($user->email, $user->firstname)
@@ -360,6 +352,7 @@ class EventController extends Controller {
 	       						->subject($request->title);
 		    });
 		}
-		
+
+		return redirect('events/' . $request->eventID);
 	}
 }
