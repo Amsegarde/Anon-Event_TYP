@@ -16,7 +16,7 @@
 					@if  (Auth::guest())
 
 					@elseif ($isAdmin === true)
-						<p>	<a class="waves-effect waves-light btn modal-trigger" href="#modal2">Contact Followers</a></p>
+						<p>	<a class="waves-effect waves-light btn modal-trigger" href="#modal2">Contact Followers</a> <a class="waves-effect waves-light btn modal-trigger" href="#modal2">Delete Organisation</a></p>
 						<!-- Modal Structure -->
 						<div id="modal2" class="modal">
 					    	<div class="modal-content">
@@ -56,6 +56,24 @@
 								{!! Form::close() !!}
 						    </div>
 						</div>
+
+
+							<!-- Modal Structure -->
+							<div id="modal2" class="modal">
+						    	<div class="modal-content">
+							    	{!! Form::open(array('method' => 'delete')) !!}
+										
+
+										<div class="row">
+											{!! Form::label('Are you sure you want to cancel the order?') !!}
+										</div>
+										<div class="input-field">
+											{!! Form::submit('Confirm Cancelation', array('class'=>'btn')) !!}
+										</div>
+
+									{!! Form::close() !!}
+							    </div>
+							</div>
 					@elseif ($hasFavourited === true) 
 						{!! Form::open(array('url' => 'organisation/'. $org->id)) !!}
 							{!! Form::submit('Unfavourite') !!}

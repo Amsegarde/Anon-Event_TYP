@@ -208,6 +208,7 @@ class OrganisationController extends Controller {
 
 	public function contactFollowers(Request $request, $id) {
 		$followers = FavouriteOrganisation::where('organisation_id', '=', $request->organisationID)->get();
+		$organisation = Organisation::findOrFail($request->organisationID);
 
 		foreach($followers as $follower) {
 
@@ -216,16 +217,37 @@ class OrganisationController extends Controller {
 			Mail::send('emails.followers',
 		       array(
 		            'title' => $request->title,
-		            'msg' => $request->message
-		        ), function($message) use ($user, $request)  {
+		            'msg' => $request->message,
+		            'organisation' => $organisation
+		        ), function($message) use ($user, $request, $organisation)  {
 		       			
 	       				$message->to($user->email, $user->firstname)
 	       						->from('anonevent.cs@gmail.com')
-	       						->subject($request->title);
+	       						->subject('Anon-Event | ' . $organisation->name);
 		    });
 		}
 
 		return redirect('organisation/' . $request->organisationID);
+	}
+
+	public function contact(Request $request) {
+		$admins = Admin::where('organisation_id', '=', $request->organisationID)->get();
+
+
+		foreach ($admins as $admin) {
+			$user = User::findOrFail($admin->user_id);
+			Mail::send('emails.organisation_contact',
+		       array(
+		            'title' => $request->title,
+		            'msg' => $request->message,
+		        ), function($message) use ($user, $request)  {
+		       			
+	       				$message->to($user->email, $user->firstname)
+	       						->from(Auth::user()->email)
+	       						->subject($request->title);
+		    });
+		}
+		return redirect('tickets/' . $request->ticketID);
 	}
 
 	/**

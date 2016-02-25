@@ -1,21 +1,18 @@
-@extends('app')
+@extends('email')
 
 @section('content')
-<div class="container">
+	<div class="container">
 
+		<hr />
+		<h1>{{ $organisation->name }}</h1>
+		<hr />
 
-					You received a message from Anon-Event
+		<h2>{{ $title }}</h2>
 
-					<p>
-				    	{{ $title }}
-					</p>
-
-					<p>
-						{{ $msg }}
-					</p>
+		<p>{{ $msg }}</p>
 
 	
 
-</div>
+	</div>
 @endsection
 

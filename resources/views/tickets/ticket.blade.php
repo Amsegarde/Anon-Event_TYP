@@ -26,7 +26,10 @@
 							</div>	
 
 							<!-- Modal Trigger -->
-							<a class="waves-effect waves-light btn modal-trigger" href="#modal1">Cancel Order</a>
+							<p>
+								<a class="waves-effect waves-light btn modal-trigger" href="#modal1">Cancel Order</a>
+								<a class="waves-effect waves-light btn modal-trigger" href="#modal2">Contact Organisation</a>
+							</p>
 
 							<!-- Modal Structure -->
 							<div id="modal1" class="modal">
@@ -49,8 +52,45 @@
 								{!! Form::submit('Print Tickets', array('class'=>'btn btn-primary')) !!}
 							</div>
 
-							<div class="input-field">
-								{!! Form::submit('Contact Organisation', array('class'=>'btn btn-primary')) !!}
+							<!-- CONTACT ORGANISATION FROM -->
+							<div id="modal2" class="modal">
+						    	<div class="modal-content">
+							    	<h4>Contact Organisation</h4>
+
+									<ul>
+									    @foreach($errors->all() as $error)
+									        <li>{{ $error }}</li>
+									    @endforeach
+									</ul>
+
+									{!! Form::open(array('route' => 'contact_organisation', 'class' => 'form')) !!}
+										{!! Form::hidden('organisationID', $organisation->id) !!}
+										{!! Form::hidden('ticketID', $ticket->id) !!}
+										
+										<div class="form-group">
+										    {!! Form::label('title') !!}
+										    {!! Form::text('title', null, 
+										        array('required', 
+										              'class'=>'form-control', 
+										              'placeholder'=>'Your name')) !!}
+										</div>
+
+										<div class="form-group">
+										    {!! Form::label('Message') !!}
+										    {!! Form::textarea('message', null, 
+										        array('required', 
+										              'class'=>'form-control', 
+										              'placeholder'=>'message')) !!}
+										</div>
+
+										<div class="form-group">
+										    {!! Form::submit('Send', 
+										      array('class'=>'btn btn-primary')) !!}
+										      <a href="">Cancel</a>
+										</div>
+
+									{!! Form::close() !!}
+						    	</div>
 							</div>
 
 						</article>					  

@@ -211,8 +211,7 @@
 						</div>
 					</div>
 
-					<!-- Modal Trigger -->
-					<!-- Modal Structure -->
+					<!-- CONTACT ATTENDEES -->
 					<div id="modal2" class="modal">
 				    	<div class="modal-content">
 					    	<h4>Contact Attendees</h4>
@@ -228,11 +227,11 @@
 								{!! Form::hidden('organisationID', $organisation->id) !!}
 
 								<div class="form-group">
-								    {!! Form::label('title') !!}
+								    {!! Form::label('Title') !!}
 								    {!! Form::text('title', null, 
 								        array('required', 
 								              'class'=>'form-control', 
-								              'placeholder'=>'Your name')) !!}
+								              'placeholder'=>'Title')) !!}
 								</div>
 
 								<div class="form-group">
@@ -240,7 +239,7 @@
 								    {!! Form::textarea('message', null, 
 								        array('required', 
 								              'class'=>'form-control', 
-								              'placeholder'=>'message')) !!}
+								              'placeholder'=>'Message')) !!}
 								</div>
 
 								<div class="form-group">

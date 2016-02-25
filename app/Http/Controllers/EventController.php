@@ -336,6 +336,8 @@ class EventController extends Controller {
 	public function sendMessage(Request $request) {
 
 		$tickets = Ticket::where('event_id', '=', $request->eventID)->get();
+		$event = Event::findOrFail($request->eventID);
+		$organisation = Organisation::findOrFail($request->organisationID);
 
 		foreach($tickets as $ticket) {
 
@@ -344,12 +346,14 @@ class EventController extends Controller {
 			Mail::send('emails.attendees',
 		       array(
 		            'title' => $request->title,
-		            'msg' => $request->message
-		        ), function($message) use ($user, $request)  {
+		            'msg' => $request->message,
+		            'organisation' => $organisation,
+		            'event' => $event
+		        ), function($message) use ($user, $request, $organisation)  {
 		       			
 	       				$message->to($user->email, $user->firstname)
 	       						->from('anonevent.cs@gmail.com')
-	       						->subject($request->title);
+	       						->subject('Message from ' . $organisation->name);
 		    });
 		}
 

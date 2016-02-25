@@ -49,10 +49,14 @@ Route::post('organisation/{id}',
 Route::get('organisation/favourite', 'OrganisationController@myFavourites');
 
 
+
 Route::get('tickets',['as' => 'display', 'uses' => 'TicketController@index']);
 Route::post('tickets', 
 	['as' => 'store_tickets', 'uses' => 'TicketController@store']);
 Route::get('tickets/{id}', 'TicketController@show');
+
+Route::post('ticket/{id}/contact', 
+	['as' => 'contact_organisation', 'uses' => 'OrganisationController@contact']);
 
 Route::post('tickets/{id}/cancel', 'TicketController@confirmCancelation');
 Route::delete('tickets/{id}', 

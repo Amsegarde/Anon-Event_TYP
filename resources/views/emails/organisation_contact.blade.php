@@ -1,10 +1,11 @@
 @extends('email')
 
 @section('content')
-<div class="container">
+	<div class="container">
 
-
-		<h1>{{ $organisaion->name }} presents {{ $event->name }}</h1>
+		<hr />
+		<h1>Message</h1>
+		<hr />
 
 		<h2>{{ $title }}</h2>
 
@@ -12,6 +13,6 @@
 
 	
 
-</div>
+	</div>
 @endsection
 
