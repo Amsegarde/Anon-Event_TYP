@@ -5,6 +5,7 @@ use App\Admin;
 use Auth;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Collection;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Validator;
@@ -18,6 +19,7 @@ use App\TicketType;
 use App\Event;
 use App\UserPurchase;
 use App\Purchase;
+use Mail;
 
 class TicketController extends Controller {
 
@@ -73,6 +75,7 @@ class TicketController extends Controller {
 
 	public function store(Request $request)
 	{
+
 		$userID = Auth::user()->id;
 		$type = $request->type;
 		$price = $request->price;
@@ -95,7 +98,16 @@ class TicketController extends Controller {
 
 		}
 
-		
+
+		Mail::send('emails.tickets',
+	       array(
+	            'email' => Auth::user()->email,
+	        ), function($message) use ($request)  {
+	       			
+       				$message->to(Auth::user()->email, Auth::user()->firstname)
+       						->from('anonevent.cs@gmail.com')
+       						->subject('Your tickets for ' . $request->eventName);
+	    });
 
 		return redirect('tickets');
 	}
@@ -140,12 +152,15 @@ class TicketController extends Controller {
 		 							'totalQuantity' => $totalQuantity,
 		 							'tickets' 		=> $tickets));	
 
+		 
+
 
 	}
 
 
    	public function postOrder(Request $request)
    	{
+
    		$userID = Auth::user()->id;
 		$type = $request->type;
 		$price = $request->price;
@@ -306,7 +321,8 @@ class TicketController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		//
+		DB::table('tickets')->where('id', '=', $id)->delete();
+		return redirect('tickets');
 	}
 
 

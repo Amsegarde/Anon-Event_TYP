@@ -25,9 +25,10 @@
 			<div class="row">
 				@if ($isAdmin === true)
 					<ul class="tabs">
-						<li class="tab col s3"><a href="#desc">Description</a> </li>
+						<li class="tab col s3"><a href="#desc">Description</a></li>
 						<li class="tab col s3"><a href="#tix">Ticket Information</a></li>
-						<li class="tab col s3"><a href="#edit">Editor</a> </li>
+						<li class="tab col s3"><a href="#edit">Editor</a></li>
+						
 					</ul>
 				@endif
 				<div id="desc">
@@ -56,7 +57,8 @@
 					<div class="col s6">
 						<h5>Where</h5>
 						<p>{{ $event->location }}</p>
-											</div>
+					</div>			
+				</div>
 
 					<div class="col s6">
 						<h5>When</h5>
@@ -110,7 +112,7 @@
 
 							</table>
 						</div>
-
+							
 
 						<div class="row" id="edit">
 							<h4>Edit your Event</h4>
@@ -208,12 +210,6 @@
 						</div>
 					</div>
 
-
-
-
-
-
-
 					@else
 						<!-- Modal Trigger -->
 						<a class="waves-effect waves-light btn modal-trigger" href="#modal1">Get Tickets</a>
@@ -223,6 +219,7 @@
 					    	<div class="modal-content">
 						    	{!! Form::open(array('url' => 'events/' . $event->id . '/ticket/confirm', 'class' => 'form')) !!}
 									{!!  Form::hidden('eventID', $event->id) !!}
+									{!!  Form::hidden('eventName', $event->name) !!}
 
 									<div class="row">
 										<div class="input-field col s4">
@@ -282,9 +279,6 @@
 	</div>
 
 	<script type="text/javascript">
-		// For the Rich Text Editor
-		// CKEDITOR.replace( 'bio' );
-		
 		$(document).ready(function(){
 			// the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
 			$('.modal-trigger').leanModal();
@@ -294,5 +288,7 @@
 			$('ul.tabs').tabs('select_tab', 'tab_id');
 		});
 
+		// For the Rich Text Editor
+		CKEDITOR.replace( 'bio' );
 	</script>
 @endsection

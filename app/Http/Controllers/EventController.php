@@ -19,6 +19,8 @@ use App\EventTicket;
 use App\LocationSuggestion;
 use App\Ticket;
 use App\DateSuggestion;
+use App\User;
+use Mail; 
 
 class EventController extends Controller {
 
@@ -70,7 +72,7 @@ class EventController extends Controller {
 	 * @return Redirect
 	 */
 	public function store(CreateEventFormRequest $request){
-		
+
 		//$carbonStart = $carbon->createFromFormat('d-m-Y', $start_date)->toDateString();
 		//$carbonEnd = $carbon->createFromFormat('d-m-Y', $end_date)->toDateString();
 		
@@ -78,6 +80,10 @@ class EventController extends Controller {
 
 		$newEvent->name = $request->name;
 		$newEvent->bio = $request->bio;
+
+		// $newEvent->start_date = $start_date->toDateTimeString();
+		// $newEvent->end_date = $end_date->toDateTimeString();
+		// $newEvent->Location = $request->location;
 		$newEvent->no_tickets = $request->no_tickets;
 		$newEvent->avail_tickets = $request->no_tickets;
 		$newEvent->price = $request->price;
@@ -153,10 +159,6 @@ class EventController extends Controller {
 			$newTicket->save();
 		}		
 
-			
-
-		
-
 		if(count($request->location)>1){
 			$active = 1;
 			$location = "To Be Decided";
@@ -186,6 +188,7 @@ class EventController extends Controller {
 			}
 
 		}else{
+
 			$start_date = new Carbon($request->start_date[0]);
 			$end_date = new Carbon($request->end_date[0]);
 			$newEvent->start_date = $start_date->toDateTimeString();
@@ -213,7 +216,7 @@ class EventController extends Controller {
 	}
 
 	/**
-	 * Show the application welcome screen to the user.
+	 * Show the events available
 	 *
 	 * @return Response
 	 */
@@ -221,7 +224,35 @@ class EventController extends Controller {
 		//needs users filters and scope filters and some kind of algorithm
 		//needs to be relevant events not just all.
 			$events = Event::all();
-			return view('events.browse', compact('events'));
+			$search = Event::all();
+			return view('events.browse', compact('events', 'search'));
+	}
+
+	/**
+	 * Apply the filters to the browse
+	 *
+	 * @return Response
+	 */
+	public function filter(Request $request) {
+		$events = new Event;
+
+		if ($request->location){
+			$events = $events->where('location', '=', $request->location)->get();
+		}
+
+		if ($request->genre) {
+			$events = Event::where('genre','=', $request->genre)->get();
+		}
+
+		if ($request->price) {
+			$events = Event::where('price', '<=', $request->price)->get();
+		}
+
+		$search = Event::all();
+
+		return redirect('events')->with(compact('events','search'));
+		// return redirect('events')->with(array($search, $events));
+		// return redirect::action('',array('events','search'));
 	}
 
 	public function show($id) {
@@ -271,4 +302,64 @@ class EventController extends Controller {
 			));
 
 	}	
+
+	/**
+	 * Display events by this user only.
+	 *
+	 * @return view of events.
+	 */
+	public function manageEvents() {
+
+
+		$id = Auth::user()->id;
+
+		$events = DB::table('events')
+						->join('organises','events.id', '=', 'organises.event_id')
+						->join('admins', 'organises.organisation_id', '=', 'admins.organisation_id')
+						->select(
+							'events.name', 
+							'events.start_date',
+							'events.end_date',
+							'events.location',
+							'events.id',
+							'events.image')
+						->where('admins.user_id', '=', $id)							
+					    ->get();
+
+		// $admin = Admin::findOrFail($id);
+		// $organises = Organise::where('organisation_id', '=', $admin->organisation_id);
+
+		// $events = Event::where('id', '=', $organises->event_id);
+		return view('events.manage', compact('events'));
+	}
+
+	public function contact($id) {
+		$organises = Organise::findOrFail($id);
+		$organisation = Organisation::findOrFail($organises->organisation_id);
+		return view('events.contact', compact('organises'));
+		
+	}
+
+	public function sendMessage(Request $request) {
+
+		$tickets = Ticket::where('event_id', '=', $request->eventID)->get();
+
+
+		foreach($tickets as $ticket) {
+
+			$user = User::findOrFail($ticket->user_id);
+
+			Mail::send('emails.attendees',
+		       array(
+		            'title' => $request->title,
+		            'message' => $request->message
+		        ), function($message) use ($user, $request)  {
+		       			
+	       				$message->to($user->email, $user->firstname)
+	       						->from('anonevent.cs@gmail.com')
+	       						->subject($request->title);
+		    });
+		}
+		
+	}
 }

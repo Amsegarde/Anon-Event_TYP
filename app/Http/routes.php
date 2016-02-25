@@ -18,12 +18,12 @@ Route::get('/', 'HomePageController@index');
 Route::get('events', 'EventController@browse');
 
 
-
+Route::post('events/filter', 'EventController@filter');
 Route::get('events/past', 'EventController@browsePast');
 Route::get('events/create','EventController@create');
 Route::post('events/create', 
   ['as' => 'create_store', 'uses' => 'EventController@store']);
-
+Route::get('events/manage', 'EventController@manageEvents');
 Route::post('events/{id}/ticket/confirm', 'TicketController@confirm');
 // Route::post('events/{id}/ticket/confirm', function () {
 //     return redirect()->route('order');
@@ -32,7 +32,12 @@ Route::post('events/{id}/ticket/confirm', 'TicketController@confirm');
 Route::post('events/{id}/ticket/confirm/order', ['as' => 'order-post', 'uses' => 'TicketController@postOrder']);
 
 Route::get('events/{id}/ticket', 'TicketController@show');
+
+
 Route::get('events/{id}','EventController@show');
+Route::get('events/{id}/contact', 'EventController@contact');
+Route::post('events/{id}', 
+	['as' => 'contact_attendees', 'uses' => 'EventController@sendMessage']);
 
 Route::get('organisation/create', 'OrganisationController@create');
 Route::get('organisation/dashboard', 'OrganisationController@dashboard');
@@ -43,12 +48,13 @@ Route::post('organisation/{id}', 'OrganisationController@favourite');
 Route::get('organisations/favourite', 'OrganisationController@myFavourites');
 
 Route::get('tickets',['as' => 'display', 'uses' => 'TicketController@index']);
-Route::post('tickets', 'TicketController@store');
+Route::post('tickets', 
+	['as' => 'store_tickets', 'uses' => 'TicketController@store']);
 Route::get('tickets/{id}', 'TicketController@show');
 
 Route::post('tickets/{id}/cancel', 'TicketController@confirmCancelation');
-// Route::post('tickets', 
-// 	['as' => 'cancel_order', 'uses' => 'TicketController@destroy']);
+Route::delete('tickets/{id}', 
+ 	['as' => 'cancel_order', 'uses' => 'TicketController@destroy']);
 
 Route::get('contact', 
   ['as' => 'contact', 'uses' => 'AboutController@create']);

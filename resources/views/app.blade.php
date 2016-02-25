@@ -106,7 +106,7 @@
 			<li><a href="{{ url('/events') }}">Saved/Favourited</a></li>
 			<li class="divider"></li>
 			
-			<li><a href="{{ url('/eventDashboard') }}">Manage Events</a></li>
+			<li><a href="{{ url('events/manage') }}">Manage Events</a></li>
 			<li><a href="{{ url('/organisation') }}">Organisations</a></li>
 			<li><a href="{{ url('/contact') }}">Contact</a></li>
 			<li class="divider"></li>
@@ -151,7 +151,7 @@
 								<li><a href="{{ url('/events') }}">Saved/Favourited</a></li>
 								<li class="divider"></li>
 								
-								<li><a href="{{ url('/eventDashboard') }}">Manage Events</a></li>
+								<li><a href="{{ url('events/manage') }}">Manage Events</a></li>
 								<li><a href="{{ url('/organisations') }}">Organisations</a></li>
 								<li><a href="{{ url('/contact') }}">Contact</a></li>
 								<li class="divider"></li>
@@ -219,12 +219,14 @@
 			</div>
 		</footer>
 
-		<script type="text/javascript">
-			$(document).ready(function() {
-			$('select').material_select();}
-		</script>
+	<script>
+		$(document).ready(function() {
+			$('select').material_select();
+		});
+	</script>
 
-		<script>
+
+
         window.ParsleyConfig = {
             errorsWrapper: '<div></div>',
             errorTemplate: '<div class="alert alert-danger parsley" role="alert"></div>',
