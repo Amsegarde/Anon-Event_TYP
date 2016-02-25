@@ -25,9 +25,10 @@
 			<div class="row">
 				@if ($isAdmin === true)
 					<ul class="tabs">
-						<li class="tab col s3"><a href="#desc">Description</a> </li>
+						<li class="tab col s3"><a href="#desc">Description</a></li>
 						<li class="tab col s3"><a href="#tix">Ticket Information</a></li>
-						<li class="tab col s3"><a href="#edit">Editor</a> </li>
+						<li class="tab col s3"><a href="#edit">Editor</a></li>
+						
 					</ul>
 				@endif
 				<div id="desc">
@@ -56,17 +57,7 @@
 					<div class="col s6">
 						<h5>Where</h5>
 						<p>{{ $event->location }}</p>
-						<iframe
-							  width="450"
-							  height="250"
-							  frameborder="0" style="border:0"
-							  src="https://www.google.com/maps/embed/v1/directions
-  								?key={{env (API_KEY)}}
-							  &origin=Oslo+Norway
-							  &destination=Telemark+Norway
-							  &avoid=tolls|highways"
-								  allowfullscreen>
-						</iframe>
+						
 					</div>
 
 					<div class="col s6">
@@ -121,7 +112,7 @@
 
 							</table>
 						</div>
-
+							
 
 						<div class="row" id="edit">
 							<h4>Edit your Event</h4>
@@ -219,12 +210,6 @@
 						</div>
 					</div>
 
-
-
-
-
-
-
 					@else
 						<!-- Modal Trigger -->
 						<a class="waves-effect waves-light btn modal-trigger" href="#modal1">Get Tickets</a>
@@ -234,6 +219,7 @@
 					    	<div class="modal-content">
 						    	{!! Form::open(array('url' => 'events/' . $event->id . '/ticket/confirm', 'class' => 'form')) !!}
 									{!!  Form::hidden('eventID', $event->id) !!}
+									{!!  Form::hidden('eventName', $event->name) !!}
 
 									<div class="row">
 										<div class="input-field col s4">
