@@ -8,8 +8,12 @@
 		<div class="row col s3">
 			<div class="row">
 				{!! Form::open(array('url' => 'events')) !!}
+<<<<<<< HEAD
 					<div class="input-field col s12">
 						Change to Jonny's geolocation thing!
+=======
+					<div class="input-field col s2">
+>>>>>>> 8e73246cc83be89ad8e211ccb283374c3f68d6aa
 						<select name="location">
 							<option value="">Location</option>
 							<!--look into passing org id along with form even though its not displayed-->
@@ -68,6 +72,26 @@
 			</div>
 			@endforeach
 		</div>
+
+		@foreach ($events as $event)
+			<a href="{{ url('/events/'.$event->id) }}">
+				<div class="card small col s4">
+					<div class="card-image">
+						<img class="responsive-img" src="{{ asset('images/events/').'/'.$event->id.'.'.$event->image }}">
+						<span class="card-title">{{ $event->name }}</span>
+					</div>
+						<div class="card-content">
+						<p>Date: {{ $event->start_date }}</p>
+						<p>{{ $event->bio }}</p>
+					</div>
+					<div class="card-action">
+						<a href="">Favourite link</a>
+						<a href="{{ url('/events/'.$event->id) }}">Get Tickets</a>
+					</div>
+				</div>
+			</a>
+
+		@endforeach
 	</div>
 
 

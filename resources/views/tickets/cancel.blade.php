@@ -13,7 +13,7 @@
 						<p><a href="{{ url('/auth/login') }}">Log in</a> or <a href="{{ url('/auth/register') }}">Register</a></p>
 					@else
 						<div class="input-field">
-							{!! Form::open(array('route' => 'cancel_order', 'class' => 'form')) !!}
+							{!! Form::open(array('route' => ['cancel_order', $ticketID], 'method' => 'delete', 'class' => 'form')) !!}
 								{!!  Form::hidden('ticketID', $ticketID) !!}
 								{!! Form::submit('Confirm Cancelation', array('class'=>'btn btn-primary', 'route' => 'cancel_order')) !!}
 							{!! Form::close() !!}

@@ -12,7 +12,7 @@
 						<p>You must have an account in order to get tickets.</p>
 						<p><a href="{{ url('/auth/login') }}">Log in</a> or <a href="{{ url('/auth/register') }}">Register</a></p>
 					@else
-						{!! Form::open(array('url' => 'tickets', 'class' => 'form')) !!}
+						{!! Form::open(array('route' => 'store_tickets', 'class' => 'form')) !!}
 							{!! Form::hidden('eventID', $event->id) !!}
 							{!! Form::hidden('request', $request) !!}
 							{!! Form::hidden('request', $tickets) !!}
@@ -47,11 +47,11 @@
 								<tr><td></td><td>Total:</td><td>{{ $totalQuantity }}</td><td>{{ $totalPrice }}</td></tr>
 							</table>
 						
-							@if($totalPrice==0)			
-								{!! Form::submit('Confirm', array('class'=>'btn btn-primary')) !!}
-								
-							@else
+							@if($totalPrice == 0)			
+									{!! Form::submit('Confirm Free', array('class'=>'btn btn-primary')) !!}
 								{!! Form::close() !!}
+							@else
+								
 
 								<div class="row">
 								  <div class="col-md-6 col-md-offset-3">
