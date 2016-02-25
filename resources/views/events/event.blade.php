@@ -57,6 +57,21 @@
 					<div class="col s6">
 						<h5>Where</h5>
 						<p>{{ $event->location }}</p>
+					<div id="locationField">
+      					<input id="autocomplete" placeholder="Enter your address"
+             			onFocus="geolocate()" name="location" type="text"></input>
+             			<input type="button" onclick="loadMap()">Get Directions</input>
+   			 		</div>
+   			 		<div id ="map"></div>
+	   			 		<script type="text/javascript">
+	   			 		function loadMap(){
+	   			 			var origin = document.getElementById('autocomplete').value;
+	   			 			var map = document.getElementById('map');
+	   			 			map.innerHTML = '<iframe width="450" height="300" frameborder="0" style="border:0"src="https://www.google.com/maps/embed/v1/directions?origin='+origin+'&destination={{$event->location}}&key={{env("API_KEY")}}" allowfullscreen></iframe>';
+	   			 		}
+	   			 		</script> 
+	    			
+						
 					</div>			
 				</div>
 

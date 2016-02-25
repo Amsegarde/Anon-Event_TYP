@@ -7,7 +7,7 @@
 
 		<div class="row col s12">
 			<div class="row">
-				{!! Form::open(array('url' => 'events/filter')) !!}
+				{!! Form::open(array('url' => 'events')) !!}
 					<div class="input-field col s2">
 						<select name="location">
 							<option value="">Location</option>
