@@ -186,7 +186,6 @@ class EventController extends Controller {
 			}
 
 		}else{
-			return "only one apparantly";
 			$start_date = new Carbon($request->start_date[0]);
 			$end_date = new Carbon($request->end_date[0]);
 			$newEvent->start_date = $start_date->toDateTimeString();

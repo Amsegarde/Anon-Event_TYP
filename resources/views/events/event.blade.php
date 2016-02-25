@@ -56,18 +56,7 @@
 					<div class="col s6">
 						<h5>Where</h5>
 						<p>{{ $event->location }}</p>
-						<iframe
-							  width="450"
-							  height="250"
-							  frameborder="0" style="border:0"
-							  src="https://www.google.com/maps/embed/v1/directions
-  								?key={{env (API_KEY)}}
-							  &origin=Oslo+Norway
-							  &destination=Telemark+Norway
-							  &avoid=tolls|highways"
-								  allowfullscreen>
-						</iframe>
-					</div>
+											</div>
 
 					<div class="col s6">
 						<h5>When</h5>
