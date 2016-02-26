@@ -45,7 +45,7 @@
 								<div class="col s8 offset-s2">
 									<h5 align="middle">{!! $it->name !!}</h5>
 									<p>Date: {{ $it->date }}</p> 
-									<p>Time: {{ $it->time }}</p>
+									<!-- <p>Time: {{ $it->time }}</p> -->
 									<p>{{ $it->blurb }}</p>
 									<p>The Cost of the extra event is €{{ $it->cost }}</p>
 									<p>There is limited spaces to this event, {{ $it->capacity }} tickets are remaining</p>
@@ -58,21 +58,19 @@
 					<div class="col s6">
 						<h5>Where</h5>
 						<p>{{ $event->location }}</p>
-					<div id="locationField">
-      					<input id="autocomplete" placeholder="Enter your address"
-             			onFocus="geolocate()" name="location" type="text"></input>
-             			<input type="button" onclick="loadMap()">Get Directions</input>
-   			 		</div>
-   			 		<div id ="map"></div>
-	   			 		<script type="text/javascript">
-	   			 		function loadMap(){
-	   			 			var origin = document.getElementById('autocomplete').value;
-	   			 			var map = document.getElementById('map');
-	   			 			map.innerHTML = '<iframe width="1000" height="500" frameborder="0" style="border:0"src="https://www.google.com/maps/embed/v1/directions?origin='+origin+'&destination={{$event->location}}&key={{env("API_KEY")}}" allowfullscreen></iframe>';
-	   			 		}
-	   			 		</script> 
-	    			
-						
+						<div id="locationField">
+	      					<input id="autocomplete" placeholder="Enter your address"
+	             			onFocus="geolocate()" name="location" type="text"></input>
+	             			<input type="button" onclick="loadMap()">Get Directions</input>
+	   			 		</div>
+	   			 		<div id ="map"></div>
+		   			 		<script type="text/javascript">
+		   			 		function loadMap(){
+		   			 			var origin = document.getElementById('autocomplete').value;
+		   			 			var map = document.getElementById('map');
+		   			 			map.innerHTML = '<iframe width="1000" height="500" frameborder="0" style="border:0"src="https://www.google.com/maps/embed/v1/directions?origin='+origin+'&destination={{$event->location}}&key={{env("API_KEY")}}" allowfullscreen></iframe>';
+		   			 		}
+		   			 		</script>
 					</div>			
 				</div>
 
@@ -278,6 +276,7 @@
 									{!!  Form::hidden('eventID', $event->id) !!}
 									{!!  Form::hidden('eventName', $event->name) !!}
 
+
 									<div class="row">
 										<div class="input-field col s4">
 								        	<input readonly value="Type" id="disabled" type="text">
@@ -311,11 +310,35 @@
 													'4',
 													'5',
 													'6'], 
-													null,
-													['class'=>'ticketSelect']) !!}
+													null
+													) !!}
 											</div>
 										</div>
 									@endforeach
+									@if ($itinerary->prebooked = 1)
+										@foreach($itinArrays as $itinArray)
+											<div class="row">
+												<div class="input-field col s4">
+										        	<input readonly name="name[]" value="{!! $itinArray->name !!}" id="disabled" type="text">
+										        </div>
+												<div class="input-field col s4">
+										        	<input readonly name="cost[]" value="{!! $itinArray->cost !!}" id="disabled" type="text">
+										        </div>
+										        <div class='input-field col s4'>
+													{!! Form::select('amount[]', [
+														'0',
+														'1', 
+														'2', 
+														'3',
+														'4',
+														'5',
+														'6'], 
+														null
+														) !!}
+												</div>
+											</div>
+										@endforeach
+									@endif	
 
 									@if (($event->avail_tickets) === 0 )
 										<p>SOLD OUT</p>

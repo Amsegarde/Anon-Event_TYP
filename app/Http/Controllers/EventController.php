@@ -128,20 +128,24 @@ class EventController extends Controller {
 				$prebooked = 0;
 			}
 			
+
+
 			$itinerary = new Itinerary;
 			$itinerary->name = $itins[$i];
 			$itinerary->blurb = $itins[$i+1];
-			//$itinerary->time = $itins[$i+2];
+			$itinerary->date = $itins[$i+2];
 			$itinerary->prebooked = $prebooked;
 			$itinerary->cost = $itins[$i+3];
+			$itinerary->capacity = $itins[$i+4];
 
 			$itinerary->save();
 			$itineraryID = $itinerary->id;
 			//return $eventID;
 			EventContain::create([
-				'itineraryId'=>$itineraryID,
+				'itinerary_id'=>$itineraryID,
 				'event_id'=>$eventID
 				]);
+			
 		}
 
 		$tickets = $request->tickets;
@@ -192,7 +196,7 @@ class EventController extends Controller {
 			$start_date = new Carbon($request->start_date[0]);
 			$end_date = new Carbon($request->end_date[0]);
 			$newEvent->start_date = $start_date->toDateTimeString();
-		$newEvent->end_date = $end_date->toDateTimeString();
+			$newEvent->end_date = $end_date->toDateTimeString();
 			
 			//TODO: ensure that dates are coming from event.blade correctly
 			//store dates in db (update db first)
@@ -250,7 +254,8 @@ class EventController extends Controller {
 			$userID = Auth::id();
 			$event = Event::findOrFail($id);
 			$organises = Organise::findOrFail($event->id);
-
+			$itinArrays = array();
+			$itinerary = new Itinerary;
 	
 			$organisation = Organisation::findOrFail($organises->organisation_id);
 
@@ -264,6 +269,13 @@ class EventController extends Controller {
 					$isAdmin = true;
 					break;
 				}
+			}
+
+			$eventItins = EventContain::where("event_id", "=", $event->id)->get();
+			//$actualItins = Itinerary::where("event_id", "=", $eventItins->id)->get();
+			foreach($eventItins as $eventItin){
+				$i = Itinerary::findOrFail($eventItin->itinerary_id);
+				array_push($itinArrays, $i);
 			}
 
 
@@ -288,7 +300,9 @@ class EventController extends Controller {
 				'isAdmin',
 				'tickets',
 				'locationSuggs',
-				'itin'
+				'itin',
+				'itinArrays',
+				'itinerary'
 			));
 
 	}	

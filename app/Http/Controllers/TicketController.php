@@ -121,7 +121,7 @@ class TicketController extends Controller {
 
 
 	/**
-	 * Temporarely displays tickets.
+	 * Temporarily displays tickets.
 	 */
 	public function confirm(Request $request)
 	{
@@ -130,11 +130,15 @@ class TicketController extends Controller {
 		$type = $request->type;
 		$price = $request->price;
 		$quantity = $request->quantity;
-		
+		$name = $request->name;
+		$cost = $request->cost;
+		$amount = $request->amount;
+		$itinArrays = $request->itinArrays;
 
 		$tickets = TicketType::where('event_id', '=', $event->id)->get();
 
 		$totals = array();
+		$itinTotals = array();
 		$size = count($type);
 
 		$totalPrice = 0;
@@ -142,11 +146,12 @@ class TicketController extends Controller {
 
 		for ($i = 0; $i < $size; $i++) {
 			$sum = $price[$i] * $quantity[$i];
-			$totalPrice += $sum;
+			$itinSum = $cost[$i] * $amount[$i];
+			$totalPrice += $sum + $itinSum;
 			$totalQuantity += $quantity[$i];
 			array_push($totals, $sum);
+			array_push($itinTotals, $itinSum);
 		};
-
 
 		return view('events.confirmation', array(
 									'request' 		=> $request, 
@@ -157,7 +162,13 @@ class TicketController extends Controller {
 		 							'totals' 		=> $totals,
 		 							'totalPrice' 	=> $totalPrice,
 		 							'totalQuantity' => $totalQuantity,
-		 							'tickets' 		=> $tickets));	
+		 							'tickets' 		=> $tickets,
+		 							'name'			=> $name,
+		 							'cost'			=> $cost,
+		 							'amount'		=> $amount,
+		 							'itinTotals'	=> $itinTotals,
+		 							'itinArrays'	=> $itinArrays
+		 							));	
 	}
 
 
@@ -202,17 +213,18 @@ class TicketController extends Controller {
         // Checking is product valid
         $temp = $request->totalPrice;
         $amount = $temp * 100;
+        return $amount;
 
         $token = $request->input('stripeToken');
         $first_name = $request->input('first_name');
         $last_name = $request->input('last_name');
         $email = $request->input('email');
-        // $temp = UserPurchase::where('email', $email)->first();//->value('email');
-        // $emailCheck = $temp->email;
+        $temp = UserPurchase::where('email', $email)->first();//->value('email');
+        $emailCheck = $temp->email;
         \Stripe\Stripe::setApiKey(env('STRIPE_SK'));
 
         // If the email doesn't exist in the database create new customer and user record
-        if (/*!isset($emailCheck)*/ UserPurchase::where('email', $email)->get()) {
+        if (!isset($emailCheck)) {
             // Create a new Stripe customer
             try {
                 $customer = \Stripe\Customer::create([
@@ -267,9 +279,9 @@ class TicketController extends Controller {
             'quantity' => $request->totalQuantity,
             'stripe_transaction_id' => $charge->id,
         ]);
-
-        return redirect()->route('display')
-            ->with('successful', 'Your purchase was successful!');
+        
+        // return redirect()->route('display')
+        //     ->with('successful', 'Your purchase was successful!');
     }
 
 
