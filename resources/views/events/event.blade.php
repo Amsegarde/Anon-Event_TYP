@@ -67,7 +67,7 @@
 	   			 		function loadMap(){
 	   			 			var origin = document.getElementById('autocomplete').value;
 	   			 			var map = document.getElementById('map');
-	   			 			map.innerHTML = '<iframe width="450" height="300" frameborder="0" style="border:0"src="https://www.google.com/maps/embed/v1/directions?origin='+origin+'&destination={{$event->location}}&key={{env("API_KEY")}}" allowfullscreen></iframe>';
+	   			 			map.innerHTML = '<iframe width="1000" height="500" frameborder="0" style="border:0"src="https://www.google.com/maps/embed/v1/directions?origin='+origin+'&destination={{$event->location}}&key={{env("API_KEY")}}" allowfullscreen></iframe>';
 	   			 		}
 	   			 		</script> 
 	    			
