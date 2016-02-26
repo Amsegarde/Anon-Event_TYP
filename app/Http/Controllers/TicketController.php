@@ -81,6 +81,7 @@ class TicketController extends Controller {
 		$price = $request->price;
 		$quantity = $request->quantity;
 		$totalQuantity = $request->totalQuantity;
+		$mailTickets = array();
 
 		$size = count($type);
 		for($i = 0; $i< $size; $i++) { 
@@ -95,18 +96,24 @@ class TicketController extends Controller {
 			$update = DB::table('events')
 							->where('id', '=', $request->eventID)
 							->decrement('avail_tickets', $totalQuantity);
-
+			array_push($mailTickets, $newTicket);
 		}
 
+		$event = Event::findOrFail($request->eventID);
+		$organises = Organise::findOrFail($event->id);
+		$organisation = Organisation::findOrFail($organises->organisation_id);
 
 		Mail::send('emails.tickets',
 	       array(
 	            'email' => Auth::user()->email,
-	        ), function($message) use ($request)  {
+	            'event' => $event,
+	            'organisation' => $organisation,
+	            'mailTickets' => $mailTickets
+	        ), function($message) use ($request, $event)  {
 	       			
        				$message->to(Auth::user()->email, Auth::user()->firstname)
        						->from('anonevent.cs@gmail.com')
-       						->subject('Your tickets for ' . $request->eventName);
+       						->subject('Your tickets for - ' . $event->name);
 	    });
 
 		return redirect('tickets');
@@ -123,7 +130,7 @@ class TicketController extends Controller {
 		$type = $request->type;
 		$price = $request->price;
 		$quantity = $request->quantity;
-
+		
 
 		$tickets = TicketType::where('event_id', '=', $event->id)->get();
 
@@ -151,10 +158,6 @@ class TicketController extends Controller {
 		 							'totalPrice' 	=> $totalPrice,
 		 							'totalQuantity' => $totalQuantity,
 		 							'tickets' 		=> $tickets));	
-
-		 
-
-
 	}
 
 
@@ -175,12 +178,14 @@ class TicketController extends Controller {
 						'type'		=> $type[$i],
 						'quantity'	=> $quantity[$i]
 						
-			]);
+			]);	
 		}	
+
 		
-			$update = DB::table('events')
-							->where('id', '=', $request->eventID)
-							->decrement('avail_tickets', $totalQuantity);
+		
+		$update = DB::table('events')
+						->where('id', '=', $request->eventID)
+						->decrement('avail_tickets', $totalQuantity);
 
         $validator = \Validator::make(\Input::all(), [
             'first_name' => 'required|string|min:2|max:32',
