@@ -2,6 +2,7 @@
 
 @section('content')
 
+
 	<div class="row">
 		@if (count($errors) > 0)
 			<div class="alert alert-danger">
@@ -42,6 +43,12 @@
 					{!! Form::password('password_confirmation', null) !!}
 				</div>
 
+
+
+
+
+    
+
 				<div class="input-field col s12">
 					{!! Form::submit('Register', ['class'=>'btn indigo lighten-1']) !!}
 				</div>
@@ -49,4 +56,5 @@
 		{!! Form:: close() !!}
 	</div>
 
+	
 @endsection

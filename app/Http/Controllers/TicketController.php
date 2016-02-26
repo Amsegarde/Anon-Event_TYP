@@ -264,7 +264,7 @@ class TicketController extends Controller {
             'ticket_id' => $request->id,
             'ticket_type' => $request->type,
             'price' => $amount/100,
-            'quantity' => $request->quantity,
+            'quantity' => $request->totalQuantity,
             'stripe_transaction_id' => $charge->id,
         ]);
 

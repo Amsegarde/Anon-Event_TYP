@@ -188,7 +188,7 @@ class EventController extends Controller {
 			}
 
 		}else{
-			//return "only one apparantly";
+
 			$start_date = new Carbon($request->start_date[0]);
 			$end_date = new Carbon($request->end_date[0]);
 			$newEvent->start_date = $start_date->toDateTimeString();
@@ -220,39 +220,29 @@ class EventController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function browse(){
+	public function browse(Request $request){
 		//needs users filters and scope filters and some kind of algorithm
 		//needs to be relevant events not just all.
-			$events = Event::all();
-			$search = Event::all();
-			return view('events.browse', compact('events', 'search'));
-	}
-
-	/**
-	 * Apply the filters to the browse
-	 *
-	 * @return Response
-	 */
-	public function filter(Request $request) {
 		$events = new Event;
 
-		if ($request->location){
-			$events = $events->where('location', '=', $request->location)->get();
-		}
+		if (!empty($request->all())) {
+			if ($request->location){
+				$events = $events->where('location', '=', $request->location)->get();
+			}
 
-		if ($request->genre) {
-			$events = Event::where('genre','=', $request->genre)->get();
-		}
+			if ($request->genre) {
+				$events = Event::where('genre','=', $request->genre)->get();
+			}
 
-		if ($request->price) {
-			$events = Event::where('price', '<=', $request->price)->get();
-		}
-
+			if ($request->price) {
+				$events = Event::where('price', '<=', $request->price)->get();
+			}
+		} else {
+			$events = Event::all();
+		}	
+		
 		$search = Event::all();
-
-		return redirect('events')->with(compact('events','search'));
-		// return redirect('events')->with(array($search, $events));
-		// return redirect::action('',array('events','search'));
+		return view('events.browse', compact('events', 'search'));
 	}
 
 	public function show($id) {
