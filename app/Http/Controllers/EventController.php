@@ -20,7 +20,9 @@ use App\LocationSuggestion;
 use App\Ticket;
 use App\DateSuggestion;
 use App\User;
+use App\Vote;
 use Mail; 
+use Illuminate\Support\Facades\Redirect;
 
 class EventController extends Controller {
 
@@ -117,7 +119,7 @@ class EventController extends Controller {
 							'organisation_id'=>$request->organisation]);
 		//added by joe to handle incoming intinery items
 		$itins = $request->item;
-		//return $itins;
+		
 		$size = count($itins);
 		for($i = 1; $i< $size; $i+=6){
 			if(isset($itins[$i+5])){
@@ -184,7 +186,7 @@ class EventController extends Controller {
 			$start_dateSuggs = $request->start_date;
 			$end_dateSuggs = $request->end_date;
 			
-			for($i = 0; $i <count($start_dateSuggs); $i+=2){
+			for($i = 0; $i <count($start_dateSuggs); $i++){
 				DateSuggestion::create(['start_date'=>new Carbon($start_dateSuggs[$i]),
 										'end_date'=>new Carbon($end_dateSuggs[$i]),
 										'event_id'=>$eventID]);
@@ -282,12 +284,21 @@ class EventController extends Controller {
 			// get the tickets to the event
 			$e = Event::findOrFail($id);
 			$tickets = TicketType::where('event_id', '=', $e->id)->get();
+
+			$voteOpen= 0;
+			$voted = Vote::where('user_id','=', $userID)->where('event_id','=',$e->id)->first();
+			if(empty($voted)){
+				//return "voting is opne";
+				$voteOpen = 1;
+			}
 			//decide on showing location poll
 			$locations = $e->location;
 			$locationSuggs = null;
+			$start_dateSuggs = null;
 			if($locations=="To Be Decided"){
 				$locationSuggs = LocationSuggestion::where('event_id', '=',$e->id)->get();
 			}
+			$dateSuggs = DateSuggestion::where('event_id','=', $e->id)->get();
 
 			// Get itinerary for the events;
 			$itin = DB::table('itinerarys')
@@ -296,6 +307,7 @@ class EventController extends Controller {
 			
 			return view('events.event', compact(
 				'event', 
+				'voteOpen',
 				'organisation',
 				'isAdmin',
 				'tickets',
@@ -303,9 +315,27 @@ class EventController extends Controller {
 				'itin',
 				'itinArrays',
 				'itinerary'
+				'dateSuggs'
 			));
-
 	}	
+
+	public function vote(Request $request){
+		$userID = Auth::user()->id;
+		$eventID = $request->eventID;
+		$location = $request->location_vote;
+		$date = $request->date_vote;
+		
+		Vote::create(['event_id'=>$eventID,'user_id'=>$userID]);
+		$locVote = DB::table('location_suggestions')->where('id','=', $location)										
+										->increment('votes');
+		$dateVote = DB::table('date_suggestions')->where('id','=', $date)										
+										->increment('votes');
+		
+		
+		return Redirect::back()->with('message','Operation Successful !');
+
+	}
+	
 
 	/**
 	 * Display events by this user only.
