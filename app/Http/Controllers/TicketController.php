@@ -123,7 +123,7 @@ class TicketController extends Controller {
 	/**
 	 * Temporarily displays tickets.
 	 */
-	public function confirm(Request $request)
+	public function confirmPage(Request $request)
 	{
 		$event = Event::find($request->eventID);
 		//$quantity = $request->quantity + 1;
@@ -213,7 +213,6 @@ class TicketController extends Controller {
         // Checking is product valid
         $temp = $request->totalPrice;
         $amount = $temp * 100;
-        return $amount;
 
         $token = $request->input('stripeToken');
         $first_name = $request->input('first_name');
@@ -280,8 +279,8 @@ class TicketController extends Controller {
             'stripe_transaction_id' => $charge->id,
         ]);
         
-        // return redirect()->route('display')
-        //     ->with('successful', 'Your purchase was successful!');
+        return redirect()->route('display')
+            ->with('successful', 'Your purchase was successful!');
     }
 
 
