@@ -55,12 +55,17 @@
 
 				
 					<div class="input-field col s12" id="locations">
-					    {!! Form::label('Enter The Location Of Your Event') !!}
+					<div id="locationField">
+      					<input id="autocomplete" placeholder="Enter The Location Of Your Event"
+             			onFocus="geolocate()" name="location[]" type="text"></input>
+             			
+   			 		</div>
+					    <!--{!! Form::label('Enter The Location Of Your Event') !!}
 					    {!! Form::text('location[]', 
 					    				null, 
 					      				array('required', 
 					         		    'class'=>'form-control', 
-					          		    'placeholder'=>'Enter The Location Of Your Event')) !!}
+					          		    'placeholder'=>'Enter The Location Of Your Event')) !!}-->
 						<input type="button" class="btn btn-secondary"value="Open Location to Polling" onClick="togglePoll(locations);">
 					
 					</div>

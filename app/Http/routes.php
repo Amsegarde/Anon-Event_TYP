@@ -19,6 +19,10 @@ Route::get('events', 'EventController@browse');
 
 
 Route::post('events', 'EventController@browse');
+Route::post('vote','EventController@vote');
+Route::post('date_vote','EventController@date_vote');
+
+
 Route::get('events/past', 'EventController@browsePast');
 Route::get('events/create','EventController@create');
 Route::post('events/create', 
