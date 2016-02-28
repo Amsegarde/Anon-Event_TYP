@@ -2,24 +2,73 @@
 
 @section('content')
 
-<div class="container">
-	<div class="row">
-		<div class="col-md-10 col-md-offset-1">
-			<div class="panel panel-default">
-				<div class="panel-heading">Browse Events</div>
-						@foreach ($events as $event) 
-							<article id="events">
-								<h2>{{ $event->name }}</h2>
-								<h7>Date: {{ $event->date }}</h7>
-								<h7>Details: {{ $event->bio }}</h7>
-								<h1>{{ $event->id }}</h1>
-								<button type="button"><a href="{{ url('/events/' .$event->id ) }}">Get Tickets</a></button>
-							</article>
-						@endforeach
+	<div class="row col s12">
+		<h5>Browse Events</h5>
 
+		<div class="row col s3">
+			<div class="row">
+				{!! Form::open(array('url' => 'events/past')) !!}
+
+					<div class="input-field col s12">
+						{!! Form::label('location','Location') !!}
+						{!! Form::text('location') !!}
+					</div>
+
+					<div class="input-field col s12">
+						<label for="datepicker">After what Date?</label>
+						<input type="date" class="datepicker" name="date">
+					</div>
+
+					<div class="input-field col s12">
+						<select name="genre">
+							<option value="">Genre</option>
+							<!--look into passing org id along with form even though its not displayed-->
+							@foreach ($genre as $cat)
+								<option value="{{$cat->id}}">{{$cat->type}}</option>
+							@endforeach
+						</select>
+					</div>
+
+					<div class="input-field col s12">
+						{!! Form::submit('Search', array('class'=>'btn indigo lighten-1')) !!}
+					</div>
+
+				{!! Form::close() !!}
 			</div>
 		</div>
-	</div>
-</div>
 
+		<div class="col s9">
+			<p>{{ $msg	 }}</p>
+			@foreach ($events as $event)
+			<div class="card small col s6">
+				<div class="card-image">
+					<img class="responsive-img" src="{{ asset('images/events/').'/'.$event->id.'.'.$event->image }}">
+					<span class="card-title">{{ $event->name }}</span>
+				</div>
+					<div class="card-content">
+					<p>Date: {{ $event->start_date }}</p>
+					<p>{!! $event->bio !!}</p>
+				</div>
+				<div class="card-action">
+					<a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+					<a href="{{ url('/events/'.$event->id) }}">Get Tickets</a>
+				</div>
+			</div>
+			@endforeach
+		</div>
+
+		
+	</div>
+
+
+	<script>
+		$(document).ready(function() {
+			// Datepicker working - uses pickadate.js
+			$('.datepicker').pickadate({
+				selectMonths: false, // Creates a dropdown to control month
+				selectYears: 15, // Creates a dropdown of 15 years to control year
+				max:true
+			});
+		});
+	</script>
 @endsection

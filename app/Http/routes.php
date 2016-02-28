@@ -20,6 +20,7 @@ Route::get('events', 'EventController@browse');
 
 Route::post('events', 'EventController@browse');
 Route::get('events/past', 'EventController@browsePast');
+Route::post('events/past', 'EventController@browsePast');
 Route::get('events/create','EventController@create');
 Route::post('events/create', 
   ['as' => 'create_store', 'uses' => 'EventController@store']);

@@ -19,6 +19,7 @@ use App\EventTicket;
 use App\LocationSuggestion;
 use App\Ticket;
 use App\DateSuggestion;
+use App\Category;
 use App\User;
 use Mail; 
 
@@ -210,9 +211,54 @@ class EventController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function browsePast()
+	public function browsePast(Request $request)
 	{
-		return view('events.browsePast');
+		$events = new Event;
+		echo "1";
+		if (!empty($request->all())) {
+			echo "2";
+			if ($request->location){
+				echo "3";
+				$events = Event::where('location', 'Like', $request->location)
+						->where('start_date', '<', Carbon::now())->get();
+			} 
+
+			if ($request->date) {
+				echo "4";
+				echo "</br>";
+				//echo new Date('Y m d', $request_date);
+				
+				echo new Carbon::createFromFromat($request->date);
+				$events = Event::where('start_date', '>=', new Carbon($request->date))
+						->where('start_date', '<', Carbon::now())->get();
+						echo "</br>";
+				echo $events;
+			}
+
+			if ($request->genre) {
+				echo "5";
+				$events = Event::where('genre','=', $request->genre)
+						->where('start_date', '<', Carbon::now())->get();
+			}
+		} else {
+			echo "6";
+			$events = Event::where('start_date', '<', Carbon::now())->get();
+		}
+		echo $events;
+		if (empty($events)) {
+			echo "7";
+			$msg = 'No Events match your search';
+			$events = Event::where('start_date', '<', Carbon::now())->get();
+		}
+		else {
+			echo "8";
+			$msg = count($events) . " event(s) found";
+		}
+
+		echo "9";
+		$search = Event::all();
+		$genre = Category::all();
+		return view('events.browsePast', compact('events', 'search', 'genre', 'msg'));
 	}
 
 	/**
@@ -242,7 +288,8 @@ class EventController extends Controller {
 		}	
 		
 		$search = Event::all();
-		return view('events.browse', compact('events', 'search'));
+		$genre = Category::all();
+		return view('events.browse', compact('events', 'search', 'genre'));
 	}
 
 	public function show($id) {

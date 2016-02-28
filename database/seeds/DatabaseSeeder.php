@@ -54,6 +54,19 @@ class DatabaseSeeder extends Seeder {
 			]);
 
 
+		Category::create(['type' => 'Music', 
+					'type' => 'Sport', 
+					'type' => 'Theatre',
+					'type' => 'Convention',
+					'type' => 'Course',
+					'type' => 'Conference',
+					'type' => 'Seminar',
+					'type' => 'Gaming',
+					'type' => 'Party',
+					'type' => 'Screening',
+					'type' => 'Tour',
+					'type' => 'Other'
+					]);
 	}
 
 }
