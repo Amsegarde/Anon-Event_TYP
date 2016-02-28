@@ -22,6 +22,7 @@ use App\DateSuggestion;
 use App\Category;
 use App\User;
 use App\Vote;
+use App\Media;
 use Mail; 
 use Illuminate\Support\Facades\Redirect;
 
@@ -220,48 +221,43 @@ class EventController extends Controller {
 	public function browsePast(Request $request)
 	{
 		$events = new Event;
-		echo "1";
+		// echo "1";
 		if (!empty($request->all())) {
-			echo "2";
+			// echo "2";
 			if ($request->location){
-				echo "3";
+				// echo "3";
 				$events = Event::where('location', 'Like', $request->location)
 						->where('start_date', '<', Carbon::now())->get();
 			} 
 
 			if ($request->date) {
-				echo "4";
-				echo "</br>";
-				//echo new Date('Y m d', $request_date);
-				
-				echo new Carbon::createFromFromat($request->date);
-				$events = Event::where('start_date', '>=', new Carbon($request->date))
+				// echo "4";
+				$carbon = new Carbon;
+				$searchDate = $carbon->createFromFormat('j F, Y', $request->date);
+				$events = Event::where('start_date', '>=', $searchDate)
 						->where('start_date', '<', Carbon::now())->get();
-						echo "</br>";
-				echo $events;
 			}
 
 			if ($request->genre) {
-				echo "5";
+				// echo "5";
 				$events = Event::where('genre','=', $request->genre)
 						->where('start_date', '<', Carbon::now())->get();
 			}
 		} else {
-			echo "6";
+			// echo "6";
 			$events = Event::where('start_date', '<', Carbon::now())->get();
 		}
-		echo $events;
-		if (empty($events)) {
-			echo "7";
+		if (count($events) == 0) {
+			// echo "7";
 			$msg = 'No Events match your search';
 			$events = Event::where('start_date', '<', Carbon::now())->get();
 		}
 		else {
-			echo "8";
+			// echo "8";
 			$msg = count($events) . " event(s) found";
 		}
 
-		echo "9";
+		// echo "9";
 		$search = Event::all();
 		$genre = Category::all();
 		return view('events.browsePast', compact('events', 'search', 'genre', 'msg'));
@@ -352,18 +348,33 @@ class EventController extends Controller {
 				->join('event_contains', 'itinerarys.id', '=', 'event_contains.itinerary_id')
 				->where('event_contains.event_id', '=', $e->id)->get();
 			
-			return view('events.event', compact(
-				'event', 
-				'voteOpen',
-				'organisation',
-				'isAdmin',
-				'tickets',
-				'locationSuggs',
-				'itin',
-				'itinArrays',
-				'itinerary'
-				'dateSuggs'
-			));
+
+			if ($event->start_date >= Carbon::now()) { // All active events
+				return view('events.event', compact(
+					'event', 
+					'voteOpen',
+					'organisation',
+					'isAdmin',
+					'tickets',
+					'locationSuggs',
+					'itin',
+					'itinArrays',
+					'itinerary',
+					'dateSuggs'
+				));
+			} else { // all past events
+				$medias = Media::where('event_id', '=', $e->id)->get();
+				return view('events.past', compact(
+					'event', 
+					'organisation',
+					'isAdmin',
+					'itin',
+					'itinArrays',
+					'itinerary',
+					'medias'
+				));
+			}
+				
 	}	
 
 	public function vote(Request $request){
@@ -439,5 +450,30 @@ class EventController extends Controller {
 		}
 
 		return redirect('events/' . $request->eventID);
+	}
+
+	public function media(Request $request) {
+		$media = new Media;
+
+		$media->event_id = $request->event_id;
+		$media->user_id = $request->user_id;
+		$media->flagged = false;
+		$media->save();
+
+		if (Input::hasFile('image')){
+			$uploadFile = Input::file('image');
+			$filename = $media->id . '.' . $uploadFile->getClientOriginalExtension(); 
+
+			$destinationPath = base_path() . '/public/images/media/';
+
+			Input::file('image')->move($destinationPath, $filename);
+			$media->media = $uploadFile->getClientOriginalExtension();	
+		} else {
+			$media->media = '';
+		}
+		$media->save();
+
+		return redirect::back()->with('message', 'Media Uploaded');
+
 	}
 }

@@ -51,7 +51,7 @@
 				</div>
 				<div class="card-action">
 					<a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-					<a href="{{ url('/events/'.$event->id) }}">Get Tickets</a>
+					<a href="{{ url('/events/'.$event->id) }}">Show Event</a>
 				</div>
 			</div>
 			@endforeach

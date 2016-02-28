@@ -15,14 +15,9 @@
 Route::get('about', 'AboutPageController@index');
 Route::get('/', 'HomePageController@index');
 
+Route::post('media', 'EventController@media');
 Route::get('events', 'EventController@browse');
-
-
 Route::post('events', 'EventController@browse');
-Route::post('vote','EventController@vote');
-Route::post('date_vote','EventController@date_vote');
-
-
 Route::get('events/past', 'EventController@browsePast');
 Route::post('events/past', 'EventController@browsePast');
 Route::get('events/create','EventController@create');
@@ -42,6 +37,10 @@ Route::get('events/{id}/ticket', 'TicketController@show');
 Route::get('events/{id}','EventController@show');
 Route::post('events/{id}', 
 	['as' => 'contact_attendees', 'uses' => 'EventController@sendMessage']);
+
+
+Route::post('vote','EventController@vote');
+Route::post('date_vote','EventController@date_vote');
 
 Route::get('organisation/create', 'OrganisationController@create');
 Route::get('organisation/dashboard', 'OrganisationController@dashboard');

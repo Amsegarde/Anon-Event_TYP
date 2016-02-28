@@ -53,7 +53,7 @@
 					</div>
 
 					<div class="divider col s12"></div>
-
+<!-- 
 					<div class="col s6">
 						<h5>Where</h5>
 						<p>{{ $event->location }}</p>
@@ -70,7 +70,7 @@
 		   			 			map.innerHTML = '<iframe width="1000" height="500" frameborder="0" style="border:0"src="https://www.google.com/maps/embed/v1/directions?origin='+origin+'&destination={{$event->location}}&key={{env("API_KEY")}}" allowfullscreen></iframe>';
 		   			 		}
 		   			 		</script>
-					</div>			
+					</div>	 -->		
 				</div>
 
 				</div>
