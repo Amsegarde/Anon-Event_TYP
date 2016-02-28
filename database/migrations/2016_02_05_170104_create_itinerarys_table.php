@@ -18,7 +18,7 @@ class CreateItinerarysTable extends Migration {
 			$table->string('name');
 			//consider removing date. it is redundant with datetime below
 			$table->date('date');
-			$table->dateTime('time');
+			//$table->dateTime('time');
 			$table->string('blurb');
 			$table->boolean('prebooked');
 			$table->integer('cost');

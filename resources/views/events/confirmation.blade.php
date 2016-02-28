@@ -44,14 +44,32 @@
 									@endif
 								@endfor
 
+								@if(count($name) > 0)
+									@for ($i = 0; $i < count($name); $i++)
+										@if ($amount[$i] > 0)
+
+											{!!	Form::hidden('name[]', $name[$i]) !!}
+											{!!	Form::hidden('cost[]', $cost[$i]) !!}
+											{!!	Form::hidden('amount[]', $amount[$i]) !!}
+
+											<tr>
+												<td>{{ $name[$i] }}</td>
+												<td>{{ $cost[$i] }}</td>
+												<td>{{ $amount[$i] }}</td>
+												<td>{{ $itinTotals[$i] }}</td>
+											</tr>
+										@endif
+									@endfor
+								@endif
+
 								<tr><td></td><td>Total:</td><td>{{ $totalQuantity }}</td><td>{{ $totalPrice }}</td></tr>
 							</table>
 						
 							@if($totalPrice == 0)			
-									{!! Form::submit('Confirm Free', array('class'=>'btn btn-primary')) !!}
+								{!! Form::submit('Confirm Free', array('class'=>'btn btn-primary')) !!}
 								{!! Form::close() !!}
 							@else
-								
+								{!! Form::close() !!}
 
 								<div class="row">
 								  <div class="col-md-6 col-md-offset-3">
@@ -62,6 +80,7 @@
 										{!!	Form::hidden('totalQuantity', $totalQuantity) !!}
 										{!!	Form::hidden('totalPrice', $totalPrice) !!}
 
+										oasidhasdihwasidhihafoehoishdsiofhdshiadh
 
 								      <div class="form-group" id="first-name-group">
 								          {!! Form::label('firstName', 'First Name:') !!}
@@ -135,7 +154,6 @@
 								              {!! Form::label(null, 'Ex. Month') !!}
 								              {!! Form::selectMonth(null, null, [
 								                  'style' => 'display: inherit !important',
-								                  'id'				  => 'ticketSelect',
 								                  'required'              => 'required',
 								                  'data-stripe'           => 'exp-month'
 								              ], '%m') !!}
@@ -146,7 +164,6 @@
 								              {!! Form::label(null, 'Ex. Year') !!}
 								              {!! Form::selectYear(null, date('Y'), date('Y') + 10, null, [
 								                  'style' => 'display: inherit !important',
-								                  'id'				  => 'ticketSelect',
 								                  'required'          => 'required',
 								                  'data-stripe'       => 'exp-year'
 								                  ]) !!}
@@ -181,11 +198,12 @@
 								          </div>
 								      @endif
 								  </div>
-
+								  
 								</div>
 								</div>
+								{!! Form::close() !!}
 							@endif
-							{!! Form::close() !!}
+							
 					@endif
 
 				</div>

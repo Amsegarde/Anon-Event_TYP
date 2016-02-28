@@ -19,13 +19,17 @@ Route::get('events', 'EventController@browse');
 
 
 Route::post('events', 'EventController@browse');
+Route::post('vote','EventController@vote');
+Route::post('date_vote','EventController@date_vote');
+
+
 Route::get('events/past', 'EventController@browsePast');
 Route::post('events/past', 'EventController@browsePast');
 Route::get('events/create','EventController@create');
 Route::post('events/create', 
   ['as' => 'create_store', 'uses' => 'EventController@store']);
 Route::get('events/manage', 'EventController@manageEvents');
-Route::post('events/{id}/ticket/confirm', 'TicketController@confirm');
+Route::post('events/{id}/ticket/confirm', 'TicketController@confirmPage');
 // Route::post('events/{id}/ticket/confirm', function () {
 //     return redirect()->route('order');
 // });

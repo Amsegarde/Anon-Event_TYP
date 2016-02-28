@@ -38,14 +38,13 @@
 						<div class="divider"></div>
 						<p>{!! $event->bio !!}</p>
 					</div>
-
 					<!-- Itinerary -->
 					<div class="col s12">
 							@foreach ($itin as $it)
 								<div class="col s8 offset-s2">
 									<h5 align="middle">{!! $it->name !!}</h5>
 									<p>Date: {{ $it->date }}</p> 
-									<p>Time: {{ $it->time }}</p>
+									<!-- <p>Time: {{ $it->time }}</p> -->
 									<p>{{ $it->blurb }}</p>
 									<p>The Cost of the extra event is €{{ $it->cost }}</p>
 									<p>There is limited spaces to this event, {{ $it->capacity }} tickets are remaining</p>
@@ -58,28 +57,82 @@
 					<div class="col s6">
 						<h5>Where</h5>
 						<p>{{ $event->location }}</p>
-					<div id="locationField">
-      					<input id="autocomplete" placeholder="Enter your address"
-             			onFocus="geolocate()" name="location" type="text"></input>
-             			<input type="button" onclick="loadMap()">Get Directions</input>
-   			 		</div>
-   			 		<div id ="map"></div>
-	   			 		<script type="text/javascript">
-	   			 		function loadMap(){
-	   			 			var origin = document.getElementById('autocomplete').value;
-	   			 			var map = document.getElementById('map');
-	   			 			map.innerHTML = '<iframe width="450" height="300" frameborder="0" style="border:0"src="https://www.google.com/maps/embed/v1/directions?origin='+origin+'&destination={{$event->location}}&key={{env("API_KEY")}}" allowfullscreen></iframe>';
-	   			 		}
-	   			 		</script> 
-	    			
-						
+						<div id="locationField">
+	      					<input id="autocomplete" placeholder="Enter your address"
+	             			onFocus="geolocate()" name="location" type="text"></input>
+	             			<input type="button" onclick="loadMap()">Get Directions</input>
+	   			 		</div>
+	   			 		<div id ="map"></div>
+		   			 		<script type="text/javascript">
+		   			 		function loadMap(){
+		   			 			var origin = document.getElementById('autocomplete').value;
+		   			 			var map = document.getElementById('map');
+		   			 			map.innerHTML = '<iframe width="1000" height="500" frameborder="0" style="border:0"src="https://www.google.com/maps/embed/v1/directions?origin='+origin+'&destination={{$event->location}}&key={{env("API_KEY")}}" allowfullscreen></iframe>';
+		   			 		}
+		   			 		</script>
 					</div>			
 				</div>
 
+				</div>
+				<!-- Itinerary -->
+				<div class="col s12">
+						@foreach ($itin as $it)
+							<div class="col s8 offset-s2">
+								<h5 align="middle">{!! $it->name !!}</h5>
+								<p>Date: {{ $it->date }}</p> 
+								<p>Time: {{ $it->time }}</p>
+								<p>{{ $it->blurb }}</p>
+								<p>The Cost of the extra event is €{{ $it->cost }}</p>
+								<p>There is limited spaces to this event, {{ $it->capacity }} tickets are remaining</p>
+							</div>
+						@endforeach
+				</div>
+				<div class="divider col s12"></div>
+				<div class="col s12">
+				{!! Form::open(array('url'=>'vote','method'=>'POST', 'class'=>'col s12')) !!}
+					<div class="col s6">
+						<h5>Where</h5>
+						
+						@if ($event->location=="To Be Decided")
+							<select name="location_vote">
+								<option value="">Vote on locations</option>
+								@foreach ($locationSuggs as $suggestion)
+								<option value="{{$suggestion->id}}">{{$suggestion->location}}</option>
+								@endforeach
+							</select>			
+						@else
+							<p>{{ $event->location }}</p>
+							<div id="locationField">
+      							<input id="autocomplete" placeholder="Enter your address"
+             					onFocus="geolocate()" name="location" type="text">
+             					<input type="button" onclick="loadMap()"value="Get Directions">
+   			 				</div>
+   			 				<div id ="map"></div>
+	   			 				
+						@endif
+					</div>
+
+
 					<div class="col s6">
 						<h5>When</h5>
-						<p>{{ date('F d, Y', strtotime($event->start_date)) }} - {{ date('F d, Y', strtotime($event->end_date)) }}</p>
+						@if (date('F d, Y', strtotime($event->start_date)) != "January 01, 1970")
+							<p>{{ date('F d, Y', strtotime($event->start_date)) }} - {{ date('F d, Y', strtotime($event->end_date)) }}</p>
+						@else	
+							<select name="date_vote">
+								<option value="">Vote on dates</option>
+									@foreach ($dateSuggs as $dsuggestion)
+										<option value="{{$dsuggestion->id}}">{{ date('F d, Y', strtotime($dsuggestion->start_date)) }} - {{ date('F d, Y', strtotime($dsuggestion->end_date)) }}</option>
+									@endforeach
+							</select>	
+						@endif
 					</div>
+					{!!  Form::hidden('eventID', $event->id) !!}
+					@if($voteOpen == 1)
+						{!! Form::submit('Vote', array('class'=>'btn indigo lighten-1')) !!}
+					@else
+						<p>Your vote has been logged</p>
+					@endif
+					{!! Form::close() !!}
 				</div>
 					
 					
@@ -136,7 +189,8 @@
 								@foreach($errors->all() as $error)
 									<li>{{ $error }}</li>
 								@endforeach
-							</ul>
+	<div class="col s12">
+										</ul>
 
 							{!! Form::open(array('route' => 'create_store', 'class' => 'form', 'files'=>true)) !!}
 								<div class="row">
@@ -144,7 +198,7 @@
 									<h5 class="title col s12">Event Information</h5>
 									<div class="divider col s12"></div>
 
-									<div class="input-field col s12">
+									<div class="input-field col s12">7
 										{!! Form::label('Event Name') !!}
 										{!! Form::text('name', 
 														$event->name, 
@@ -278,6 +332,7 @@
 									{!!  Form::hidden('eventID', $event->id) !!}
 									{!!  Form::hidden('eventName', $event->name) !!}
 
+
 									<div class="row">
 										<div class="input-field col s4">
 								        	<input readonly value="Type" id="disabled" type="text">
@@ -311,11 +366,35 @@
 													'4',
 													'5',
 													'6'], 
-													null,
-													['class'=>'ticketSelect']) !!}
+													null
+													) !!}
 											</div>
 										</div>
 									@endforeach
+									@if ($itinerary->prebooked = 1)
+										@foreach($itinArrays as $itinArray)
+											<div class="row">
+												<div class="input-field col s4">
+										        	<input readonly name="name[]" value="{!! $itinArray->name !!}" id="disabled" type="text">
+										        </div>
+												<div class="input-field col s4">
+										        	<input readonly name="cost[]" value="{!! $itinArray->cost !!}" id="disabled" type="text">
+										        </div>
+										        <div class='input-field col s4'>
+													{!! Form::select('amount[]', [
+														'0',
+														'1', 
+														'2', 
+														'3',
+														'4',
+														'5',
+														'6'], 
+														null
+														) !!}
+												</div>
+											</div>
+										@endforeach
+									@endif	
 
 									@if (($event->avail_tickets) === 0 )
 										<p>SOLD OUT</p>
@@ -334,7 +413,13 @@
 			</div>
 		</div>
 	</div>
-
+<script>
+	function loadMap(){
+		var origin = document.getElementById('autocomplete').value;
+		var map = document.getElementById('map');
+		map.innerHTML = '<iframe width="450" height="300" frameborder="0" style="border:0"src="https://www.google.com/maps/embed/v1/directions?origin='+origin+'&destination={{$event->location}}&key={{env("API_KEY")}}" allowfullscreen></iframe>';
+	}
+</script>
 	<script type="text/javascript">
 		$(document).ready(function(){
 			// the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered

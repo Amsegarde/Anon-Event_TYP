@@ -21,7 +21,9 @@ use App\Ticket;
 use App\DateSuggestion;
 use App\Category;
 use App\User;
+use App\Vote;
 use Mail; 
+use Illuminate\Support\Facades\Redirect;
 
 class EventController extends Controller {
 
@@ -118,7 +120,7 @@ class EventController extends Controller {
 							'organisation_id'=>$request->organisation]);
 		//added by joe to handle incoming intinery items
 		$itins = $request->item;
-		//return $itins;
+		
 		$size = count($itins);
 		for($i = 1; $i< $size; $i+=6){
 			if(isset($itins[$i+5])){
@@ -129,20 +131,24 @@ class EventController extends Controller {
 				$prebooked = 0;
 			}
 			
+
+
 			$itinerary = new Itinerary;
 			$itinerary->name = $itins[$i];
 			$itinerary->blurb = $itins[$i+1];
-			//$itinerary->time = $itins[$i+2];
+			$itinerary->date = $itins[$i+2];
 			$itinerary->prebooked = $prebooked;
 			$itinerary->cost = $itins[$i+3];
+			$itinerary->capacity = $itins[$i+4];
 
 			$itinerary->save();
 			$itineraryID = $itinerary->id;
 			//return $eventID;
 			EventContain::create([
-				'itineraryId'=>$itineraryID,
+				'itinerary_id'=>$itineraryID,
 				'event_id'=>$eventID
 				]);
+			
 		}
 
 		$tickets = $request->tickets;
@@ -181,7 +187,7 @@ class EventController extends Controller {
 			$start_dateSuggs = $request->start_date;
 			$end_dateSuggs = $request->end_date;
 			
-			for($i = 0; $i <count($start_dateSuggs); $i+=2){
+			for($i = 0; $i <count($start_dateSuggs); $i++){
 				DateSuggestion::create(['start_date'=>new Carbon($start_dateSuggs[$i]),
 										'end_date'=>new Carbon($end_dateSuggs[$i]),
 										'event_id'=>$eventID]);
@@ -193,7 +199,7 @@ class EventController extends Controller {
 			$start_date = new Carbon($request->start_date[0]);
 			$end_date = new Carbon($request->end_date[0]);
 			$newEvent->start_date = $start_date->toDateTimeString();
-		$newEvent->end_date = $end_date->toDateTimeString();
+			$newEvent->end_date = $end_date->toDateTimeString();
 			
 			//TODO: ensure that dates are coming from event.blade correctly
 			//store dates in db (update db first)
@@ -297,7 +303,8 @@ class EventController extends Controller {
 			$userID = Auth::id();
 			$event = Event::findOrFail($id);
 			$organises = Organise::findOrFail($event->id);
-
+			$itinArrays = array();
+			$itinerary = new Itinerary;
 	
 			$organisation = Organisation::findOrFail($organises->organisation_id);
 
@@ -313,16 +320,32 @@ class EventController extends Controller {
 				}
 			}
 
+			$eventItins = EventContain::where("event_id", "=", $event->id)->get();
+			//$actualItins = Itinerary::where("event_id", "=", $eventItins->id)->get();
+			foreach($eventItins as $eventItin){
+				$i = Itinerary::findOrFail($eventItin->itinerary_id);
+				array_push($itinArrays, $i);
+			}
+
 
 			// get the tickets to the event
 			$e = Event::findOrFail($id);
 			$tickets = TicketType::where('event_id', '=', $e->id)->get();
+
+			$voteOpen= 0;
+			$voted = Vote::where('user_id','=', $userID)->where('event_id','=',$e->id)->first();
+			if(empty($voted)){
+				//return "voting is opne";
+				$voteOpen = 1;
+			}
 			//decide on showing location poll
 			$locations = $e->location;
 			$locationSuggs = null;
+			$start_dateSuggs = null;
 			if($locations=="To Be Decided"){
 				$locationSuggs = LocationSuggestion::where('event_id', '=',$e->id)->get();
 			}
+			$dateSuggs = DateSuggestion::where('event_id','=', $e->id)->get();
 
 			// Get itinerary for the events;
 			$itin = DB::table('itinerarys')
@@ -331,14 +354,35 @@ class EventController extends Controller {
 			
 			return view('events.event', compact(
 				'event', 
+				'voteOpen',
 				'organisation',
 				'isAdmin',
 				'tickets',
 				'locationSuggs',
-				'itin'
+				'itin',
+				'itinArrays',
+				'itinerary'
+				'dateSuggs'
 			));
-
 	}	
+
+	public function vote(Request $request){
+		$userID = Auth::user()->id;
+		$eventID = $request->eventID;
+		$location = $request->location_vote;
+		$date = $request->date_vote;
+		
+		Vote::create(['event_id'=>$eventID,'user_id'=>$userID]);
+		$locVote = DB::table('location_suggestions')->where('id','=', $location)										
+										->increment('votes');
+		$dateVote = DB::table('date_suggestions')->where('id','=', $date)										
+										->increment('votes');
+		
+		
+		return Redirect::back()->with('message','Operation Successful !');
+
+	}
+	
 
 	/**
 	 * Display events by this user only.
