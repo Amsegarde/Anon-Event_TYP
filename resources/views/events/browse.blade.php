@@ -10,14 +10,7 @@
 				{!! Form::open(array('url' => 'events')) !!}
 
 					<div class="input-field col s12">
-						Change to Jonny's geolocation thing!
-						<select name="location">
-							<option value="">Location</option>
-							<!--look into passing org id along with form even though its not displayed-->
-							@foreach ($search as $event)
-								<option value="{{$event->location}}">{{$event->location}}</option>
-							@endforeach
-						</select>
+						{!! Form::text('location') !!}
 					</div>
 
 					<div class="input-field col s12">
@@ -33,12 +26,11 @@
 					</div>
 
 					<div class="input-field col s12">
-						Change to reading from catagories table
 						<select name="genre">
 							<option value="">Genre</option>
 							<!--look into passing org id along with form even though its not displayed-->
-							@foreach ($search as $event)
-								<option value="{{$event->genre}}">{{$event->genre}}</option>
+							@foreach ($genre as $cat)
+								<option value="{{$cat->id}}">{{$cat->type}}</option>
 							@endforeach
 						</select>
 					</div>
@@ -63,7 +55,6 @@
 					<p>{!! $event->bio !!}</p>
 				</div>
 				<div class="card-action">
-					<a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
 					<a href="{{ url('/events/'.$event->id) }}">Get Tickets</a>
 				</div>
 			</div>

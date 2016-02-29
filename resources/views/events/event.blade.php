@@ -28,8 +28,6 @@
 						<li class="tab col s3"><a href="#desc">Description</a></li>
 						<li class="tab col s3"><a href="#tix">Ticket Information</a></li>
 						<li class="tab col s3"><a href="#edit">Editor</a></li>
-						<li class="tab col s3"><a class="waves-effect waves-light btn modal-trigger" href="#modal2">Contact Attendees</a></li>
-						
 					</ul>
 				@endif
 				<div id="desc">
@@ -57,6 +55,7 @@
 							@endforeach
 					</div>
 
+
 					<div class="divider col s12"></div>
 
 					
@@ -83,8 +82,8 @@
    			 				<div id ="map"></div>
 	   			 				
 						@endif
-					</div>
 
+					</div>
 
 					<div class="col s6">
 						<h5>When</h5>
@@ -106,28 +105,28 @@
 						<p>Your vote has been logged</p>
 					@endif
 					{!! Form::close() !!}
+					
+					@if(auth::guest())
+						<div class="col s12">
+							<h4>Available Tickets</h4>
+								<table>
+									<th>Type</th>
+									<th>Price</th>
+									@foreach ($tickets as $tic)
+										<tr>
+											<td>{{ $tic->type }}</td>
+											<td>{{ $tic->price }}</td>
+										</tr>
+									@endforeach
+								</table>
+						</div>
+						<div class="col s12"><h5><a href="{{ url('/auth/login') }}">Login to get tickets</a></h5></div>
+					@else 
 				</div>
-					
-					
-				@if(auth::guest())
-					<div class="col s12">
-						<h4>Available Tickets</h4>
-							<table>
-								<th>Type</th>
-								<th>Price</th>
-								@foreach ($tickets as $tic)
-									<tr>
-										<td>{{ $tic->type }}</td>
-										<td>{{ $tic->price }}</td>
-									</tr>
-								@endforeach
-							</table>
-					</div>
-					<div class="col s12"><h5><a href="{{ url('/auth/login') }}">Login to get tickets</a></h5></div>
-				@else 
 
 					@if ($isAdmin === true)
 						<div id="tix" class="col s12">
+							<a class="btn modal-trigger" href="#modal2">Contact Attendees</a>
 							<h4>Tickets Sold Information</h4>
 							<div class="divider"></div>
 							<table>
@@ -162,9 +161,8 @@
 								@foreach($errors->all() as $error)
 									<li>{{ $error }}</li>
 								@endforeach
-	<div class="col s12">
-										</ul>
-
+							
+							</ul>
 							{!! Form::open(array('route' => 'create_store', 'class' => 'form', 'files'=>true)) !!}
 								<div class="row">
 									<!-- Event Information -->
@@ -296,7 +294,7 @@
 
 					@else
 						<!-- Modal Trigger -->
-						<a class="waves-effect waves-light btn modal-trigger" href="#modal1">Get Tickets</a>
+						<a class="btn modal-trigger" href="#modal1">Get Tickets</a>
 
 						<!-- Modal Structure -->
 						<div id="modal1" class="modal">
