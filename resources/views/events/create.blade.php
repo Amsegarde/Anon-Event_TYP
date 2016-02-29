@@ -55,12 +55,17 @@
 
 				
 					<div class="input-field col s12" id="locations">
-					    {!! Form::label('Enter The Location Of Your Event') !!}
+					<div id="locationField">
+      					<input id="autocomplete" placeholder="Enter The Location Of Your Event"
+             			onFocus="geolocate()" name="location[]" type="text"></input>
+             			
+   			 		</div>
+					    <!--{!! Form::label('Enter The Location Of Your Event') !!}
 					    {!! Form::text('location[]', 
 					    				null, 
 					      				array('required', 
 					         		    'class'=>'form-control', 
-					          		    'placeholder'=>'Enter The Location Of Your Event')) !!}
+					          		    'placeholder'=>'Enter The Location Of Your Event')) !!}-->
 						<input type="button" class="btn btn-secondary"value="Open Location to Polling" onClick="togglePoll(locations);">
 					
 					</div>
@@ -188,8 +193,8 @@
 						"<input type='text' name='item["+(itemElement+1)+"]'></div>"+
 						
 						"<div class='input-field col s12'>"+
-						"<label for='item["+(itemElement+2)+"]'>Time</label>"+
-						"<input type='text' name='item["+(itemElement+2)+"]'></div>"+
+						"<label for='item["+(itemElement+2)+"]'>Date</label>"+
+						"<div class='input-field col s6'><input type='date' class='start_datepicker' name='item["+(itemElement+2)+"]' placeholder='Date'></div>"+
 
 						"<div class='input-field col s6'>"+
 						"<label for='item["+(itemElement+3)+"]'>Cost(optional)</label>"+

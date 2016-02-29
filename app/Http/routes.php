@@ -15,16 +15,16 @@
 Route::get('about', 'AboutPageController@index');
 Route::get('/', 'HomePageController@index');
 
+Route::post('media', 'EventController@media');
 Route::get('events', 'EventController@browse');
-
-
 Route::post('events', 'EventController@browse');
 Route::get('events/past', 'EventController@browsePast');
+Route::post('events/past', 'EventController@browsePast');
 Route::get('events/create','EventController@create');
 Route::post('events/create', 
   ['as' => 'create_store', 'uses' => 'EventController@store']);
 Route::get('events/manage', 'EventController@manageEvents');
-Route::post('events/{id}/ticket/confirm', 'TicketController@confirm');
+Route::post('events/{id}/ticket/confirm', 'TicketController@confirmPage');
 // Route::post('events/{id}/ticket/confirm', function () {
 //     return redirect()->route('order');
 // });
@@ -40,6 +40,10 @@ Route::delete('events/{id}/delete/confirm', [
 Route::get('events/{id}','EventController@show');
 Route::post('events/{id}', 
 	['as' => 'contact_attendees', 'uses' => 'EventController@sendMessage']);
+
+
+Route::post('vote','EventController@vote');
+Route::post('date_vote','EventController@date_vote');
 
 Route::get('organisation/create', 'OrganisationController@create');
 Route::get('organisation/dashboard', 'OrganisationController@dashboard');

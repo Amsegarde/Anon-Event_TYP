@@ -20,8 +20,12 @@ use App\Engage;
 use App\LocationSuggestion;
 use App\Ticket;
 use App\DateSuggestion;
+use App\Category;
 use App\User;
+use App\Vote;
+use App\Media;
 use Mail; 
+use Illuminate\Support\Facades\Redirect;
 
 class EventController extends Controller {
 
@@ -118,7 +122,7 @@ class EventController extends Controller {
 							'organisation_id'=>$request->organisation]);
 		//added by joe to handle incoming intinery items
 		$itins = $request->item;
-		//return $itins;
+		
 		$size = count($itins);
 		for($i = 1; $i< $size; $i+=6){
 			if(isset($itins[$i+5])){
@@ -129,20 +133,24 @@ class EventController extends Controller {
 				$prebooked = 0;
 			}
 			
+
+
 			$itinerary = new Itinerary;
 			$itinerary->name = $itins[$i];
 			$itinerary->blurb = $itins[$i+1];
-			//$itinerary->time = $itins[$i+2];
+			$itinerary->date = $itins[$i+2];
 			$itinerary->prebooked = $prebooked;
 			$itinerary->cost = $itins[$i+3];
+			$itinerary->capacity = $itins[$i+4];
 
 			$itinerary->save();
 			$itineraryID = $itinerary->id;
 			//return $eventID;
 			EventContain::create([
-				'itineraryId'=>$itineraryID,
+				'itinerary_id'=>$itineraryID,
 				'event_id'=>$eventID
 				]);
+			
 		}
 
 		$tickets = $request->tickets;
@@ -181,7 +189,7 @@ class EventController extends Controller {
 			$start_dateSuggs = $request->start_date;
 			$end_dateSuggs = $request->end_date;
 			
-			for($i = 0; $i <count($start_dateSuggs); $i+=2){
+			for($i = 0; $i <count($start_dateSuggs); $i++){
 				DateSuggestion::create(['start_date'=>new Carbon($start_dateSuggs[$i]),
 										'end_date'=>new Carbon($end_dateSuggs[$i]),
 										'event_id'=>$eventID]);
@@ -193,7 +201,7 @@ class EventController extends Controller {
 			$start_date = new Carbon($request->start_date[0]);
 			$end_date = new Carbon($request->end_date[0]);
 			$newEvent->start_date = $start_date->toDateTimeString();
-		$newEvent->end_date = $end_date->toDateTimeString();
+			$newEvent->end_date = $end_date->toDateTimeString();
 			
 			//TODO: ensure that dates are coming from event.blade correctly
 			//store dates in db (update db first)
@@ -211,9 +219,49 @@ class EventController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function browsePast()
+	public function browsePast(Request $request)
 	{
-		return view('events.browsePast');
+		$events = new Event;
+		// echo "1";
+		if (!empty($request->all())) {
+			// echo "2";
+			if ($request->location){
+				// echo "3";
+				$events = Event::where('location', 'Like', $request->location)
+						->where('start_date', '<', Carbon::now())->get();
+			} 
+
+			if ($request->date) {
+				// echo "4";
+				$carbon = new Carbon;
+				$searchDate = $carbon->createFromFormat('j F, Y', $request->date);
+				$events = Event::where('start_date', '>=', $searchDate)
+						->where('start_date', '<', Carbon::now())->get();
+			}
+
+			if ($request->genre) {
+				// echo "5";
+				$events = Event::where('genre','=', $request->genre)
+						->where('start_date', '<', Carbon::now())->get();
+			}
+		} else {
+			// echo "6";
+			$events = Event::where('start_date', '<', Carbon::now())->get();
+		}
+		if (count($events) == 0) {
+			// echo "7";
+			$msg = 'No Events match your search';
+			$events = Event::where('start_date', '<', Carbon::now())->get();
+		}
+		else {
+			// echo "8";
+			$msg = count($events) . " event(s) found";
+		}
+
+		// echo "9";
+		$search = Event::all();
+		$genre = Category::all();
+		return view('events.browsePast', compact('events', 'search', 'genre', 'msg'));
 	}
 
 	/**
@@ -243,7 +291,8 @@ class EventController extends Controller {
 		}	
 		
 		$search = Event::all();
-		return view('events.browse', compact('events', 'search'));
+		$genre = Category::all();
+		return view('events.browse', compact('events', 'search', 'genre'));
 	}
 
 	public function show($id) {
@@ -251,7 +300,8 @@ class EventController extends Controller {
 			$userID = Auth::id();
 			$event = Event::findOrFail($id);
 			$organises = Organise::findOrFail($event->id);
-
+			$itinArrays = array();
+			$itinerary = new Itinerary;
 	
 			$organisation = Organisation::findOrFail($organises->organisation_id);
 
@@ -267,32 +317,84 @@ class EventController extends Controller {
 				}
 			}
 
+			$eventItins = EventContain::where("event_id", "=", $event->id)->get();
+			//$actualItins = Itinerary::where("event_id", "=", $eventItins->id)->get();
+			foreach($eventItins as $eventItin){
+				$i = Itinerary::findOrFail($eventItin->itinerary_id);
+				array_push($itinArrays, $i);
+			}
+
 
 			// get the tickets to the event
 			$e = Event::findOrFail($id);
 			$tickets = TicketType::where('event_id', '=', $e->id)->get();
+
+			$voteOpen= 0;
+			$voted = Vote::where('user_id','=', $userID)->where('event_id','=',$e->id)->first();
+			if(empty($voted)){
+				//return "voting is opne";
+				$voteOpen = 1;
+			}
 			//decide on showing location poll
 			$locations = $e->location;
 			$locationSuggs = null;
+			$start_dateSuggs = null;
 			if($locations=="To Be Decided"){
 				$locationSuggs = LocationSuggestion::where('event_id', '=',$e->id)->get();
 			}
+			$dateSuggs = DateSuggestion::where('event_id','=', $e->id)->get();
 
 			// Get itinerary for the events;
 			$itin = DB::table('itinerarys')
 				->join('event_contains', 'itinerarys.id', '=', 'event_contains.itinerary_id')
 				->where('event_contains.event_id', '=', $e->id)->get();
 			
-			return view('events.event', compact(
-				'event', 
-				'organisation',
-				'isAdmin',
-				'tickets',
-				'locationSuggs',
-				'itin'
-			));
 
+			if ($event->start_date >= Carbon::now()) { // All active events
+				return view('events.event', compact(
+					'event', 
+					'voteOpen',
+					'organisation',
+					'isAdmin',
+					'tickets',
+					'locationSuggs',
+					'itin',
+					'itinArrays',
+					'itinerary',
+					'dateSuggs'
+				));
+			} else { // all past events
+				$medias = Media::where('event_id', '=', $e->id)->get();
+				return view('events.past', compact(
+					'event', 
+					'organisation',
+					'isAdmin',
+					'itin',
+					'itinArrays',
+					'itinerary',
+					'medias'
+				));
+			}
+				
 	}	
+
+	public function vote(Request $request){
+		$userID = Auth::user()->id;
+		$eventID = $request->eventID;
+		$location = $request->location_vote;
+		$date = $request->date_vote;
+		
+		Vote::create(['event_id'=>$eventID,'user_id'=>$userID]);
+		$locVote = DB::table('location_suggestions')->where('id','=', $location)										
+										->increment('votes');
+		$dateVote = DB::table('date_suggestions')->where('id','=', $date)										
+										->increment('votes');
+		
+		
+		return Redirect::back()->with('message','Operation Successful !');
+
+	}
+	
 
 	/**
 	 * Display events by this user only.
@@ -352,6 +454,7 @@ class EventController extends Controller {
 		return redirect('events/' . $request->eventID);
 	}
 
+
 	public function delete($id) {
 		$eventID = $id;
 		return view('events.delete', compact('eventID'));
@@ -407,5 +510,30 @@ class EventController extends Controller {
 
 		$delete_event = Event::where('id', '=', $request->eventID)->delete();
 		return redirect('events/manage');
+	}
+
+	public function media(Request $request) {
+		$media = new Media;
+
+		$media->event_id = $request->event_id;
+		$media->user_id = $request->user_id;
+		$media->flagged = false;
+		$media->save();
+
+		if (Input::hasFile('image')){
+			$uploadFile = Input::file('image');
+			$filename = $media->id . '.' . $uploadFile->getClientOriginalExtension(); 
+
+			$destinationPath = base_path() . '/public/images/media/';
+
+			Input::file('image')->move($destinationPath, $filename);
+			$media->media = $uploadFile->getClientOriginalExtension();	
+		} else {
+			$media->media = '';
+		}
+		$media->save();
+
+		return redirect::back()->with('message', 'Media Uploaded');
+
 	}
 }

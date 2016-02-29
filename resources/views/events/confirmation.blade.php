@@ -12,6 +12,7 @@
 						<p>You must have an account in order to get tickets.</p>
 						<p><a href="{{ url('/auth/login') }}">Log in</a> or <a href="{{ url('/auth/register') }}">Register</a></p>
 					@else
+
 						@if ($totalQuantity > $event->avail_tickets)
 							<h4>Sorry, that amount of tickets is not available</h4>
 							<p>Tickets Remaining: {{ $event->avail_tickets }}</p>
@@ -196,7 +197,8 @@
 									</div>
 									</div>
 								@endif
-								{!! Form::close() !!}
+							{!! Form::close() !!}
+
 						@endif
 					@endif
 
