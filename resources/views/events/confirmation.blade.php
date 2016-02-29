@@ -156,7 +156,7 @@
 						{!! Form::submit('Place order!', ['class' => 'btn btn-primary btn-order', 'id' => 'submitBtn', 'style' => 'margin-bottom: 10px;']) !!}
 	   				</div>
 
-					<div class="row">
+					<div class="row col s12">
 						<span class="payment-errors" style="color: red;margin-top:10px;"></span>
 					</div>
 
