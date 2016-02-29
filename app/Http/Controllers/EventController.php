@@ -16,6 +16,7 @@ use App\Itinerary;
 use App\EventContain;
 use App\TicketType;
 use App\EventTicket;
+use App\Engage;
 use App\LocationSuggestion;
 use App\Ticket;
 use App\DateSuggestion;
@@ -329,6 +330,7 @@ class EventController extends Controller {
 		$event = Event::findOrFail($request->eventID);
 		$organisation = Organisation::findOrFail($request->organisationID);
 
+
 		foreach($tickets as $ticket) {
 
 			$user = User::findOrFail($ticket->user_id);
@@ -348,5 +350,62 @@ class EventController extends Controller {
 		}
 
 		return redirect('events/' . $request->eventID);
+	}
+
+	public function delete($id) {
+		$eventID = $id;
+		return view('events.delete', compact('eventID'));
+	}
+
+	/**
+	 * Delete an event. Removes data from all related tables.
+	 *
+	 *
+	 */
+	public function destroy(Request $request) {
+		$event = Event::findOrFail($request->eventID);
+		
+		$delete_organise = Organise::where('event_id', '=', $request->eventID)->delete();
+	
+
+		$tickets = Ticket::where('event_id', '=', $request->eventID)->get();
+		$delete_tickets = Ticket::where('event_id', '=', $request->eventID)->delete();
+		$delete_ticketTypes = TicketType::where('event_id', '=', $request->eventID)->delete();
+		
+
+		$itinerarys = EventContain::where('event_id', '=', $request->eventID)->get();
+		$delete_itinerarys = EventContain::where('event_id', '=', $request->eventID)->delete();
+
+		if (count($itinerarys) > 0) {
+			foreach ($itinerarys as $itinerary) {
+				$delete_itinerary = Itinerary::where('id', '=', $itinerary->itinerary_id)->delete();
+				$delete_prebooks = Prebook::where('id', '=', $itinerary->itinerary_id)->delete();
+			}
+		}
+		
+
+		$delete_engages = Engage::where('event_id', '=', $request->eventID)->delete();
+
+		foreach ($tickets as $ticket) {
+			$user = User::findOrFail($ticket->user_id);
+			$prevUser = null;
+
+			if ($prevUser == null || $user->id != $prevUser->id) {
+				Mail::send('emails.event_cancelled',
+			       array(
+			            'name' => $event->name,
+			        ), function($message) use ($user, $event)  {
+			       			
+		       			$message->to($user->email, $user->firstname)
+		       				->from('anonevent.cs@gmail.com')
+		       				->subject('Anon-Event | ' . $event->name . ' Cancelled!');
+			    });
+			    $prevUser = $user;
+			}
+				
+		}
+
+		$delete_event = Event::where('id', '=', $request->eventID)->delete();
+		return redirect('events/manage');
 	}
 }

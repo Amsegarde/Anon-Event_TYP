@@ -326,6 +326,13 @@ class TicketController extends Controller {
 	 */
 	public function destroy($id)
 	{
+		$ticket = Ticket::findOrFail($id);
+		$quantity = $ticket->quantity;
+
+		$update = DB::table('events')
+							->where('id', '=', $ticket->event_id)
+							->increment('avail_tickets', $quantity);
+
 		DB::table('tickets')->where('id', '=', $id)->delete();
 		return redirect('tickets');
 	}

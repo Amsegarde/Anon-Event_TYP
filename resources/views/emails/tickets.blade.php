@@ -14,6 +14,10 @@
 						<h2>Quantity: {{ $mailTicket->quantity }}</h2>
 						<h3>Date: {{ $event->start_date }} | Ticket No: {{ $mailTicket->id }}</h3>
 						<h2>Location: {{ $event->location }}</h2>
+						<div class="visible-print text-center">
+							    {!! QrCode::margin(2)->size(165)->generate('Ticket' . $mailTicket->id . 'Qrcode generator') !!}
+						</div>	
+						<a href="{{ url('/tickets/'.$mailTicket->id )}}">View your tickets on Anon-Event!</a>
 						<hr />
 					@endforeach
 					

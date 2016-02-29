@@ -28,15 +28,13 @@
 						<li class="tab col s3"><a href="#desc">Description</a></li>
 						<li class="tab col s3"><a href="#tix">Ticket Information</a></li>
 						<li class="tab col s3"><a href="#edit">Editor</a></li>
-						<li class="tab col s3"><a class="waves-effect waves-light btn modal-trigger" href="#modal2">Contact Attendees</a></li>
-						
 					</ul>
 				@endif
 				<div id="desc">
 					<div class="col s10 offset-s1">
 						<h5 align="middle">Description</h5>
 						<div class="divider"></div>
-						<p>{!! $event->bio !!}</p>
+						{{-- <p>{!! $event->bio !!}</p> --}}
 					</div>
 
 					<!-- Itinerary -->
@@ -56,30 +54,32 @@
 					<div class="divider col s12"></div>
 
 					<div class="col s6">
+						<div class="col s6">
+							<h5>When</h5>
+							<p>{{ date('F d, Y', strtotime($event->start_date)) }} - {{ date('F d, Y', strtotime($event->end_date)) }}</p>
+						</div>
 						<h5>Where</h5>
 						<p>{{ $event->location }}</p>
-					<div id="locationField">
-      					<input id="autocomplete" placeholder="Enter your address"
-             			onFocus="geolocate()" name="location" type="text"></input>
-             			<input type="button" onclick="loadMap()">Get Directions</input>
-   			 		</div>
-   			 		<div id ="map"></div>
-	   			 		<script type="text/javascript">
-	   			 		function loadMap(){
-	   			 			var origin = document.getElementById('autocomplete').value;
-	   			 			var map = document.getElementById('map');
-	   			 			map.innerHTML = '<iframe width="450" height="300" frameborder="0" style="border:0"src="https://www.google.com/maps/embed/v1/directions?origin='+origin+'&destination={{$event->location}}&key={{env("API_KEY")}}" allowfullscreen></iframe>';
-	   			 		}
-	   			 		</script> 
+
+						<div id="locationField">
+	      					<input id="autocomplete" placeholder="Enter your address"
+	             			onFocus="geolocate()" name="location" type="text"></input>
+	             			<input type="button" onclick="loadMap()">Get Directions</input>
+	   			 		</div>
+	   			 		<div id ="map"></div>
+		   			 		<script type="text/javascript">
+		   			 		function loadMap(){
+		   			 			var origin = document.getElementById('autocomplete').value;
+		   			 			var map = document.getElementById('map');
+		   			 			map.innerHTML = '<iframe width="450" height="300" frameborder="0" style="border:0"src="https://www.google.com/maps/embed/v1/directions?origin='+origin+'&destination={{$event->location}}&key={{env("API_KEY")}}" allowfullscreen></iframe>';
+		   			 		}
+		   			 		</script> 
 	    			
 						
 					</div>			
 				</div>
 
-					<div class="col s6">
-						<h5>When</h5>
-						<p>{{ date('F d, Y', strtotime($event->start_date)) }} - {{ date('F d, Y', strtotime($event->end_date)) }}</p>
-					</div>
+					
 				</div>
 					
 					
@@ -127,6 +127,7 @@
 								</tr>
 
 							</table>
+							<a class="waves-effect waves-light btn modal-trigger" href="#modal2">Contact Attendees</a>
 						</div>
 							
 
@@ -320,6 +321,7 @@
 									@if (($event->avail_tickets) === 0 )
 										<p>SOLD OUT</p>
 									@else
+
 										<div class="input-field">
 											{!! Form::submit('Get Tickets', array('class'=>'btn')) !!}
 										</div>

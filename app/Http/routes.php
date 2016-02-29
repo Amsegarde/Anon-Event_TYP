@@ -32,6 +32,9 @@ Route::post('events/{id}/ticket/confirm', 'TicketController@confirm');
 Route::post('events/{id}/ticket/confirm/order', ['as' => 'order-post', 'uses' => 'TicketController@postOrder']);
 
 Route::get('events/{id}/ticket', 'TicketController@show');
+Route::get('events/{id}/delete', 'EventController@delete');
+Route::delete('events/{id}/delete/confirm', [
+	'as' => 'cancel_event', 'uses' => 'EventController@destroy']);
 
 
 Route::get('events/{id}','EventController@show');
