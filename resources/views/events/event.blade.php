@@ -40,53 +40,26 @@
 					</div>
 					<!-- Itinerary -->
 					<div class="col s12">
-							@foreach ($itin as $it)
+							@foreach ($itinArrays as $itinArray)
 								<div class="col s8 offset-s2">
-									<h5 align="middle">{!! $it->name !!}</h5>
-									<p>Date: {{ $it->date }}</p> 
-									<!-- <p>Time: {{ $it->time }}</p> -->
-									<p>{{ $it->blurb }}</p>
-									<p>The Cost of the extra event is €{{ $it->cost }}</p>
-									<p>There is limited spaces to this event, {{ $it->capacity }} tickets are remaining</p>
+									<h5 align="middle">{!! $itinArray->name !!}</h5>
+									<p>Date: {{ $itinArray->date }}</p> 
+									<p>{{ $itinArray->blurb }}</p>
+									@if($itinArray->cost > 0)
+										<p>The Cost of the extra event is €{{ $itinArray->cost }}</p>
+									@endif
+									@if($itinArray->capacity > 0)	
+										<p>There are limited spaces to this event, {{ $itinArray->capacity }} tickets are remaining</p>
+									@else
+										<p>Sold out!</p>
+									@endif
 								</div>
 							@endforeach
 					</div>
 
 					<div class="divider col s12"></div>
 
-					<div class="col s6">
-						<h5>Where</h5>
-						<p>{{ $event->location }}</p>
-						<div id="locationField">
-	      					<input id="autocomplete" placeholder="Enter your address"
-	             			onFocus="geolocate()" name="location" type="text"></input>
-	             			<input type="button" onclick="loadMap()">Get Directions</input>
-	   			 		</div>
-	   			 		<div id ="map"></div>
-		   			 		<script type="text/javascript">
-		   			 		function loadMap(){
-		   			 			var origin = document.getElementById('autocomplete').value;
-		   			 			var map = document.getElementById('map');
-		   			 			map.innerHTML = '<iframe width="1000" height="500" frameborder="0" style="border:0"src="https://www.google.com/maps/embed/v1/directions?origin='+origin+'&destination={{$event->location}}&key={{env("API_KEY")}}" allowfullscreen></iframe>';
-		   			 		}
-		   			 		</script>
-					</div>			
-				</div>
-
-				</div>
-				<!-- Itinerary -->
-				<div class="col s12">
-						@foreach ($itin as $it)
-							<div class="col s8 offset-s2">
-								<h5 align="middle">{!! $it->name !!}</h5>
-								<p>Date: {{ $it->date }}</p> 
-								<p>Time: {{ $it->time }}</p>
-								<p>{{ $it->blurb }}</p>
-								<p>The Cost of the extra event is €{{ $it->cost }}</p>
-								<p>There is limited spaces to this event, {{ $it->capacity }} tickets are remaining</p>
-							</div>
-						@endforeach
-				</div>
+					
 				<div class="divider col s12"></div>
 				<div class="col s12">
 				{!! Form::open(array('url'=>'vote','method'=>'POST', 'class'=>'col s12')) !!}
@@ -348,6 +321,7 @@
 									</div>
 
 									@foreach ($tickets as $ticket)
+
 										<div class="row">
 											<div class="input-field col s4">
 									        	<input readonly name="type[]" value="{!! $ticket->type !!}" id="disabled" type="text">
@@ -371,8 +345,9 @@
 											</div>
 										</div>
 									@endforeach
-									@if ($itinerary->prebooked = 1)
-										@foreach($itinArrays as $itinArray)
+									
+									@foreach($itinArrays as $itinArray)
+										@if ($itinArray->prebooked = 1)
 											<div class="row">
 												<div class="input-field col s4">
 										        	<input readonly name="name[]" value="{!! $itinArray->name !!}" id="disabled" type="text">
@@ -380,6 +355,9 @@
 												<div class="input-field col s4">
 										        	<input readonly name="cost[]" value="{!! $itinArray->cost !!}" id="disabled" type="text">
 										        </div>
+										        <?php echo '<br/>' ?>
+										        <?php echo $itinArray->id?>
+										        {!! form::hidden('itinerary_id[]', $itinArray->id) !!}
 										        <div class='input-field col s4'>
 													{!! Form::select('amount[]', [
 														'0',
@@ -393,8 +371,8 @@
 														) !!}
 												</div>
 											</div>
-										@endforeach
-									@endif	
+										@endif
+									@endforeach			
 
 									@if (($event->avail_tickets) === 0 )
 										<p>SOLD OUT</p>

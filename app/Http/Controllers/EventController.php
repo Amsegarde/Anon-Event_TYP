@@ -299,11 +299,6 @@ class EventController extends Controller {
 				$locationSuggs = LocationSuggestion::where('event_id', '=',$e->id)->get();
 			}
 			$dateSuggs = DateSuggestion::where('event_id','=', $e->id)->get();
-
-			// Get itinerary for the events;
-			$itin = DB::table('itinerarys')
-				->join('event_contains', 'itinerarys.id', '=', 'event_contains.itinerary_id')
-				->where('event_contains.event_id', '=', $e->id)->get();
 			
 			return view('events.event', compact(
 				'event', 
@@ -312,9 +307,8 @@ class EventController extends Controller {
 				'isAdmin',
 				'tickets',
 				'locationSuggs',
-				'itin',
 				'itinArrays',
-				'itinerary'
+				'itinerary',
 				'dateSuggs'
 			));
 	}	

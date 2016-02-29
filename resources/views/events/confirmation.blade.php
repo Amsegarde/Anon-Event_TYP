@@ -12,13 +12,18 @@
 						<p>You must have an account in order to get tickets.</p>
 						<p><a href="{{ url('/auth/login') }}">Log in</a> or <a href="{{ url('/auth/register') }}">Register</a></p>
 					@else
-						{!! Form::open(array('route' => 'store_tickets', 'class' => 'form')) !!}
+						@if($totalPrice == 0)
+							{!! Form::open(array('route' => 'store_tickets', 'class' => 'form')) !!}
+						
+						@else
+							{!! Form::open(['url' => route('order-post'), 'method' => 'post' ,'data-parsley-validate', 'id' => 'payment-form']) !!}
+						@endif
 							{!! Form::hidden('eventID', $event->id) !!}
 							{!! Form::hidden('request', $request) !!}
 							{!! Form::hidden('request', $tickets) !!}
 							{!!	Form::hidden('totalQuantity', $totalQuantity) !!}
 							{!!	Form::hidden('totalPrice', $totalPrice) !!}
-
+							
 							<h2>{{ $event->name }}</h2>
 							<p>Date: {{ $event->start_date }}</p>
 
@@ -51,12 +56,14 @@
 											{!!	Form::hidden('name[]', $name[$i]) !!}
 											{!!	Form::hidden('cost[]', $cost[$i]) !!}
 											{!!	Form::hidden('amount[]', $amount[$i]) !!}
+											{!! Form::hidden('itinIDs[]', $itinIDs[$i]) !!}
 
 											<tr>
 												<td>{{ $name[$i] }}</td>
 												<td>{{ $cost[$i] }}</td>
 												<td>{{ $amount[$i] }}</td>
 												<td>{{ $itinTotals[$i] }}</td>
+												<td>{{ $itinIDs[$i] }}</td>
 											</tr>
 										@endif
 									@endfor
@@ -69,19 +76,9 @@
 								{!! Form::submit('Confirm Free', array('class'=>'btn btn-primary')) !!}
 								{!! Form::close() !!}
 							@else
-								{!! Form::close() !!}
 
 								<div class="row">
 								  <div class="col-md-6 col-md-offset-3">
-								    {!! Form::open(['url' => route('order-post'), 'method' => 'post' ,'data-parsley-validate', 'id' => 'payment-form']) !!}
-										{!! Form::hidden('eventID', $event->id) !!}
-										{!! Form::hidden('request', $request) !!}
-										{!! Form::hidden('request', $tickets) !!}
-										{!!	Form::hidden('totalQuantity', $totalQuantity) !!}
-										{!!	Form::hidden('totalPrice', $totalPrice) !!}
-
-										oasidhasdihwasidhihafoehoishdsiofhdshiadh
-
 								      <div class="form-group" id="first-name-group">
 								          {!! Form::label('firstName', 'First Name:') !!}
 								          {!! Form::text('first_name', null, [
@@ -201,14 +198,11 @@
 								  
 								</div>
 								</div>
-								{!! Form::close() !!}
-							@endif
-							
+							{!! Form::close() !!}
+						@endif	
 					@endif
-
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
 @endsection
