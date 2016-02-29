@@ -38,14 +38,19 @@
 					</div>
 					<!-- Itinerary -->
 					<div class="col s12">
-							@foreach ($itin as $it)
+							@foreach ($itinArrays as $itinArray)
 								<div class="col s8 offset-s2">
-									<h5 align="middle">{!! $it->name !!}</h5>
-									<p>Date: {{ $it->date }}</p> 
-									<!-- <p>Time: {{ $it->time }}</p> -->
-									<p>{{ $it->blurb }}</p>
-									<p>The Cost of the extra event is €{{ $it->cost }}</p>
-									<p>There is limited spaces to this event, {{ $it->capacity }} tickets are remaining</p>
+									<h5 align="middle">{!! $itinArray->name !!}</h5>
+									<p>Date: {{ $itinArray->date }}</p> 
+									<p>{{ $itinArray->blurb }}</p>
+									@if($itinArray->cost > 0)
+										<p>The Cost of the extra event is €{{ $itinArray->cost }}</p>
+									@endif
+									@if($itinArray->capacity > 0)	
+										<p>There are limited spaces to this event, {{ $itinArray->capacity }} tickets are remaining</p>
+									@else
+										<p>Sold out!</p>
+									@endif
 								</div>
 							@endforeach
 					</div>
@@ -325,6 +330,7 @@
 									</div>
 
 									@foreach ($tickets as $ticket)
+
 										<div class="row">
 											<div class="input-field col s4">
 									        	<input readonly name="type[]" value="{!! $ticket->type !!}" id="disabled" type="text">
@@ -348,8 +354,9 @@
 											</div>
 										</div>
 									@endforeach
-									@if ($itinerary->prebooked = 1)
-										@foreach($itinArrays as $itinArray)
+									
+									@foreach($itinArrays as $itinArray)
+										@if ($itinArray->prebooked = 1)
 											<div class="row">
 												<div class="input-field col s4">
 										        	<input readonly name="name[]" value="{!! $itinArray->name !!}" id="disabled" type="text">
@@ -357,6 +364,9 @@
 												<div class="input-field col s4">
 										        	<input readonly name="cost[]" value="{!! $itinArray->cost !!}" id="disabled" type="text">
 										        </div>
+										        <?php echo '<br/>' ?>
+										        <?php echo $itinArray->id?>
+										        {!! form::hidden('itinerary_id[]', $itinArray->id) !!}
 										        <div class='input-field col s4'>
 													{!! Form::select('amount[]', [
 														'0',
@@ -370,8 +380,8 @@
 														) !!}
 												</div>
 											</div>
-										@endforeach
-									@endif	
+										@endif
+									@endforeach			
 
 									@if (($event->avail_tickets) === 0 )
 										<p>SOLD OUT</p>
