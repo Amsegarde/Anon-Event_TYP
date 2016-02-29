@@ -55,22 +55,6 @@
 							@endforeach
 					</div>
 
-					<div class="divider col s12"></div>		
-
-					<!-- Itinerary -->
-					<div class="col s12">
-							@foreach ($itin as $it)
-								<div class="col s8 offset-s2">
-									<h5 align="middle">{!! $it->name !!}</h5>
-									<p>Date: {{ $it->date }}</p> 
-									<p>Time: {{ $it->time }}</p>
-									<p>{{ $it->blurb }}</p>
-									<p>The Cost of the extra event is €{{ $it->cost }}</p>
-									<p>There is limited spaces to this event, {{ $it->capacity }} tickets are remaining</p>
-								</div>
-							@endforeach
-					</div>
-					<div class="divider col s12"></div>
 					<div class="col s12">
 					{!! Form::open(array('url'=>'vote','method'=>'POST', 'class'=>'col s12')) !!}
 						<div class="col s6">
@@ -93,7 +77,7 @@
 	   			 				<div id ="map"></div>
 		   			 				
 							@endif
-						</div>
+						
 					</div>
 
 					<div class="col s6">
@@ -104,7 +88,9 @@
 							<select name="date_vote">
 								<option value="">Vote on dates</option>
 									@foreach ($dateSuggs as $dsuggestion)
+										<p>{{$dsuggestion}}</p>
 										<option value="{{$dsuggestion->id}}">{{ date('F d, Y', strtotime($dsuggestion->start_date)) }} - {{ date('F d, Y', strtotime($dsuggestion->end_date)) }}</option>
+										}
 									@endforeach
 							</select>	
 						@endif
@@ -116,7 +102,7 @@
 						<p>Your vote has been logged</p>
 					@endif
 					{!! Form::close() !!}
-					
+				</div>	
 					@if(auth::guest())
 						<div class="col s12">
 							<h4>Available Tickets</h4>
@@ -163,6 +149,18 @@
 								</tr>
 
 							</table>
+							<p>Put all the info regarding votes on location etc here</p>
+							<table>
+								<tr><th>Location Suggestions</th><th>Votes</th></tr>
+							@foreach($locationSuggs as $sug)
+								<tr><td>{{$sug->location}}</td><td>{{$sug->votes}}</td></tr>
+							@endforeach
+								<tr><th>Date Suggestions</th><th>Votes</th></tr>
+							@foreach($dateSuggs as $dsug)
+								<tr><td>{{$dsug->start_date}} - {{$dsug->end_date}}</td><td>{{$dsug->votes}}</td></tr>
+							@endforeach
+							</table>
+			
 						</div>
 							
 

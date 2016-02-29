@@ -393,9 +393,10 @@ class EventController extends Controller {
 		$date = $request->date_vote;
 		
 		Vote::create(['event_id'=>$eventID,'user_id'=>$userID]);
-		$locVote = DB::table('location_suggestions')->where('id','=', $location)										
+		$locVote = LocationSuggestion::where('id','=', $location)										
 										->increment('votes');
-		$dateVote = DB::table('date_suggestions')->where('id','=', $date)										
+		
+		$dateVote = DateSuggestion::where('id','=', $date)										
 										->increment('votes');
 		
 		
