@@ -4,6 +4,7 @@
 
 
 	<div class="row">
+		<h5>Register</h5>
 		@if (count($errors) > 0)
 			<div class="alert alert-danger">
 				<strong>Whoops!</strong> There were some problems with your input.<br><br>
