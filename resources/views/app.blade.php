@@ -305,11 +305,8 @@
 	<script>
 		$(document).ready(function() {
 			$('select').material_select();
-<<<<<<< HEAD
 			$('.modal-trigger').leanModal();
-=======
 			$('.slider').slider({indicators: false, height: 600});
->>>>>>> 72844a56eed4ceaf37b47e151388abade5e7e6b2
 		});
 	</script>
 

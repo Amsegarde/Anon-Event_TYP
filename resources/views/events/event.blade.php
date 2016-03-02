@@ -77,7 +77,6 @@
 	   			 				<div id ="map"></div>
 		   			 				
 							@endif
-<<<<<<< HEAD
 						</div>
 
 						<div class="col s6">
@@ -98,39 +97,10 @@
 							{!! Form::submit('Vote', array('class'=>'btn indigo lighten-1')) !!}
 						@else
 							<p>Your vote has been logged</p>
-=======
-						
-					</div>
-
-					<div class="col s6">
-						<h5>When</h5>
-						@if (date('F d, Y', strtotime($event->start_date)) != "January 01, 1970")
-							<p>{{ date('F d, Y', strtotime($event->start_date)) }} - {{ date('F d, Y', strtotime($event->end_date)) }}</p>
-						@else	
-							<select name="date_vote">
-								<option value="">Vote on dates</option>
-									@foreach ($dateSuggs as $dsuggestion)
-										<p>{{$dsuggestion}}</p>
-										<option value="{{$dsuggestion->id}}">{{ date('F d, Y', strtotime($dsuggestion->start_date)) }} - {{ date('F d, Y', strtotime($dsuggestion->end_date)) }}</option>
-										}
-									@endforeach
-							</select>	
->>>>>>> 72844a56eed4ceaf37b47e151388abade5e7e6b2
 						@endif
 						{!! Form::close() !!}
-					</div>
-<<<<<<< HEAD
-					
-=======
-					{!!  Form::hidden('eventID', $event->id) !!}
-					@if($voteOpen == 1)
-						{!! Form::submit('Vote', array('class'=>'btn indigo lighten-1')) !!}
-					@else
-						<p>Your vote has been logged</p>
-					@endif
-					{!! Form::close() !!}
-				</div>	
->>>>>>> 72844a56eed4ceaf37b47e151388abade5e7e6b2
+					</div>	
+
 					@if(auth::guest())
 						<div class="col s12">
 							<h4>Available Tickets</h4>

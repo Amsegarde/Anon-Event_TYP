@@ -46,7 +46,6 @@
 
 		<div class="col s9">
 			@foreach ($events as $event)
-<<<<<<< HEAD
 			<p>{{ $msg }}</p>
 			<div class="card small" id="browse">
 				<div class="card-image left" id="browse_card">
@@ -65,26 +64,7 @@
 			</div>
 			@endforeach
 		</div>
-=======
-				<a href="{{ url('/events/'.$event->id) }}">
-					<div class="card small col s6">
-						<div class="card-image">
-							<img class="responsive-img" src="{{ asset('images/events/').'/'.$event->id.'.'.$event->image }}">
-							<span class="card-title">{{ $event->name }}</span>
-						</div>
-							<div class="card-content">
-							<p>Date: {{ $event->start_date }}</p>
-							<p>{!! $event->bio !!}</p>
-						</div>
-						<div class="card-action">
-							<a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-							<a href="{{ url('/events/'.$event->id) }}">Get Tickets</a>
-						</div>
-					</div>
-				</a>
-			@endforeach
-		</div>		
->>>>>>> 72844a56eed4ceaf37b47e151388abade5e7e6b2
+
 	</div>
 
 	<script>
