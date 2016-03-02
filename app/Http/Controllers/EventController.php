@@ -60,6 +60,11 @@ class EventController extends Controller {
 	 */
 	public function create(){
 		$id = Auth::id();
+		$loggedIn = true;
+		$hasOrg = true;
+		if($id == null){
+			$loggedIn = false;
+		}
 		$organisations = DB::table('organisations')
 								->whereIn('id', function($query) use ($id) {
 										$query->select('organisation_id')
@@ -67,8 +72,24 @@ class EventController extends Controller {
 										->where('user_id', '=', '?')
 										->setBindings([$id]);
 								})->get();
+		if($organisations == null){
+			$hasOrg = false;
+		}
 		
-		return view('events.create', compact('organisations'));
+		if($id == null){
+			return redirect('/auth/register')->with('message', 
+				'You must have an account to create an event!');
+		}
+		else if($organisations == null){
+			return redirect('organisation/create')->with('message', 
+				'You must have an organisation to create an event!');
+		}
+		else{
+			return view('events.create', compact('organisations',
+												'loggedIn',
+												'hasOrg'
+											));
+		}	
 	}
 
 	/**

@@ -1,149 +1,157 @@
 @extends('app')
 
 @section('content')
-	<div class="row">
+	
+		@if (Auth::guest())
+			<p>You must be logged in, in order to create an event</p>
+			<p><a href="{{ url('/auth/login') }}">Log in</a> or <a href="{{ url('/auth/register') }}">Register</a></p>
+		@elseif($loggedIn && !$hasOrg)
+			<p>You must have an organisation, in order to create an event</p>
+			<p><a href="{{ url('/organistaion/create') }}">Create Organisaion</a>
+		@else
+		<div class="row">
 		<h1>Create a New Event</h1>
 		<ul>
 			@foreach($errors->all() as $error)
 				<li>{{ $error }}</li>
 			@endforeach
 		</ul>
+			{!! Form::open(array('route' => 'create_store', 'class' => 'form', 'files'=>true)) !!}
+				<div class="row">
+					<!-- Select Organisation -->
+					<h5 class="title col s12">Select an Organisation</h5>
+					<div class="divider col s12"></div>
 
-		{!! Form::open(array('route' => 'create_store', 'class' => 'form', 'files'=>true)) !!}
-			<div class="row">
-				<!-- Select Organisation -->
-				<h5 class="title col s12">Select an Organisation</h5>
-				<div class="divider col s12"></div>
-
-				<div class="input-field col s12">
-					<select name="organisation">
-						<option value="">Select an Organisation</option>
-						<!--look into passing org id along with form even though its not displayed-->
-						@foreach ($organisations as $organisation)
-							<option value="{{$organisation->id}}">{{$organisation->name}}</option>
-						@endforeach
-					</select>		
-				</div>
-
-				<!-- Event Information -->
-				<h5 class="title col s12">Event Information</h5>
-				<div class="divider col s12"></div>
-
-				<div class="input-field col s12">
-					{!! Form::label('Event Name') !!}
-					{!! Form::text('name', 
-									null, 
-									array('required'
-									)) !!}
-				</div>
-				
 					<div class="input-field col s12">
-						<textarea name="bio" id="bio" class="materialize-textarea" length="2000"></textarea>
+						<select name="organisation">
+							<option value="">Select an Organisation</option>
+							<!--look into passing org id along with form even though its not displayed-->
+							@foreach ($organisations as $organisation)
+								<option value="{{$organisation->id}}">{{$organisation->name}}</option>
+							@endforeach
+						</select>		
 					</div>
-				<div id="dates">
-					<div class="input-field col s6">
-					<input type="date" class="start_datepicker" name="start_date[]" placeholder="Start Date">
+
+					<!-- Event Information -->
+					<h5 class="title col s12">Event Information</h5>
+					<div class="divider col s12"></div>
+
+					<div class="input-field col s12">
+						{!! Form::label('Event Name') !!}
+						{!! Form::text('name', 
+										null, 
+										array('required'
+										)) !!}
 					</div>
-	
-					<div class="input-field col s6">
-						<input type="date" class="end_datepicker" name="end_date[]" placeholder="End Date">
-					</div>	
-									
-					 <input type="button" id="addDateButton"class="btn btn-secondary"value="Open Dates to Voting" onClick="toggleDatePoll(dates);">				
-
-				</div>
-
-				
-					<div class="input-field col s12" id="locations">
-					<div id="locationField">
-      					<input id="autocomplete" placeholder="Enter The Location Of Your Event"
-             			onFocus="geolocate()" name="location[]" type="text"></input>
-             			
-   			 		</div>
-					    <!--{!! Form::label('Enter The Location Of Your Event') !!}
-					    {!! Form::text('location[]', 
-					    				null, 
-					      				array('required', 
-					         		    'class'=>'form-control', 
-					          		    'placeholder'=>'Enter The Location Of Your Event')) !!}-->
-						<input type="button" class="btn btn-secondary"value="Open Location to Polling" onClick="togglePoll(locations);">
 					
+						<div class="input-field col s12">
+							<textarea name="bio" id="bio" class="materialize-textarea" length="2000"></textarea>
+						</div>
+					<div id="dates">
+						<div class="input-field col s6">
+						<input type="date" class="start_datepicker" name="start_date[]" placeholder="Start Date">
+						</div>
+		
+						<div class="input-field col s6">
+							<input type="date" class="end_datepicker" name="end_date[]" placeholder="End Date">
+						</div>	
+										
+						 <input type="button" id="addDateButton"class="btn btn-secondary"value="Open Dates to Voting" onClick="toggleDatePoll(dates);">				
+
 					</div>
 
-				<div class='input-field col s6'>
-					{!! Form::select('scope', ['Select a Scope', 'None', 'Local', 'Regional', 
-							'National'], null) !!}
-				</div>
+					
+						<div class="input-field col s12" id="locations">
+						<div id="locationField">
+	      					<input id="autocomplete" placeholder="Enter The Location Of Your Event"
+	             			onFocus="geolocate()" name="location[]" type="text"></input>
+	             			
+	   			 		</div>
+						    <!--{!! Form::label('Enter The Location Of Your Event') !!}
+						    {!! Form::text('location[]', 
+						    				null, 
+						      				array('required', 
+						         		    'class'=>'form-control', 
+						          		    'placeholder'=>'Enter The Location Of Your Event')) !!}-->
+							<input type="button" class="btn btn-secondary"value="Open Location to Polling" onClick="togglePoll(locations);">
+						
+						</div>
 
-
-				<div class='input-field col s6'>
-					{!! Form::select('genre', ['Select a Category', 'Music', 'Sport', 
-						'Theatre', 'Convention',
-						'Course', 'Conference', 'Seminar', 'Gaming', 'Party', 'Screening', 
-						'Tour', 'Other'], null) !!}
-				</div>
-
-				<!-- Event Image upload -->
-				<h5 class="title col s12">Upload Event Image</h5>
-				<div class="divider col s12"></div>
-
-				<div class="file-field input-field col s12">
-					<div class="btn indigo lighten-1">
-						<span>Upload Event Image</span>
-						<input name="image" type="file">
-					</div>				
-					<div class="file-path-wrapper">
-						<input class="file-path validate type="text>
+					<div class='input-field col s6'>
+						{!! Form::select('scope', ['Select a Scope', 'None', 'Local', 'Regional', 
+								'National'], null) !!}
 					</div>
-				</div>
 
-				<!-- Tickets -->
-				<h5 class="title col s12">Tickets Information</h5>
-				<div class="divider col s12"></div>
 
-				<div class="input-field col s6">
-					{!! Form::label('Enter The Number Of Tickets') !!}
-					{!! Form::input('number', 'no_tickets', 
-								0, 
-								array('required')) !!}
-				</div>
+					<div class='input-field col s6'>
+						{!! Form::select('genre', ['Select a Category', 'Music', 'Sport', 
+							'Theatre', 'Convention',
+							'Course', 'Conference', 'Seminar', 'Gaming', 'Party', 'Screening', 
+							'Tour', 'Other'], null) !!}
+					</div>
 
-				<div class="input-field col s6">
-					{!! Form::label('Enter The Price Of A Ticket') !!}
-					{!! Form::input('number', 'price', 
+					<!-- Event Image upload -->
+					<h5 class="title col s12">Upload Event Image</h5>
+					<div class="divider col s12"></div>
+
+					<div class="file-field input-field col s12">
+						<div class="btn indigo lighten-1">
+							<span>Upload Event Image</span>
+							<input name="image" type="file">
+						</div>				
+						<div class="file-path-wrapper">
+							<input class="file-path validate type="text>
+						</div>
+					</div>
+
+					<!-- Tickets -->
+					<h5 class="title col s12">Tickets Information</h5>
+					<div class="divider col s12"></div>
+
+					<div class="input-field col s6">
+						{!! Form::label('Enter The Number Of Tickets') !!}
+						{!! Form::input('number', 'no_tickets', 
 									0, 
 									array('required')) !!}
-					
-				</div>
-
-				<div class="input-field col s12">
-					<table id="dynamic-tickets" class="ticket-table col s12"></table>
-					<input type="button" class="btn"value="Add Ticket" onClick="addTicket('dynamic-tickets');">
-				</div>
-
-					<div class="form-group">
-					    {!! Form::label('Select your tickets') !!}
 					</div>
 
+					<div class="input-field col s6">
+						{!! Form::label('Enter The Price Of A Ticket') !!}
+						{!! Form::input('number', 'price', 
+										0, 
+										array('required')) !!}
+						
+					</div>
+
+					<div class="input-field col s12">
+						<table id="dynamic-tickets" class="ticket-table col s12"></table>
+						<input type="button" class="btn"value="Add Ticket" onClick="addTicket('dynamic-tickets');">
+					</div>
+
+						<div class="form-group">
+						    {!! Form::label('Select your tickets') !!}
+						</div>
 
 
-					<!-- Itinery Items -->
-				<h5 class="title col s12">Optional Itinerary</h5>
-				<div class="divider col s12"></div>
 
-				<div class="input-field col s12">
-					<div id="dynamicInput">
-					   <!--  Itinerary From divs will go here  -->
-					</div>	 
-					<input type="button" class="btn"value="Add Itinerary Item" onClick="addInput('dynamicInput');">
+						<!-- Itinery Items -->
+					<h5 class="title col s12">Optional Itinerary</h5>
+					<div class="divider col s12"></div>
+
+					<div class="input-field col s12">
+						<div id="dynamicInput">
+						   <!--  Itinerary From divs will go here  -->
+						</div>	 
+						<input type="button" class="btn"value="Add Itinerary Item" onClick="addInput('dynamicInput');">
+					</div>
+						
+						<!-- Submit Button -->
+					<div class="input-field col s12">
+						{!! Form::submit('Create Event!', array('class'=>'btn indigo lighten-1')) !!}
+					</div>
 				</div>
-					
-					<!-- Submit Button -->
-				<div class="input-field col s12">
-					{!! Form::submit('Create Event!', array('class'=>'btn indigo lighten-1')) !!}
-				</div>
-			</div>
-		{!! Form::close() !!}
+			{!! Form::close() !!}
+		@endif	
 	</div>
 </div>
 

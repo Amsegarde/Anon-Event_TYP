@@ -3,6 +3,7 @@
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\RedirectResponse;
+use Redirect;
 
 class RedirectIfAuthenticated {
 
@@ -36,6 +37,7 @@ class RedirectIfAuthenticated {
 		if ($this->auth->check())
 		{
 			return new RedirectResponse(url('/home'));
+			
 		}
 
 		return $next($request);
