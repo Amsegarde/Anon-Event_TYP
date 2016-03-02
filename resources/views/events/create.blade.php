@@ -6,7 +6,7 @@
 		<ul>
 			@foreach($errors->all() as $error)
 				<li>{{ $error }}</li>
-			@endforeach
+			<@endforeach>
 		</ul>
 
 		{!! Form::open(array('route' => 'create_store', 'class' => 'form', 'files'=>true)) !!}
@@ -33,8 +33,7 @@
 					{!! Form::label('Event Name') !!}
 					{!! Form::text('name', 
 									null, 
-									array('required'
-									)) !!}
+									array('required')) !!}
 				</div>
 				
 					<div class="input-field col s12">
@@ -127,7 +126,7 @@
 
 
 
-					<!-- Itinery Items -->
+				<!-- Itinery Items -->
 				<h5 class="title col s12">Optional Itinerary</h5>
 				<div class="divider col s12"></div>
 

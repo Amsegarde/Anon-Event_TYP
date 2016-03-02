@@ -6,7 +6,6 @@
 	<div class="row">
 		<div class="col-md-10 col-md-offset-1">
 			<div class="panel panel-default">
-				<div class="panel-heading">Your Tickets</div>
 
 					@if (Auth::guest())
 						<p>You must be logged in, in order to view tickets</p>
@@ -17,11 +16,11 @@
 							<h4><a href="{{ url('/organisation/' . $organisation->id) }}">{!! $organisation->name !!}</a></h4>
 							<h4>Type: {{ $ticket->type }}</h4>
 							<h4>Quantity: {{ $ticket->quantity }}</h4>
-							<h5>Date: {{ $event->start_date }} | Ticket No: {{ $ticket->id }}</h5>
+							<h5>Date: {{ $event->start_date }} | Order No: {{ $ticket->order_number }}</h5>
 							<h5>Location: {{ $event->location }}</h5>
 
 							<div class="visible-print text-center">
-							    {!! QrCode::margin(2)->size(165)->generate('Ticket' . $ticket->id . 'Qrcode generator') !!}
+							    {!! QrCode::margin(1)->size(165)->generate('Event Name: ' . $event->name . ' | Date ' . $event->date . ' | Location: ' . $event->location . ' | Order Number: ' . $ticket->order_nunber . ' | Qrcode generator') !!}
 							    
 							</div>	
 
@@ -29,6 +28,7 @@
 							<p>
 								<a class="waves-effect waves-light btn modal-trigger" href="#modal1">Cancel Order</a>
 								<a class="waves-effect waves-light btn modal-trigger" href="#modal2">Contact Organisation</a>
+								<a class="waves-effect waves-light btn modal-trigger" href="#modal3">Print Tickets</a>
 							</p>
 
 							<!-- Modal Structure -->
@@ -48,9 +48,6 @@
 							    </div>
 							</div>
 
-							<div class="input-field">
-								{!! Form::submit('Print Tickets', array('class'=>'btn btn-primary')) !!}
-							</div>
 
 							<!-- CONTACT ORGANISATION FROM -->
 							<div id="modal2" class="modal">

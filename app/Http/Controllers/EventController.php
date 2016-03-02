@@ -462,7 +462,9 @@ class EventController extends Controller {
 		return redirect('events/' . $request->eventID);
 	}
 
-
+	/**
+	 * Select an aven to delete.
+	 */
 	public function delete($id) {
 		$eventID = $id;
 		return view('events.delete', compact('eventID'));
@@ -543,5 +545,17 @@ class EventController extends Controller {
 
 		return redirect::back()->with('message', 'Media Uploaded');
 
+	}
+
+	public function printBadges($id) {
+		$tickets = Ticket::where('event_id', '=', $id)->get();
+		$usersArray = array();
+
+		foreach ($tickets as $ticket) {
+			$user = User::findOrFail($ticket->user_id);
+			array_push($usersArray, $user);
+		}
+
+		return view('events.badges', compact('tickets', 'usersArray'));
 	}
 }

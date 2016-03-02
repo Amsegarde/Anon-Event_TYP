@@ -12,10 +12,11 @@
 					@foreach ($mailTickets as $mailTicket)
 						<h2>Type: {{ $mailTicket->type }}</h2>
 						<h2>Quantity: {{ $mailTicket->quantity }}</h2>
-						<h3>Date: {{ $event->start_date }} | Ticket No: {{ $mailTicket->id }}</h3>
+						<h3>Date: {{ $event->start_date }} | Order No: {{ $mailTicket->order_number }}</h3>
 						<h2>Location: {{ $event->location }}</h2>
 						<div class="visible-print text-center">
-							    {!! QrCode::margin(2)->size(165)->generate('Ticket' . $mailTicket->id . 'Qrcode generator') !!}
+							<img src="{!!$message->embedData(QrCode::format('png')->margin(1)->size(165)->generate('Event Name: ' . $event->name . ' | Date ' . $event->date . ' | Location: ' . $event->location . ' | Order Number: ' . $mailTicket->order_nunber . ' | Qrcode generator'), 'QrCode.png', 'image/png')!!}">
+							   
 						</div>	
 						<a href="{{ url('/tickets/'.$mailTicket->id )}}">View your tickets on Anon-Event!</a>
 						<hr />

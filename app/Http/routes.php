@@ -41,6 +41,8 @@ Route::get('events/{id}','EventController@show');
 Route::post('events/{id}', 
 	['as' => 'contact_attendees', 'uses' => 'EventController@sendMessage']);
 
+Route::get('events/{id}/badges', 'EventController@printBadges');
+
 
 Route::post('vote','EventController@vote');
 Route::post('date_vote','EventController@date_vote');
@@ -62,6 +64,9 @@ Route::post('tickets',
 	['as' => 'store_tickets', 'uses' => 'TicketController@store']);
 Route::get('tickets/{id}', 'TicketController@show');
 
+Route::get('ticket/{id}/print', 
+	['as' => 'ticket_print', 'uses' => 'TicketController@helloWorld']);
+
 Route::post('ticket/{id}/contact', 
 	['as' => 'contact_organisation', 'uses' => 'OrganisationController@contact']);
 
@@ -74,8 +79,18 @@ Route::get('contact',
 Route::post('contact', 
   ['as' => 'contact_store', 'uses' => 'AboutController@store']);
 
+Route::get('users/account', 'OrganisationController@getAccount');
+Route::get('users/{id}/account', 'OrganisationController@account');
+Route::post('users/{id}/account/update/details', 
+ 	['as' => 'update_details', 'uses' => 'OrganisationController@updateAccountDetails']);
+Route::post('users/{id}/account/update/email', 
+ 	['as' => 'update_email', 'uses' => 'OrganisationController@updateAccountEmail']);
+
 Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
 ]);
+
+
+
 

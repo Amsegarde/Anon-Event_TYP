@@ -9,7 +9,7 @@
 		@foreach ($events as $event)
 			<a href="{{ url('/events/'.$event->id) }}">
 				<div class="card small col s4">
-					<div class="card-image">
+					<div class="card-image">	
 						<img class="responsive-img" src="{{ asset('images/events/').'/'.$event->id.'.'.$event->image }}"> -->
 						<span class="card-title">{{ $event->name }}</span>
 					</div>
@@ -20,6 +20,7 @@
 					<div class="card-action">
 						<a href="{{ url('/events/'.$event->id) }}">Dashboard</a>
 						<a href="{{ url('/events/'. $event->id . '/delete') }}">Delete Event</a>
+						<a href="{{ url('/events/'. $event->id . '/badges') }}">Print Badges</a>
 					</div>
 
 				</div>

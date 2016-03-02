@@ -19,9 +19,9 @@
 									<h2>{{ $ticket->name }}</h2>
 									<p>{{ $ticket->type }}</p>
 									<p>{{ $ticket->quantity }}</p>
-									<h7>Date: {{ $ticket->start_date }} Ticket No: {{ $ticket->id }}</h7>
+									<h7>Date: {{ $ticket->start_date }} | Order No: {{ $ticket->order_number }}</h7>
 									
-									<h7>Details: {{ $ticket->location }}</h7>
+									<h7>| Details: {{ $ticket->location }}</h7>
 								</article>
 							</a>
 						@endforeach

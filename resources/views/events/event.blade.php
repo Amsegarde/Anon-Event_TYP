@@ -57,20 +57,6 @@
 
 					<div class="divider col s12"></div>		
 
-					<!-- Itinerary -->
-					<div class="col s12">
-							@foreach ($itin as $it)
-								<div class="col s8 offset-s2">
-									<h5 align="middle">{!! $it->name !!}</h5>
-									<p>Date: {{ $it->date }}</p> 
-									<p>Time: {{ $it->time }}</p>
-									<p>{{ $it->blurb }}</p>
-									<p>The Cost of the extra event is €{{ $it->cost }}</p>
-									<p>There is limited spaces to this event, {{ $it->capacity }} tickets are remaining</p>
-								</div>
-							@endforeach
-					</div>
-					<div class="divider col s12"></div>
 					<div class="col s12">
 					{!! Form::open(array('url'=>'vote','method'=>'POST', 'class'=>'col s12')) !!}
 						<div class="col s6">
