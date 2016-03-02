@@ -400,6 +400,18 @@
 		$(document).ready(function(){
 			// the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
 			$('.modal-trigger').leanModal();
+			// Datepicker working - uses pickadate.js
+		$('.start_datepicker').pickadate({
+			selectMonths: false, // Creates a dropdown to control month
+			selectYears: 15, // Creates a dropdown of 15 years to control year
+			min: true
+		});
+
+		$('.end_datepicker').pickadate({
+			selectMonths: false, // Creates a dropdown to control month
+			selectYears: 15, // Creates a dropdown of 15 years to control year
+			min: true
+		});
 		});
 		$(document).ready(function(){
 			$('ul.tabs').tabs('select_tab', 'tab_id');

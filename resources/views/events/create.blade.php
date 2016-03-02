@@ -152,6 +152,7 @@
 					</div>
 				</div>
 			@endif
+			@endif
 		{!! Form::close() !!}
 	</div>
 </div>
@@ -248,11 +249,11 @@
 						
 						"<div class='input-field col s12'>"+
 						"<label for='item["+(itemElement+1)+"]'>Description</label>"+
-						"<textarea id='bio' name='item["+(itemElement+1)+"]' class='materialize-textarea'length='500'></textarea></div>"
+						"<textarea id='bio' name='item["+(itemElement+1)+"]' class='materialize-textarea'length='500'></textarea></div>"+
 
 						"<div class='input-field col s12'>"+
 						"<label for='item["+(itemElement+2)+"]'>Date</label>"+
-						"<div class='input-field col s6'><input type='date' class='start_datepicker' name='item["+(itemElement+2)+"]' placeholder='Date'></div></div>"+
+						"<input type='date' class='start_datepicker' name='item["+(itemElement+2)+"]' placeholder='Date'></div>"+
 
 						"<div class='input-field col s6'>"+
 						"<label for='item["+(itemElement+3)+"]'>Cost(optional)</label>"+
@@ -278,9 +279,7 @@
 				selectYears: 15, // Creates a dropdown of 15 years to control year
 				min: true
 			});
- 
     	}
- 
 	}
  function removeInput(e){
  		e.remove();
@@ -343,11 +342,6 @@
     var next_ID = 1;
 
     function togglePoll(e){
-
-
-
-
-
     	console.log("add location to poll");
     	if(!locationPolled){
     		locationPolled = true;
