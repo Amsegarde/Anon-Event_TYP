@@ -4,6 +4,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\Registrar;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Request;
+
 
 class AuthController extends Controller {
 
@@ -31,10 +33,22 @@ class AuthController extends Controller {
 	{
 		$this->auth = $auth;
 		$this->registrar = $registrar;
-		//protected $redirectPath = '/dashboard';
+		//$redirectPath = Request::url();
 		$this->middleware('guest', ['except' => 'getLogout']);
 	}
 
-	
+	/**
+     * Handle an authentication attempt.
+     *
+     * @return Response
+     */
+    public function authenticate()
+    {
+        if (Auth::attempt(['email' => $email, 'password' => $password]))
+        {
+            return redirect()->intended('/');
+        }
+    }
+
 
 }

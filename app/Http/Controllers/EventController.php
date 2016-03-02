@@ -60,6 +60,11 @@ class EventController extends Controller {
 	 */
 	public function create(){
 		$id = Auth::id();
+		$loggedIn = true;
+		$hasOrg = true;
+		if($id == null){
+			$loggedIn = false;
+		}
 		$organisations = DB::table('organisations')
 								->whereIn('id', function($query) use ($id) {
 										$query->select('organisation_id')
@@ -67,8 +72,24 @@ class EventController extends Controller {
 										->where('user_id', '=', '?')
 										->setBindings([$id]);
 								})->get();
+		if($organisations == null){
+			$hasOrg = false;
+		}
 		
-		return view('events.create', compact('organisations'));
+		if($id == null){
+			return redirect('/auth/register')->with('message', 
+				'You must have an account to create an event!');
+		}
+		else if($organisations == null){
+			return redirect('organisation/create')->with('message', 
+				'You must have an organisation to create an event!');
+		}
+		else{
+			return view('events.create', compact('organisations',
+												'loggedIn',
+												'hasOrg'
+											));
+		}	
 	}
 
 	/**
@@ -91,7 +112,7 @@ class EventController extends Controller {
 		// $newEvent->Location = $request->location;
 		$newEvent->no_tickets = $request->no_tickets;
 		$newEvent->avail_tickets = $request->no_tickets;
-		$newEvent->price = $request->price;
+		$newEvent->price = 0;
 		$newEvent->genre = $request->genre;
 		$newEvent->scope = $request->scope;
 
@@ -259,9 +280,8 @@ class EventController extends Controller {
 		}
 
 		// echo "9";
-		$search = Event::all();
 		$genre = Category::all();
-		return view('events.browsePast', compact('events', 'search', 'genre', 'msg'));
+		return view('events.browsePast', compact('events', 'genre', 'msg'));
 	}
 
 	/**
@@ -276,23 +296,40 @@ class EventController extends Controller {
 
 		if (!empty($request->all())) {
 			if ($request->location){
-				$events = $events->where('location', '=', $request->location)->get();
+				$events = $events->where('location', 'like', $request->location)
+						->where('start_date', '>=', Carbon::now())->get();
+			}
+
+			if ($request->date) {
+				$carbon = new Carbon;
+				$searchDate = $carbon->createFromFormat('j F, Y', $request->date);
+				$events = Event::where('start_date', '>=', $searchDate)
+						->where('start_date', '>=', Carbon::now())->get();
 			}
 
 			if ($request->genre) {
-				$events = Event::where('genre','=', $request->genre)->get();
+				$events = Event::where('genre','=', $request->genre)
+						->where('start_date', '>=', Carbon::now())->get();
 			}
 
 			if ($request->price) {
-				$events = Event::where('price', '<=', $request->price)->get();
+				$events = Event::where('price', '<=', $request->price)
+						->where('start_date', '>=', Carbon::now())->get();
 			}
 		} else {
-			$events = Event::all();
-		}	
+			$events = Event::where('start_date', '<', Carbon::now())->get();
+		}
+
+		if (count($events) == 0) {
+			$msg = 'No Events match your search';
+			$events = Event::where('start_date', '>=', Carbon::now())->get();
+		}
+		else {
+			$msg = count($events) . " event(s) found";
+		}
 		
-		$search = Event::all();
 		$genre = Category::all();
-		return view('events.browse', compact('events', 'search', 'genre'));
+		return view('events.browse', compact('events', 'genre', 'msg'));
 	}
 
 	public function show($id) {
@@ -393,9 +430,10 @@ class EventController extends Controller {
 		$date = $request->date_vote;
 		
 		Vote::create(['event_id'=>$eventID,'user_id'=>$userID]);
-		$locVote = DB::table('location_suggestions')->where('id','=', $location)										
+		$locVote = LocationSuggestion::where('id','=', $location)										
 										->increment('votes');
-		$dateVote = DB::table('date_suggestions')->where('id','=', $date)										
+		
+		$dateVote = DateSuggestion::where('id','=', $date)										
 										->increment('votes');
 		
 		

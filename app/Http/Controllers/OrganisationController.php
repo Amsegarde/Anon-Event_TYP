@@ -10,11 +10,14 @@ use App\Http\Requests\ChangeEmailRequest;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Validator;
+use Illuminate\Support\Facades\URL;
+//use Illuminate\Support\Facades\Request;
 //use Request;
 use DB;
 use Input;
 use Mail;
 use App\user;
+//use URL;
 
 class OrganisationController extends Controller {
 
@@ -45,7 +48,13 @@ class OrganisationController extends Controller {
 	 */
 	public function create()
 	{
-		return view('organisation.create');
+		$id = Auth::id();
+		if($id == null){
+			return redirect('/auth/register')->with('message', 
+				'You must have an account to create an organisation!');
+		}else{
+			return view('organisation.create');
+		}
 	}
 
 	/**
@@ -98,7 +107,11 @@ class OrganisationController extends Controller {
 
 		echo $admin;
 
-		return redirect('organisation/' . $id);
+		if ($request->path() == 'events/create') {
+			return redirect()->back();
+		} else {
+			return redirect('organisation/' . $id);
+		}
 	}
 
 	/**

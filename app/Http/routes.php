@@ -12,7 +12,8 @@
 */
 
 //Route::get('home','HomePageController@test');
-Route::get('about', 'AboutPageController@index');
+Route::get('about', 'AboutController@index');
+Route::get('about/contact', 'AboutController@create');
 Route::get('/', 'HomePageController@index');
 
 Route::post('media', 'EventController@media');
@@ -23,6 +24,8 @@ Route::post('events/past', 'EventController@browsePast');
 Route::get('events/create','EventController@create');
 Route::post('events/create', 
   ['as' => 'create_store', 'uses' => 'EventController@store']);
+Route::post('events/create',
+	['as' => 'create_org', 'uses' => 'OrganisationController@store']);
 Route::get('events/manage', 'EventController@manageEvents');
 Route::post('events/{id}/ticket/confirm', 'TicketController@confirmPage');
 // Route::post('events/{id}/ticket/confirm', function () {

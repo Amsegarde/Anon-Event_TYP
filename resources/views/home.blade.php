@@ -2,20 +2,56 @@
 
 @section('splash')
 <div class="parallax-container" id="home">
+	<div class="parallax">
+	<div class="slider">
+    <ul class="slides">
+      <li>
+        <img class="responsive-img" src="images/homePage.jpg"> <!-- random image -->
+        <div class="caption center-align">
+          <h3>Get Organising</h3>
+          <h5 class="light grey-text text-lighten-3">Promote, manage and sell your organisation's events</h5>
+        </div>
+      </li>
+      <li>
+        <img class="responsive-img" src="http://image.shutterstock.com/z/stock-photo-cheerful-young-people-sitting-by-swimming-pool-drinking-having-fun-enjoying-holiday-101967679.jpg"> <!-- random image -->
+        <div class="caption left-align">
+          <h3>Promote Your  Organisation</h3>
+          <h5 class="light grey-text text-lighten-3">Get your organisation out there</h5>
+        </div>
+      </li>
+      <li>
+        <img class="responsive-img" src="http://st.depositphotos.com/1793716/3301/i/950/depositphotos_33016651-happy-people-having-fun-on-banana-boat.jpg"> <!-- random image -->
+        <div class="caption right-align">
+          <h3>Create Your Own Events</h3>
+          <h5 class="light grey-text text-lighten-3">You're the one in charge of your events</h5>
+        </div>
+      </li>
+      <li>
+        <img class="responsive-img" src="https://i.ytimg.com/vi/M9gFRXw5-kI/maxresdefault.jpg"> <!-- random image -->
+        <div class="caption center-align">
+          <h3>Sell Your Own Tickets</h3>
+          <h5 class="light grey-text text-lighten-3">Sell and manage tickets directly on the site</h5>
+        </div>
+      </li>
+      </div>
+    </ul>
+  </div>
+</div>
+<!-- 
 	<div class="parallax"><img class="responsive-img" src="images/homePage.jpg"></div>
 	<div class="caption center-align" style="">
-		<h1>Welcome to Anon-Event</h1>
-		<p>Here we help you to run, promote and manage your organisation's events.</p>
-		<a href="">Find out More</a>
+		<h1>Get Organising</h1>
+		<p>Promote, manage and sell your organisation's events.</p>
+		<a href="{{ url('about') }}">Find out More</a>
 	</div>
-</div>
+</div> -->
 @endsection
 
 @section('content')
 <div class="section">
 	<div class="row">
 		<div class="col s4">
-			<h4>???</h4>
+			<h4>Upcoming Events</h4>
 		</div>
 	</div>
 </div>
@@ -23,6 +59,7 @@
 <div class="divider"></div>
 
 <div class="row">
+	<h4>Upcoming Events</h4>
 	@foreach ($events as $event)
 	<div class="card small col s4">
 		<div class="card-image">

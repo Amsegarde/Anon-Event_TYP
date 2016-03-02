@@ -46,13 +46,14 @@
 				background: none;
 				position: relative;
 				z-index: 1;
+
 			}
 			nav li a {
-				color: black;
+				color: gray;
 			}
 
 			.brand-logo {
-				color: black !important;
+				color: gray !important;
 			}
 
 			.parallax {
@@ -66,6 +67,11 @@
 
 			.parallax img {
 				display: inherit !important;
+				-webkit-filter: grayscale(35%);
+                -moz-filter: grayscale(35%);
+                -o-filter: grayscale(35%);
+                -ms-filter: grayscale(35%);
+                filter: grayscale(35%);
 			}
 
 			#event_blank {
@@ -94,14 +100,37 @@
 	        .check .alert {
 	            margin-top: 20px;
 	        }
+
+	        #browse_card {
+	        	width: 35%;
+	        	height: 150%;
+	        }
+
+	        #browse {
+	        	max-height:200px;
+	        }
+
+	        body {
+				display: flex;
+				min-height: 100vh;
+				flex-direction: column;
+			}
+
+			main {
+				flex: 1 0 auto;
+			}
+
+			a #modal-trigger {
+
+			}
 		</style>
 
 	</head>
 
 
 	<body>
-		
-		
+	
+	<header>
 		<!-- Dropdown Structure -->
 		<ul id="dropdown1" class="dropdown-content">
 			<li><a href="{{ url('/tickets') }}">Tickets</a></li>
@@ -128,8 +157,10 @@
 					<ul class="right hide-on-med-and-down">
 						<li><a href="{{ url('/') }}">Home</a></li>
 						<li><a href="{{ url('/events') }}">Browse Events</a></li>
+						<li><a href="{{ url('/events/past') }}">Browse Past Events</a></li>
 						@if (Auth::guest())
-								<li><a href="{{ url('/auth/login') }}">Login</a></li>
+								<li><a class="modal-trigger" href="#login">Login</a></li>
+								<!-- <li><a href="{{ url('/auth/login') }}">Login</a></li> -->
 								<li><a href="{{ url('/auth/register') }}">Register</a></li>
 						@else
 							<li><a href="{{ url('events/create') }}">Create Event</a></li>
@@ -169,6 +200,55 @@
 				</div>
 			</nav>
 		</div>
+	</header>
+
+	<div id="login" class="modal">
+		<div class="modal-content">
+			<div class="row">
+				<h5>Login</h5>
+				@if (count($errors) > 0)
+					<div class="alert alert-danger">
+						<strong>Whoops!</strong> There were some problems with your input.<br><br>
+						<ul>
+							@foreach ($errors->all() as $error)
+								<li>{{ $error }}</li>
+							@endforeach
+						</ul>
+					</div>
+				@endif
+
+				{!! Form::open(array('url'=>'/auth/login','method'=>'POST', 'class'=>'col s12')) !!}
+				<input type="hidden" name="_token" value="{{ csrf_token() }}">
+					<div class="row">
+						<div class="input-field">
+							{!! Form::label('email', 'E-mail Address') !!}
+							{!! Form::email('email', null) !!}
+						</div>
+
+						<div class="input-field">
+							{!! Form::label('password', 'Password') !!}
+							{!! Form::password('password', null) !!}
+						</div>
+
+						<div class="input-field">
+							<p>
+								<input type="checkbox" id="remember" namd="remember" />
+								<label for="remember">Remember Me</label>
+							</p>
+						</div>
+
+						<div class="input-field">
+							{!! Form::submit('Login', ['class'=>'btn indigo lighten-1']) !!}
+						</div>
+
+						<div class="input-field">
+							<a href="{{ url('/password/email') }}">Forgot Your Password?</a>
+						</div>
+					</div>
+				{!! Form::close() !!}
+			</div>
+		</div>
+	</div>
 
 		<!-- Scripts -->
 		<script src="//code.jquery.com/jquery-2.1.2.min.js"></script>
@@ -188,11 +268,12 @@
 		</script>
 
 		@yield('splash')
+		<main>
+			<div class="container">
+				@yield('content')
+			</div>
+		</main>
 
-		<div class="container">
-			@yield('content')
-		</div>
-		
 		<footer class="page-footer blue-grey">
 			<!-- <div class="container">
 				<div class="row">
@@ -224,6 +305,8 @@
 	<script>
 		$(document).ready(function() {
 			$('select').material_select();
+			$('.modal-trigger').leanModal();
+			$('.slider').slider({indicators: false, height: 600});
 		});
 	</script>
 
@@ -294,12 +377,16 @@
 
       var placeSearch, autocomplete;
       function initAutocomplete() {
+
         // Create the autocomplete object, restricting the search to geographical
         // location types.
         autocomplete = new google.maps.places.Autocomplete(
             /** @type {!HTMLInputElement} */(document.getElementById('autocomplete')),
             {types: ['geocode']});
 
+        autocomplete2 = new google.maps.places.Autocomplete(
+            /** @type {!HTMLInputElement} */(document.getElementById('autocomplete2')),
+            {types: ['geocode']});
       }
 
       
@@ -319,6 +406,7 @@
             });
             
             autocomplete.setBounds(circle.getBounds());
+            autocomplete2.setBounds(circle.getBounds());           
           });
         }
       }
