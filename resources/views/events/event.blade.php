@@ -81,7 +81,7 @@
 							@else
 								<p>{{ $event->location }}</p>
 								<div id="locationField">
-	      							<input id="autocomplete" placeholder="Enter your address"
+	      							<input id="autocomplete2" placeholder="Enter your address"
 	             					onFocus="geolocate()" name="location" type="text">
 	             					<input type="button" onclick="loadMap()"value="Get Directions">
 	   			 				</div>
@@ -89,28 +89,28 @@
 		   			 				
 							@endif
 						</div>
-					</div>
 
-					<div class="col s6">
-						<h5>When</h5>
-						@if (date('F d, Y', strtotime($event->start_date)) != "January 01, 1970")
-							<p>{{ date('F d, Y', strtotime($event->start_date)) }} - {{ date('F d, Y', strtotime($event->end_date)) }}</p>
-						@else	
-							<select name="date_vote">
-								<option value="">Vote on dates</option>
-									@foreach ($dateSuggs as $dsuggestion)
-										<option value="{{$dsuggestion->id}}">{{ date('F d, Y', strtotime($dsuggestion->start_date)) }} - {{ date('F d, Y', strtotime($dsuggestion->end_date)) }}</option>
-									@endforeach
-							</select>	
+						<div class="col s6">
+							<h5>When</h5>
+							@if (date('F d, Y', strtotime($event->start_date)) != "January 01, 1970")
+								<p>{{ date('F d, Y', strtotime($event->start_date)) }} - {{ date('F d, Y', strtotime($event->end_date)) }}</p>
+							@else	
+								<select name="date_vote">
+									<option value="">Vote on dates</option>
+										@foreach ($dateSuggs as $dsuggestion)
+											<option value="{{$dsuggestion->id}}">{{ date('F d, Y', strtotime($dsuggestion->start_date)) }} - {{ date('F d, Y', strtotime($dsuggestion->end_date)) }}</option>
+										@endforeach
+								</select>	
+							@endif
+						</div>
+						{!!  Form::hidden('eventID', $event->id) !!}
+						@if($voteOpen == 1)
+							{!! Form::submit('Vote', array('class'=>'btn indigo lighten-1')) !!}
+						@else
+							<p>Your vote has been logged</p>
 						@endif
+						{!! Form::close() !!}
 					</div>
-					{!!  Form::hidden('eventID', $event->id) !!}
-					@if($voteOpen == 1)
-						{!! Form::submit('Vote', array('class'=>'btn indigo lighten-1')) !!}
-					@else
-						<p>Your vote has been logged</p>
-					@endif
-					{!! Form::close() !!}
 					
 					@if(auth::guest())
 						<div class="col s12">
@@ -175,7 +175,7 @@
 									<h5 class="title col s12">Event Information</h5>
 									<div class="divider col s12"></div>
 
-									<div class="input-field col s12">7
+									<div class="input-field col s12">
 										{!! Form::label('Event Name') !!}
 										{!! Form::text('name', 
 														$event->name, 
@@ -183,28 +183,23 @@
 														)) !!}
 									</div>
 									
-										<div class="input-field col s12">
-											<textarea name="bio" id="bio" class="materialize-textarea" length="2000">{{ $event->bio }}</textarea>
-										</div>
-									<div id="dates">
-										<div class="input-field col s6">
-										<input type="date" class="start_datepicker" name="start_date[]" placeholder="Start Date">
-										</div>
-						
-										<div class="input-field col s6">
-											<input type="date" class="end_datepicker" name="end_date[]" placeholder="End Date">
-										</div>
+									<div class="input-field col s12">
+										<textarea name="bio" id="bio" class="materialize-textarea" length="2000">{{ $event->bio }}</textarea>
+									</div>
+									<div class="input-field col s6">
+									<input type="date" class="start_datepicker" name="start_date[]" placeholder="Start Date">
+									</div>
+					
+									<div class="input-field col s6">
+										<input type="date" class="end_datepicker" name="end_date[]" placeholder="End Date">
 									</div>
 
-									<div class="location[]" id="x">
-										<div class="input-field col s12">
-										    {!! Form::label('Enter The Location Of Your Event') !!}
-										    {!! Form::text('location[]', 
-										    				$event->location, 
-										      				array('required', 
-										         		    'class'=>'form-control', 
-										          		    'placeholder'=>'Enter The Location Of Your Event')) !!}
-										</div>
+									<div class="input-field col s12" id="locationField">
+				      					<input id="autocomplete" placeholder="Enter The Location Of Your Event"
+				             			onFocus="geolocate()" name="location" type="text"></input>
+				   			 		</div>
+
+									
 
 									<div class='input-field col s6'>
 										{!! Form::select('scope', ['Select a Scope', 'None', 'Local', 'Regional', 
@@ -268,27 +263,27 @@
 							    @endforeach
 							</ul>
 
-							{!! Form::open(array('route' => 'contact_attendees', 'class' => 'form')) !!}
+							{!! Form::open(array('route' => 'contact_attendees')) !!}
 								{!! Form::hidden('eventID', $event->id) !!}
 								{!! Form::hidden('organisationID', $organisation->id) !!}
 
-								<div class="form-group">
+								<div class="input-field">
 								    {!! Form::label('Title') !!}
 								    {!! Form::text('title', null, 
 								        array('required', 
-								              'class'=>'form-control', 
+								               
 								              'placeholder'=>'Title')) !!}
 								</div>
 
-								<div class="form-group">
+								<div class="input-field">
 								    {!! Form::label('Message') !!}
 								    {!! Form::textarea('message', null, 
 								        array('required', 
-								              'class'=>'form-control', 
-								              'placeholder'=>'Message')) !!}
+								            	'class' => 'materialize-textarea',
+								            	'placeholder'=>'Message')) !!}
 								</div>
 
-								<div class="form-group">
+								<div class="input-field">
 								    {!! Form::submit('Send', 
 								      array('class'=>'btn btn-primary')) !!}
 								      <a href="{{ url('/events/'.$event->id) }}">Cancel</a>
@@ -299,8 +294,6 @@
 					</div>
 
 					@else
-						<!-- Modal Trigger -->
-						<a class="btn modal-trigger" href="#modal1">Get Tickets</a>
 
 						<!-- Modal Structure -->
 						<div id="modal1" class="modal">

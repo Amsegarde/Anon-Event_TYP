@@ -15,6 +15,10 @@
 				<h5 class="title col s12">Select an Organisation</h5>
 				<div class="divider col s12"></div>
 
+				<div class="col s12">
+					<!-- Modal Trigger -->
+					<p><a class="modal-trigger" href="#modal1">Create Organisation</a> or choose from below</p>
+				</div>
 				<div class="input-field col s12">
 					<select name="organisation">
 						<option value="">Select an Organisation</option>
@@ -25,127 +29,172 @@
 					</select>		
 				</div>
 
-				<!-- Event Information -->
-				<h5 class="title col s12">Event Information</h5>
-				<div class="divider col s12"></div>
+				@if (count($organisations) == 0)
+					<div class="col s12">
+						<p>You can only create an event if you have first created an organisation</p>
+					</div>
+				@else 
 
-				<div class="input-field col s12">
-					{!! Form::label('Event Name') !!}
-					{!! Form::text('name', 
-									null, 
-									array('required'
-									)) !!}
-				</div>
-				
+					<!-- Event Information -->
+					<h5 class="title col s12">Event Information</h5>
+					<div class="divider col s12"></div>
+
 					<div class="input-field col s12">
-						<textarea name="bio" id="bio" class="materialize-textarea" length="2000"></textarea>
+						{!! Form::label('Event Name') !!}
+						{!! Form::text('name', 
+										null, 
+										array('required'
+										)) !!}
 					</div>
-				<div id="dates">
-					<div class="input-field col s6">
-					<input type="date" class="start_datepicker" name="start_date[]" placeholder="Start Date">
-					</div>
-	
-					<div class="input-field col s6">
-						<input type="date" class="end_datepicker" name="end_date[]" placeholder="End Date">
-					</div>	
-									
-					 <input type="button" id="addDateButton"class="btn btn-secondary"value="Open Dates to Voting" onClick="toggleDatePoll(dates);">				
-
-				</div>
-
-				
-					<div class="input-field col s12" id="locations">
-					<div id="locationField">
-      					<input id="autocomplete" placeholder="Enter The Location Of Your Event"
-             			onFocus="geolocate()" name="location[]" type="text"></input>
-             			
-   			 		</div>
-					    <!--{!! Form::label('Enter The Location Of Your Event') !!}
-					    {!! Form::text('location[]', 
-					    				null, 
-					      				array('required', 
-					         		    'class'=>'form-control', 
-					          		    'placeholder'=>'Enter The Location Of Your Event')) !!}-->
-						<input type="button" class="btn btn-secondary"value="Open Location to Polling" onClick="togglePoll(locations);">
 					
+						<div class="input-field col s12">
+							<textarea name="bio" id="bio" class="materialize-textarea" length="2000"></textarea>
+						</div>
+					<div id="dates" class="col s12">
+						<div class="input-field col s6">
+						<input type="date" class="start_datepicker" name="start_date[]" placeholder="Start Date">
+						</div>
+		
+						<div class="input-field col s6">
+							<input type="date" class="end_datepicker" name="end_date[]" placeholder="End Date">
+						</div>	
+										
+						 <input type="button" id="addDateButton" class="btn col s12 amber darken-2"value="Open Dates to Voting" onClick="toggleDatePoll(dates);">				
+
 					</div>
 
-				<div class='input-field col s6'>
-					{!! Form::select('scope', ['Select a Scope', 'None', 'Local', 'Regional', 
-							'National'], null) !!}
-				</div>
+					
+						<div class="input-field col s12" id="locations">
+						<div id="locationField">
+	      					<input id="autocomplete" placeholder="Enter The Location Of Your Event"
+	             			onFocus="geolocate()" name="location[]" type="text"></input>
+	             			
+	   			 		</div>
+						    <!--{!! Form::label('Enter The Location Of Your Event') !!}
+						    {!! Form::text('location[]', 
+						    				null, 
+						      				array('required', 
+						         		    'class'=>'form-control', 
+						          		    'placeholder'=>'Enter The Location Of Your Event')) !!}-->
+							<input type="button" class="btn col s12 amber darken-2"value="Open Location to Polling" onClick="togglePoll(locations);">
+						
+						</div>
 
-
-				<div class='input-field col s6'>
-					{!! Form::select('genre', ['Select a Category', 'Music', 'Sport', 
-						'Theatre', 'Convention',
-						'Course', 'Conference', 'Seminar', 'Gaming', 'Party', 'Screening', 
-						'Tour', 'Other'], null) !!}
-				</div>
-
-				<!-- Event Image upload -->
-				<h5 class="title col s12">Upload Event Image</h5>
-				<div class="divider col s12"></div>
-
-				<div class="file-field input-field col s12">
-					<div class="btn indigo lighten-1">
-						<span>Upload Event Image</span>
-						<input name="image" type="file">
-					</div>				
-					<div class="file-path-wrapper">
-						<input class="file-path validate type="text>
+					<div class='input-field col s6'>
+						{!! Form::select('scope', ['Select a Scope', 'None', 'Local', 'Regional', 
+								'National'], null) !!}
 					</div>
-				</div>
 
-				<!-- Tickets -->
-				<h5 class="title col s12">Tickets Information</h5>
-				<div class="divider col s12"></div>
 
-				<div class="input-field col s6">
-					{!! Form::label('Enter The Number Of Tickets') !!}
-					{!! Form::input('number', 'no_tickets', 
-								0, 
-								array('required')) !!}
-				</div>
+					<div class='input-field col s6'>
+						{!! Form::select('genre', ['Select a Category', 'Music', 'Sport', 
+							'Theatre', 'Convention',
+							'Course', 'Conference', 'Seminar', 'Gaming', 'Party', 'Screening', 
+							'Tour', 'Other'], null) !!}
+					</div>
 
-				<div class="input-field col s6">
-					{!! Form::label('Enter The Price Of A Ticket') !!}
-					{!! Form::input('number', 'price', 
+					<!-- Event Image upload -->
+					<h5 class="title col s12">Upload Event Image</h5>
+					<div class="divider col s12"></div>
+
+					<div class="file-field input-field col s12">
+						<div class="btn amber darken-2">
+							<span>Upload Event Image</span>
+							<input name="image" type="file">
+						</div>				
+						<div class="file-path-wrapper">
+							<input class="file-path validate type="text>
+						</div>
+					</div>
+
+					<!-- Tickets -->
+					<h5 class="title col s12">Tickets Information</h5>
+					<div class="divider col s12"></div>
+
+					<div class="input-field col s12">
+						{!! Form::label('Enter The Number Of Tickets') !!}
+						{!! Form::input('number', 'no_tickets', 
 									0, 
 									array('required')) !!}
-					
-				</div>
+					</div>
 
-				<div class="input-field col s12">
-					<table id="dynamic-tickets" class="ticket-table col s12"></table>
-					<input type="button" class="btn"value="Add Ticket" onClick="addTicket('dynamic-tickets');">
-				</div>
-
-					<div class="form-group">
-					    {!! Form::label('Select your tickets') !!}
+					<div class="input-field col s12">
+						<table id="dynamic-tickets" class="ticket-table col s12"></table>
+						<input type="button" class="btn col s8 offset-s2 amber darken-2"value="Add Ticket" onClick="addTicket('dynamic-tickets');">
 					</div>
 
 
+						<!-- Itinery Items -->
+					<h5 class="title col s12">Optional Itinerary</h5>
+					<div class="divider col s12"></div>
+					<p>Here you can provide optional extra itinerary to your event</p>
+					<p>These can be just as information or for prebooking with an optional additional cost</p>
 
-					<!-- Itinery Items -->
-				<h5 class="title col s12">Optional Itinerary</h5>
-				<div class="divider col s12"></div>
-
-				<div class="input-field col s12">
-					<div id="dynamicInput">
-					   <!--  Itinerary From divs will go here  -->
-					</div>	 
-					<input type="button" class="btn"value="Add Itinerary Item" onClick="addInput('dynamicInput');">
+					<div class="input-field col s12">
+						<div id="dynamicInput">
+						   <!--  Itinerary From divs will go here  -->
+						</div>	 
+						<input type="button" class="btn col s8 offset-s2 amber darken-2"value="Add Itinerary Item" onClick="addInput('dynamicInput');">
+					</div>
+						
+						<!-- Submit Button -->
+					<div class="input-field col s12">
+						{!! Form::submit('Create Event!', array('class'=>'btn col s4 offset-s4 amber darken-4')) !!}
+					</div>
 				</div>
-					
-					<!-- Submit Button -->
-				<div class="input-field col s12">
-					{!! Form::submit('Create Event!', array('class'=>'btn indigo lighten-1')) !!}
-				</div>
-			</div>
+			@endif
 		{!! Form::close() !!}
 	</div>
 </div>
+
+<!-- Modal Structure -->
+	<div id="modal1" class="modal">
+		<div class="modal-content">
+			<h5>Create Organisation</h5>
+			@if ($errors->any())
+				<ul class='alert alert-danger'>
+					@foreach ($errors->all() as $error)
+						<li>{!! $error !!}</li>
+					@endforeach
+				</ul>
+			@endif
+
+			<!-- This is the create organisation form -->
+			{!! Form::open(array('route' => 'create_org','method'=>'POST', 'files'=>true, 'class'=>'col s12')) !!}
+				<div class="row">
+					<!-- Bio Form input -->
+					<div class="input-field col s12">
+						{!! Form::label('name', 'Organisation Name: ') !!}
+						{!! Form::text('name', null) !!}
+					</div>
+
+					<!-- Bio Form input -->
+					<div class="input-field col s12">
+						<textarea name="bio" class="materialize-textarea" placeholder="Biography" length="500"></textarea>
+					</div>
+
+					<div class='input-fields col s12'>
+						{!! Form::select('scope', ['Scope','None', 'Local', 'Regional', 'National'], null) !!}
+					</div>
+
+					<div class='file-field input-field col s12'>
+						<div class="btn amber darken-2">
+							<span>Upload logo</span>
+							<input name="image" type="file">
+						</div>
+						<div class="file-path-wrapper">
+							<input class="file-path validate" type="text">
+						</div>
+					</div>
+					
+					<!-- Submit Form input -->
+					<div class='input-field col s12'>
+						{!! Form::submit('Add Organisation', ['class'=>'btn amber darken-2']) !!}
+					</div>
+				</div>
+			{!! Form::close() !!}
+		</div>
+	</div>
 
 <script type="text/javascript">	
 	// For the Rich Text Editor
@@ -287,18 +336,18 @@
     		numOfSuggestions = 1;
     	document.getElementById('locations').innerHTML=
     										"<div id='locationSuggestion"+next_ID+"'>"
-    										+"<label for='location'>Enter Location Suggestions</label>"
+    										+"<label for='location'>Enter Location Suggestion</label>"
          									+"<input type='text' name='location[]'>"
            									+"</div>"
-           									+"<input type='button' id='addButton' class='btn'value='Add Suggestion' onClick='addSuggestion(locations);'>"
-					 						+"<input type='button' class='btn'value='Remove Poll' onClick='togglePoll(locations);'>";
+           									+"<input type='button' id='addButton' class='btn col s4 offset-s1 amber darken-4' value='Add Suggestion' onClick='addSuggestion(locations);'>"
+					 						+"<input type='button' class='btn col s4 offset-s1 amber darken-4' value='Remove Poll' onClick='togglePoll(locations);'>";
     	}else{
     		locationPolled = false;
     		numOfSuggestions = 0;
     		document.getElementById('locations').innerHTML=
     										"<label for='location'>Enter Location</label>"
-         									+"<input type='text' name='location[]'>"
-              								+"<input type='button' class='btn' value='Open to suggestions' onClick='togglePoll(locations);'>";
+         									+"<input type='text' name='location[]' placeholder='Enter Location Suggestion'>"
+              								+"<input type='button' class='btn col s12 amber darken-2' value='Open to suggestions' onClick='togglePoll(locations);'>";
     	}
     	next_ID++;
 
@@ -310,7 +359,7 @@
     	var nextSuggestion = document.createElement('div');
     	nextSuggestion.innerHTML="<div id='locationSuggestion"+next_ID+"'>"								
          						+"<input type='text' name='location[]' class='form-control'>"
-         						+"<input type='button' class='btn btn-secondary'value='remove Suggestion' onClick='removeSuggestion(locationSuggestion"+next_ID+");'>"
+         						+"<input type='button' class='btn col s6 offset-s3 amber darken-4'value='remove Suggestion' onClick='removeSuggestion(locationSuggestion"+next_ID+");'>"
            						+"</div>";         									
            	next_ID++;
     		num.insertBefore(nextSuggestion, addButton);
@@ -343,8 +392,8 @@
 											+		"<input type='date' class='end_datepicker' name='end_date[]' placeholder='End Date'>"
 											+	"</div>"	
            									+"</div>"
-           									+"<input type='button' id='addDateButton' class='btn btn-secondary'value='Add Date Suggestion' onClick='addDateSuggestion(dates);'>"
-					 						+"<input type='button' class='btn btn-secondary'value='Remove Poll' onClick='toggleDatePoll(dates);'>";
+           									+"<input type='button' id='addDateButton' class='btn col s4 offset-s1 amber darken-4'value='Add Date Suggestion' onClick='addDateSuggestion(dates);'>"
+					 						+"<input type='button' class='btn col s4 offset-s2 amber darken-4'value='Remove Poll' onClick='toggleDatePoll(dates);'>";
     	}else{
 			datePolled = false;
 			numDateSugg = 0;

@@ -21,7 +21,7 @@
 
 					<div class="input-field col s12">
 						<select name="genre">
-							<option value="">Genre</option>
+							<option value="">Category</option>
 							<!--look into passing org id along with form even though its not displayed-->
 							@foreach ($genre as $cat)
 								<option value="{{$cat->id}}">{{$cat->type}}</option>
@@ -38,20 +38,21 @@
 		</div>
 
 		<div class="col s9">
-			<p>{{ $msg	 }}</p>
 			@foreach ($events as $event)
-			<div class="card small col s6">
-				<div class="card-image">
+			<p>{{ $msg }}</p>
+			<div class="card small" id="browse">
+				<div class="card-image left" id="browse_card">
 					<img class="responsive-img" src="{{ asset('images/events/').'/'.$event->id.'.'.$event->image }}">
-					<span class="card-title">{{ $event->name }}</span>
 				</div>
+				<div class="right-content">
 					<div class="card-content">
-					<p>Date: {{ $event->start_date }}</p>
-					<p>{!! $event->bio !!}</p>
-				</div>
-				<div class="card-action">
-					<a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-					<a href="{{ url('/events/'.$event->id) }}">Show Event</a>
+						<p>Date: {{ $event->start_date }}</p>
+						<p>Location: {{ $event->location }}</p>
+						<span class="card-title">{{ $event->name }}</span>
+					</div>
+					<div class="card-action">
+						<a href="{{ url('/events/'.$event->id) }}">Get Tickets</a>
+					</div>
 				</div>
 			</div>
 			@endforeach
