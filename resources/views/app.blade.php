@@ -62,11 +62,11 @@
 
 			.parallax img {
 				display: inherit !important;
-				-webkit-filter: grayscale(75%);
-                -moz-filter: grayscale(75%);
-                -o-filter: grayscale(75%);
-                -ms-filter: grayscale(75%);
-                filter: grayscale(75%);
+				-webkit-filter: grayscale(85%);
+                -moz-filter: grayscale(85%);
+                -o-filter: grayscale(85%);
+                -ms-filter: grayscale(85%);
+                filter: grayscale(85%);
 			}
 
 			#event_blank {
@@ -109,7 +109,7 @@
 				display: flex;
 				min-height: 100vh;
 				flex-direction: column;
-				background: #e8eddf !important;
+				/*background: #e8eddf !important;*/
 			}
 
 			footer {
@@ -130,6 +130,9 @@
 			}
 			ul li a {
 				color: #f5cb5c !important;
+			}
+			.card{
+				background: #e8eddf !important;
 			}
 		</style>
 
