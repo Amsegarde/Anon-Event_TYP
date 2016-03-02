@@ -117,6 +117,7 @@
 						</div>
 						<div class="col s12"><h5><a href="{{ url('/auth/login') }}">Login to get tickets</a></h5></div>
 					@else 
+					<a class="btn modal-trigger" href="#modal1">Get Tickets</a>
 				</div>
 
 					@if ($isAdmin === true)

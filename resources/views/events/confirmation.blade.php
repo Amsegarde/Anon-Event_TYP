@@ -75,8 +75,7 @@
 
 					<div class="row col s6" id="first-name-group">
 						{!! Form::label('firstName', 'First Name:') !!}
-						{!! Form::text('first_name', null, [
-							'class'                         => 'form-control',
+						{!! Form::text('first_name', Auth::user()->firstname, [
 							'required'                      => 'required',
 							'data-parsley-required-message' => 'First name is required',
 							'data-parsley-trigger'          => 'change focusout',
@@ -89,8 +88,7 @@
 
 					<div class="row col s6" id="last-name-group">
 						{!! Form::label('lastName', 'Last Name:') !!}
-						{!! Form::text('last_name', null, [
-							'class'                         => 'form-control',
+						{!! Form::text('last_name', Auth::user()->lastname, [
 							'required'                      => 'required',
 							'data-parsley-required-message' => 'Last name is required',
 							'data-parsley-trigger'          => 'change focusout',
@@ -103,8 +101,7 @@
 
 					<div class="row col s12" id="email-group">
 						{!! Form::label('email', 'Email address:') !!}
-						{!! Form::email('email', null, [
-							'class' => 'form-control',
+						{!! Form::email('email', Auth::user()->email, [
 							'placeholder'                   => 'email@example.com',
 							'required'                      => 'required',
 							'data-parsley-required-message' => 'Email name is required',
@@ -116,7 +113,6 @@
 					<div class="row col s8" id="cc-group">
 						{!! Form::label(null, 'Credit card number:') !!}
 						{!! Form::text(null, null, [
-							'class'                         => 'form-control',
 							'required'                      => 'required',
 							'data-stripe'                   => 'number',
 							'data-parsley-type'             => 'number',
@@ -129,7 +125,6 @@
 					<div class="row col s4" id="ccv-group">
 						{!! Form::label(null, 'Card Validation Code (3 or 4 digit number):') !!}
 						{!! Form::text(null, null, [
-							'class'                         => 'form-control',
 							'required'                      => 'required',
 							'data-stripe'                   => 'cvc',
 							'data-parsley-type'             => 'number',
@@ -177,8 +172,7 @@
 						@endif
 					</div>
 					{!! Form::close() !!}
->>>>>>> 2c11c06e92e82edb35e4b790725c12f35dd0e44e
-
+					@endif
 				</div>
 			@endif
 		@endif

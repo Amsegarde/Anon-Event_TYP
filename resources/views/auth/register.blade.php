@@ -30,6 +30,11 @@
 					{!! Form::label('firstname', 'Firstname', ["class"=>"validate"]) !!}
 					{!! Form::text('firstname', null) !!}
 				</div>
+
+				<div class="input-field col s6">
+					{!! Form::label('lastname', 'Lastname', ["class"=>"validate"]) !!}
+					{!! Form::text('lastname', null) !!}
+				</div>
 				
 				<div class="input-field col s12">
 					{!! Form::label('email', 'E-mail Address', ["class"=>"validate"]) !!}

@@ -169,40 +169,7 @@
 				</ul>
 			@endif
 
-			<!-- This is the create organisation form -->
-			{!! Form::open(array('route' => 'create_org','method'=>'POST', 'files'=>true, 'class'=>'col s12')) !!}
-				<div class="row">
-					<!-- Bio Form input -->
-					<div class="input-field col s12">
-						{!! Form::label('name', 'Organisation Name: ') !!}
-						{!! Form::text('name', null) !!}
-					</div>
-
-					<!-- Bio Form input -->
-					<div class="input-field col s12">
-						<textarea name="bio" class="materialize-textarea" placeholder="Biography" length="500"></textarea>
-					</div>
-
-					<div class='input-fields col s12'>
-						{!! Form::select('scope', ['Scope','None', 'Local', 'Regional', 'National'], null) !!}
-					</div>
-
-					<div class='file-field input-field col s12'>
-						<div class="btn amber darken-2">
-							<span>Upload logo</span>
-							<input name="image" type="file">
-						</div>
-						<div class="file-path-wrapper">
-							<input class="file-path validate" type="text">
-						</div>
-					</div>
-					
-					<!-- Submit Form input -->
-					<div class='input-field col s12'>
-						{!! Form::submit('Add Organisation', ['class'=>'btn amber darken-2']) !!}
-					</div>
-				</div>
-			{!! Form::close() !!}
+			
 		</div>
 	</div>
 

@@ -45,8 +45,6 @@
 			nav {
 				background: none;
 				position: relative;
-				z-index: 1;
-
 			}
 			nav li a {
 				color: gray;
@@ -149,9 +147,9 @@
 		</ul>
 
 
-		<div class="navbar">
-			<nav style>
-				<div class="nav-wrapper" >
+		<div class="navbar z-depth-0">
+			<nav class="z-depth-0">
+				<div class="nav-wrapper z-depth-0" >
 					<a href="{{ url('/') }}" class="brand-logo">Anon-Event</a>
 					<a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
 					<ul class="right hide-on-med-and-down">
@@ -169,7 +167,7 @@
 						      <li><a class="dropdown-button" href="#!" data-activates="dropdown1">{{ Auth::user()->firstname }}<i class="material-icons right">arrow_drop_down</i></a></li>
 						@endif
 					</ul>
-					<ul class="side-nav" id="mobile-demo">
+					<ul class="side-nav z-depth-0" id="mobile-demo">
 						<li><a href="{{ url('/') }}">Home</a></li>
 						@if (Auth::guest())
 							<li><a href="{{ url('/auth/login') }}">Login</a></li>
