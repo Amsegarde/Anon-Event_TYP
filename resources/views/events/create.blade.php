@@ -188,7 +188,7 @@
         	alert("You may only add " + counter + " inputs");
 		}
      	else {
-        	var newdiv = document.createElement('div');
+     		        	var newdiv = document.createElement('div');
         	newdiv.setAttribute('id','itinItem'+counter);
        		//counter++;
         	newdiv.innerHTML =
@@ -198,11 +198,11 @@
 						
 						"<div class='input-field col s12'>"+
 						"<label for='item["+(itemElement+1)+"]'>Description</label>"+
-						"<input type='text' name='item["+(itemElement+1)+"]'></div>"+
-						
+						"<textarea id='bio' name='item["+(itemElement+1)+"]' class='materialize-textarea'length='500'></textarea></div>"
+
 						"<div class='input-field col s12'>"+
 						"<label for='item["+(itemElement+2)+"]'>Date</label>"+
-						"<div class='input-field col s6'><input type='date' class='start_datepicker' name='item["+(itemElement+2)+"]' placeholder='Date'></div>"+
+						"<div class='input-field col s6'><input type='date' class='start_datepicker' name='item["+(itemElement+2)+"]' placeholder='Date'></div></div>"+
 
 						"<div class='input-field col s6'>"+
 						"<label for='item["+(itemElement+3)+"]'>Cost(optional)</label>"+
@@ -213,13 +213,22 @@
 						"<input type='number' name='item["+(itemElement+4)+"]'></div>"+
 
 						"<div class='input-field col s6'>"+
-						"<input type='checkbox' id='checkbox' name='item["+(itemElement+5)+"]' value='true'><label for='checkbox'>Pre-booked?</label></div>"+
+						"<input type='checkbox' id='checkbox"+(itemElement+5)+"' name='item["+(itemElement+5)+"]' value='true'><label for='checkbox"+(itemElement+5)+"'>Pre-booked?</label></div>"+
 
 						"<div class='input-field col s6'>"+
 						"<input type='button' class='btn' value='Remove Itinerary Item' onClick='removeInput(itinItem"+counter+");'></div>";
 			counter++;
 			itemElement+=6;
-        	document.getElementById(divName).appendChild(newdiv);      
+        	document.getElementById(divName).appendChild(newdiv);     
+        	$('select').material_select();
+
+			// Datepicker working - uses pickadate.js
+			$('.start_datepicker').pickadate({
+				selectMonths: false, // Creates a dropdown to control month
+				selectYears: 15, // Creates a dropdown of 15 years to control year
+				min: true
+			});
+ 
     	}
  
 	}

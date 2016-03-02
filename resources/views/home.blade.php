@@ -27,7 +27,7 @@
         </div>
       </li>
       <li>
-        <img class="responsive-img" src="http://cache4.asset-cache.net/gc/130123351-happy-senior-couple-having-fun-on-summer-gettyimages.jpg?v=1&c=IWSAsset&k=2&d=wZgCAFg7ItguLNUS0ykbpK%2FKp%2FO1RSqZIThNA6604av7IaCx7sQ%2BfObxILWCibU7S"> <!-- random image -->
+        <img class="responsive-img" src="https://i.ytimg.com/vi/M9gFRXw5-kI/maxresdefault.jpg"> <!-- random image -->
         <div class="caption center-align">
           <h3>Sell Your Own Tickets</h3>
           <h5 class="light grey-text text-lighten-3">Sell and manage tickets directly on the site</h5>
