@@ -44,7 +44,13 @@ class OrganisationController extends Controller {
 	 */
 	public function create()
 	{
-		return view('organisation.create');
+		$id = Auth::id();
+		if($id == null){
+			return redirect('/auth/register')->with('message', 
+				'You must have an account to create an organisation!');
+		}else{
+			return view('organisation.create');
+		}
 	}
 
 	/**

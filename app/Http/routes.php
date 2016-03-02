@@ -12,7 +12,8 @@
 */
 
 //Route::get('home','HomePageController@test');
-Route::get('about', 'AboutPageController@index');
+Route::get('about', 'AboutController@index');
+Route::get('about/contact', 'AboutController@create');
 Route::get('/', 'HomePageController@index');
 
 Route::post('media', 'EventController@media');

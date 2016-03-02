@@ -149,16 +149,20 @@
 								</tr>
 
 							</table>
-							<p>Put all the info regarding votes on location etc here</p>
 							<table>
-								<tr><th>Location Suggestions</th><th>Votes</th></tr>
-							@foreach($locationSuggs as $sug)
-								<tr><td>{{$sug->location}}</td><td>{{$sug->votes}}</td></tr>
-							@endforeach
-								<tr><th>Date Suggestions</th><th>Votes</th></tr>
-							@foreach($dateSuggs as $dsug)
-								<tr><td>{{$dsug->start_date}} - {{$dsug->end_date}}</td><td>{{$dsug->votes}}</td></tr>
-							@endforeach
+							@if($locationSuggs != null)
+								
+									<tr><th>Location Suggestions</th><th>Votes</th></tr>
+								@foreach($locationSuggs as $sug)
+									<tr><td>{{$sug->location}}</td><td>{{$sug->votes}}</td></tr>
+								@endforeach
+							@endif
+								@if($dateSuggs != null)
+									<tr><th>Date Suggestions</th><th>Votes</th></tr>
+								@foreach($dateSuggs as $dsug)
+									<tr><td>{{$dsug->start_date}} - {{$dsug->end_date}}</td><td>{{$dsug->votes}}</td></tr>
+								@endforeach
+							@endif
 							</table>
 			
 						</div>
@@ -249,8 +253,6 @@
 													array('required')) !!}
 									</div>
 
-									<p>Display tickets and edit ability and itinerary stuff</p>
-										
 										<!-- Submit Button -->
 									<div class="input-field col s12">
 										<!-- {!! Form::submit('Update Event!', array('class'=>'btn indigo lighten-1')) !!} -->
@@ -362,8 +364,6 @@
 												<div class="input-field col s4">
 										        	<input readonly name="cost[]" value="{!! $itinArray->cost !!}" id="disabled" type="text">
 										        </div>
-										        <?php echo '<br/>' ?>
-										        <?php echo $itinArray->id?>
 										        {!! form::hidden('itinerary_id[]', $itinArray->id) !!}
 										        <div class='input-field col s4'>
 													{!! Form::select('amount[]', [
