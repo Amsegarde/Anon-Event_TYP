@@ -30,7 +30,7 @@
 					</div>
 
 					<div class="input-field col s12">
-						{!! Form::submit('Search', array('class'=>'btn indigo lighten-1')) !!}
+						{!! Form::submit('Search', array('class'=>'btn')) !!}
 					</div>
 
 				{!! Form::close() !!}
