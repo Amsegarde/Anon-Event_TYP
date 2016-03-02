@@ -45,13 +45,10 @@
 			nav {
 				background: none;
 				position: relative;
+				z-index: 1;
 			}
 			nav li a {
 				color: gray;
-			}
-
-			.brand-logo {
-				color: gray !important;
 			}
 
 			.parallax {
@@ -112,14 +109,27 @@
 				display: flex;
 				min-height: 100vh;
 				flex-direction: column;
+				background: #e8eddf !important;
+			}
+
+			footer {
+				background: #333533 !important;
 			}
 
 			main {
 				flex: 1 0 auto;
 			}
 
-			a #modal-trigger {
+			.btn {
+				background: #f5cb5c !important;
+				color: #242423 ;
+			}
 
+			.title {
+				color: #333533 !important;
+			}
+			ul li a {
+				color: #f5cb5c !important;
 			}
 		</style>
 
@@ -130,7 +140,7 @@
 	
 	<header>
 		<!-- Dropdown Structure -->
-		<ul id="dropdown1" class="dropdown-content">
+		<ul id="dropdown1" class="dropdown-content" style="min-width: 200px;">
 			<li><a href="{{ url('/tickets') }}">Tickets</a></li>
 			<li><a href="{{ url('/events') }}">Saved/Favourited</a></li>
 			<li class="divider"></li>
@@ -150,7 +160,7 @@
 		<div class="navbar z-depth-0">
 			<nav class="z-depth-0">
 				<div class="nav-wrapper z-depth-0" >
-					<a href="{{ url('/') }}" class="brand-logo">Anon-Event</a>
+					<a href="{{ url('/') }}" class="brand-logo"><img src="{{ asset('/images/logo.jpg') }}" style="width:150px; height:80px;"></a>
 					<a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
 					<ul class="right hide-on-med-and-down">
 						<li><a href="{{ url('/') }}">Home</a></li>
@@ -164,7 +174,7 @@
 							<li><a href="{{ url('events/create') }}">Create Event</a></li>
 							<li><a href="{{ url('organisation/create') }}">Create Organisation</a></li>
 							<!-- Dropdown Trigger -->
-						      <li><a class="dropdown-button" href="#!" data-activates="dropdown1">{{ Auth::user()->firstname }}<i class="material-icons right">arrow_drop_down</i></a></li>
+						      <li><a class="dropdown-button" href="#!" data-activates="dropdown1" style="min-width: 200px;">{{ Auth::user()->firstname }}<i class="material-icons right">arrow_drop_down</i></a></li>
 						@endif
 					</ul>
 					<ul class="side-nav z-depth-0" id="mobile-demo">
@@ -272,30 +282,11 @@
 			</div>
 		</main>
 
-		<footer class="page-footer blue-grey">
-			<!-- <div class="container">
-				<div class="row">
-					<div class="col s6">
-						<h5 class = "white-text">Events</h5>
-						<ul>
-							<li><a class="grey-text text-lighten-3" href="{{ url('events/create') }}">Create Event</a></li>
-							<li><a class="grey-text text-lighten-3" href="{{ url('events') }}">Browse Events</a></li>
-							<li><a class="grey-text text-lighten-3" href="{{ url('events/past') }}">Browse Past Events</a></li>
-						</ul>
-					</div>
-					<div class="col s6">
-						<h5 class="white-text">Links</h5>
-						<ul>
-							<li><a class="grey-text text-lighten-3" href="about">About</a></li>
-							<li><a class="grey-text text-lighten-3" href="contact">Contact Us</a></li>
-						</ul>
-					</div>
-				</div>
-			</div> -->
+		<footer class="page-footer">
 			<div class="footer-copyright">
 				<div class="container">
 					© 2016 Copyright Anon-Event
-					<a class="grey-text text-lighten-4 right" href="#!"></a>
+					<a class="right" href="#!"></a>
 				</div>
 			</div>
 		</footer>
