@@ -45,6 +45,7 @@
 			nav {
 				background: none;
 				position: relative;
+				z-index: 1;
 			}
 			nav li a {
 				color: gray;
@@ -65,11 +66,11 @@
 
 			.parallax img {
 				display: inherit !important;
-				-webkit-filter: grayscale(35%);
-                -moz-filter: grayscale(35%);
-                -o-filter: grayscale(35%);
-                -ms-filter: grayscale(35%);
-                filter: grayscale(35%);
+				-webkit-filter: grayscale(60%);
+                -moz-filter: grayscale(60%);
+                -o-filter: grayscale(60%);
+                -ms-filter: grayscale(60%);
+                filter: grayscale(60%);
 			}
 
 			#event_blank {
@@ -147,9 +148,9 @@
 		</ul>
 
 
-		<div class="navbar z-depth-0">
+		<div class="navbar">
 			<nav class="z-depth-0">
-				<div class="nav-wrapper z-depth-0" >
+				<div class="nav-wrapper" >
 					<a href="{{ url('/') }}" class="brand-logo">Anon-Event</a>
 					<a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
 					<ul class="right hide-on-med-and-down">
@@ -167,7 +168,7 @@
 						      <li><a class="dropdown-button" href="#!" data-activates="dropdown1">{{ Auth::user()->firstname }}<i class="material-icons right">arrow_drop_down</i></a></li>
 						@endif
 					</ul>
-					<ul class="side-nav z-depth-0" id="mobile-demo">
+					<ul class="side-nav" id="mobile-demo">
 						<li><a href="{{ url('/') }}">Home</a></li>
 						@if (Auth::guest())
 							<li><a href="{{ url('/auth/login') }}">Login</a></li>
