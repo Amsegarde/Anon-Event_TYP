@@ -52,7 +52,7 @@
 				</div>
 
 				<div class="input-field col s12">
-					{!! Form::submit('Register', ['class'=>'btn indigo lighten-1']) !!}
+					{!! Form::submit('Register', ['class'=>'btn']) !!}
 				</div>
 			</div>
 		{!! Form:: close() !!}
