@@ -45,12 +45,7 @@ class AboutController extends Controller {
 	 */
 	public function index()
 	{
-
-		return view('welcome');
-
-		//return "hello";
 		return view('about');
-
 	}
 
 }

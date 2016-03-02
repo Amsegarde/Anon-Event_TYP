@@ -1,19 +1,26 @@
 @extends('app')
 
 @section('content')
-	<div class="row">
+	
+		@if (Auth::guest())
+			<p>You must be logged in, in order to create an event</p>
+			<p><a href="{{ url('/auth/login') }}">Log in</a> or <a href="{{ url('/auth/register') }}">Register</a></p>
+		@elseif($loggedIn && !$hasOrg)
+			<p>You must have an organisation, in order to create an event</p>
+			<p><a href="{{ url('/organistaion/create') }}">Create Organisaion</a>
+		@else
+		<div class="row">
 		<h1>Create a New Event</h1>
 		<ul>
 			@foreach($errors->all() as $error)
 				<li>{{ $error }}</li>
 			@endforeach
 		</ul>
-
-		{!! Form::open(array('route' => 'create_store', 'class' => 'form', 'files'=>true)) !!}
-			<div class="row">
-				<!-- Select Organisation -->
-				<h5 class="title col s12">Select an Organisation</h5>
-				<div class="divider col s12"></div>
+			{!! Form::open(array('route' => 'create_store', 'class' => 'form', 'files'=>true)) !!}
+				<div class="row">
+					<!-- Select Organisation -->
+					<h5 class="title col s12">Select an Organisation</h5>
+					<div class="divider col s12"></div>
 
 				<div class="col s12">
 					<!-- Modal Trigger -->
@@ -123,7 +130,9 @@
 						<input type="button" class="btn col s8 offset-s2 amber darken-2"value="Add Ticket" onClick="addTicket('dynamic-tickets');">
 					</div>
 
-
+					<div class="form-group">
+					    {!! Form::label('Select your tickets') !!}
+					</div>
 						<!-- Itinery Items -->
 					<h5 class="title col s12">Optional Itinerary</h5>
 					<div class="divider col s12"></div>

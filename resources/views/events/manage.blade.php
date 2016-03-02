@@ -19,7 +19,9 @@
 					</div>
 					<div class="card-action">
 						<a href="{{ url('/events/'.$event->id) }}">Dashboard</a>
+						<a href="{{ url('/events/'. $event->id . '/delete') }}">Delete Event</a>
 					</div>
+
 				</div>
 			</a>
 		@endforeach

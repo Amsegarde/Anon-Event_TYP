@@ -12,7 +12,8 @@
 */
 
 //Route::get('home','HomePageController@test');
-Route::get('about', 'AboutPageController@index');
+Route::get('about', 'AboutController@index');
+Route::get('about/contact', 'AboutController@create');
 Route::get('/', 'HomePageController@index');
 
 Route::post('media', 'EventController@media');
@@ -34,6 +35,9 @@ Route::post('events/{id}/ticket/confirm', 'TicketController@confirmPage');
 Route::post('events/{id}/ticket/confirm/order', ['as' => 'order-post', 'uses' => 'TicketController@postOrder']);
 
 Route::get('events/{id}/ticket', 'TicketController@show');
+Route::get('events/{id}/delete', 'EventController@delete');
+Route::delete('events/{id}/delete/confirm', [
+	'as' => 'cancel_event', 'uses' => 'EventController@destroy']);
 
 
 Route::get('events/{id}','EventController@show');

@@ -16,6 +16,13 @@
 			</div>
 		@endif
 
+		<div class="row">
+			<p><?php 
+				echo Session::get('message');
+				?>
+			</p>
+		</div>
+
 		{!! Form::open(array('url'=>'/auth/register','method'=>'POST', 'class'=>'col s12')) !!}
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">
 			<div class="row">
@@ -24,11 +31,6 @@
 					{!! Form::text('firstname', null) !!}
 				</div>
 				
-				<div class="input-field col s6">
-					{!! Form::label('lastname', 'Lastname', ["class"=>"validate"]) !!}
-					{!! Form::text('lastname', null) !!}
-				</div>
-
 				<div class="input-field col s12">
 					{!! Form::label('email', 'E-mail Address', ["class"=>"validate"]) !!}
 					{!! Form::email('email', null) !!}
@@ -44,17 +46,15 @@
 					{!! Form::password('password_confirmation', null) !!}
 				</div>
 
-
-
-
-
-    
-
 				<div class="input-field col s12">
 					{!! Form::submit('Register', ['class'=>'btn indigo lighten-1']) !!}
 				</div>
 			</div>
 		{!! Form:: close() !!}
+
+		<div class="row">
+			<p>Already have an account? <a href="{{ url('/auth/login') }}">Login Here!</a></p>
+		</div>
 	</div>
 
 	

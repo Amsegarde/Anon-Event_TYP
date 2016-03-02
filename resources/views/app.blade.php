@@ -45,14 +45,15 @@
 			nav {
 				background: none;
 				position: relative;
-				z-index: 1;
+				z-index: 0;
+
 			}
 			nav li a {
-				color: black;
+				color: gray;
 			}
 
 			.brand-logo {
-				color: black !important;
+				color: gray !important;
 			}
 
 			.parallax {
@@ -66,6 +67,11 @@
 
 			.parallax img {
 				display: inherit !important;
+				-webkit-filter: grayscale(35%);
+                -moz-filter: grayscale(35%);
+                -o-filter: grayscale(35%);
+                -ms-filter: grayscale(35%);
+                filter: grayscale(35%);
 			}
 
 			#event_blank {
@@ -299,7 +305,11 @@
 	<script>
 		$(document).ready(function() {
 			$('select').material_select();
+<<<<<<< HEAD
 			$('.modal-trigger').leanModal();
+=======
+			$('.slider').slider({indicators: false, height: 600});
+>>>>>>> 72844a56eed4ceaf37b47e151388abade5e7e6b2
 		});
 	</script>
 

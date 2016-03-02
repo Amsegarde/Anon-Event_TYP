@@ -2,65 +2,67 @@
 
 @section('content')
 	<div class="row">
-		@if (Auth::guest())
-			<p>You must have an account in order to get tickets.</p>
-			<p><a href="{{ url('/auth/login') }}">Log in</a> or <a href="{{ url('/auth/register') }}">Register</a></p>
-		@else
-			{!! Form::open(array('route' => 'store_tickets', 'class' => 'form')) !!}
-				{!! Form::hidden('eventID', $event->id) !!}
-				{!! Form::hidden('request', $request) !!}
-				{!! Form::hidden('request', $tickets) !!}
-				{!!	Form::hidden('totalQuantity', $totalQuantity) !!}
-				{!!	Form::hidden('totalPrice', $totalPrice) !!}
+		<div class="col-md-10 col-md-offset-1">
+			<div class="panel panel-default">
+				<div class="panel-heading"></div>
 
-				<h2>{{ $event->name }}</h2>
-				<p>Date: {{ $event->start_date }}</p>
-				<table>
-					<tr>
-						<th>Type</th><th>Price</th><th>Quantity</th><th>Subtotal</th>
-					</tr>
+				<div class="panel-body">
+					@if (Auth::guest())
+						<p>You must have an account in order to get tickets.</p>
+						<p><a href="{{ url('/auth/login') }}">Log in</a> or <a href="{{ url('/auth/register') }}">Register</a></p>
+					@else
 
-					@for ($i = 0; $i < count($totals); $i++)
-						@if ($quantity[$i] > 0)
+						@if ($totalQuantity > $event->avail_tickets)
+							<h4>Sorry, that amount of tickets is not available</h4>
+							<p>Tickets Remaining: {{ $event->avail_tickets }}</p>
+							<p>You Selected: {{ $totalQuantity }}</p>
+							<a href="{{ url('/events/'.$event->id) }}">Return</a>
 
-							{!!	Form::hidden('type[]', $type[$i]) !!}
-							{!!	Form::hidden('price[]', $price[$i]) !!}
-							{!!	Form::hidden('quantity[]', $quantity[$i]) !!}
+						@elseif ($totalQuantity === 0)
+							<h4>Sorry you have not selected any tickets</h4>
+							<a href="{{ url('/events/'.$event->id) }}">Return</a>
+							
+						@else
+							{!! Form::open(array('route' => 'store_tickets', 'class' => 'form')) !!}
+								{!! Form::hidden('eventID', $event->id) !!}
+								{!! Form::hidden('request', $request) !!}
+								{!! Form::hidden('request', $tickets) !!}
+								{!!	Form::hidden('totalQuantity', $totalQuantity) !!}
+								{!!	Form::hidden('totalPrice', $totalPrice) !!}
 
-							<tr>
-								<td>{{ $type[$i] }}</td>
-								<td>{{ $price[$i] }}</td>
-								<td>{{ $quantity[$i] }}</td>
-								<td>{{ $totals[$i] }}</td>
-							</tr>
-						@endif
-					@endfor
+								<h2>{{ $event->name }}</h2>
+								<p>Date: {{ $event->start_date }}</p>
 
-					@if(count($name) > 0)
-						@for ($i = 0; $i < count($name); $i++)
-							@if ($amount[$i] > 0)
 
-								{!!	Form::hidden('name[]', $name[$i]) !!}
-								{!!	Form::hidden('cost[]', $cost[$i]) !!}
-								{!!	Form::hidden('amount[]', $amount[$i]) !!}
+								<table>
+									<tr>
+										<th>Type</th><th>Price</th><th>Quantity</th><th>Subtotal</th>
+									</tr>
 
-								<tr>
-									<td>{{ $name[$i] }}</td>
-									<td>{{ $cost[$i] }}</td>
-									<td>{{ $amount[$i] }}</td>
-									<td>{{ $itinTotals[$i] }}</td>
-								</tr>
-							@endif
-						@endfor
-					@endif
+									@for ($i = 0; $i < count($totals); $i++)
+										@if ($quantity[$i] > 0)
 
-					<tr><td></td><td>Total:</td><td>{{ $totalQuantity }}</td><td>{{ $totalPrice }}</td></tr>
-				</table>
+											{!!	Form::hidden('type[]', $type[$i]) !!}
+											{!!	Form::hidden('price[]', $price[$i]) !!}
+											{!!	Form::hidden('quantity[]', $quantity[$i]) !!}
+
+											<tr>
+												<td>{{ $type[$i] }}</td>
+												<td>{{ $price[$i] }}</td>
+												<td>{{ $quantity[$i] }}</td>
+												<td>{{ $totals[$i] }}</td>
+
+											</tr>
+										@endif
+									@endfor
+
+								<tr><td></td><td>Total:</td><td>{{ $totalQuantity }}</td><td>{{ $totalPrice }}</td></tr>
+							</table>
 						
-				@if($totalPrice == 0)			
-					{!! Form::submit('Confirm Free', array('class'=>'btn btn-primary')) !!}
-					{!! Form::close() !!}
-				@else
+							@if($totalPrice == 0)			
+								{!! Form::submit('Confirm Free', array('class'=>'btn btn-primary')) !!}
+								{!! Form::close() !!}
+							@else
 					{!! Form::close() !!}
 
 				<div class="row">
@@ -175,6 +177,8 @@
 						@endif
 					</div>
 					{!! Form::close() !!}
+>>>>>>> 2c11c06e92e82edb35e4b790725c12f35dd0e44e
+
 				</div>
 			@endif
 		@endif

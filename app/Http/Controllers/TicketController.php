@@ -20,6 +20,8 @@ use App\Event;
 use App\UserPurchase;
 use App\Purchase;
 use Mail;
+use App\EventContain;
+use App\Itinerary;
 
 class TicketController extends Controller {
 
@@ -82,6 +84,8 @@ class TicketController extends Controller {
 		$quantity = $request->quantity;
 		$totalQuantity = $request->totalQuantity;
 		$mailTickets = array();
+		$event = $request->eventID;
+		$itinID = $request->itinIDs;
 
 		$size = count($type);
 		for($i = 0; $i< $size; $i++) { 
@@ -128,13 +132,13 @@ class TicketController extends Controller {
 		$event = Event::find($request->eventID);
 		//$quantity = $request->quantity + 1;
 		$type = $request->type;
+		$itinIDs = $request->itinerary_id;
 		$price = $request->price;
 		$quantity = $request->quantity;
 		$name = $request->name;
 		$cost = $request->cost;
 		$amount = $request->amount;
 		$itinArrays = $request->itinArrays;
-
 		$tickets = TicketType::where('event_id', '=', $event->id)->get();
 
 		$totals = array();
@@ -148,11 +152,10 @@ class TicketController extends Controller {
 			$sum = $price[$i] * $quantity[$i];
 			$itinSum = $cost[$i] * $amount[$i];
 			$totalPrice += $sum + $itinSum;
-			$totalQuantity += $quantity[$i];
+			$totalQuantity += $quantity[$i] + $amount[$i];
 			array_push($totals, $sum);
 			array_push($itinTotals, $itinSum);
 		};
-
 		return view('events.confirmation', array(
 									'request' 		=> $request, 
 									'event' 		=> $event,
@@ -167,7 +170,7 @@ class TicketController extends Controller {
 		 							'cost'			=> $cost,
 		 							'amount'		=> $amount,
 		 							'itinTotals'	=> $itinTotals,
-		 							'itinArrays'	=> $itinArrays
+		 							'itinIDs'		=> $itinIDs
 		 							));	
 	}
 
@@ -180,6 +183,15 @@ class TicketController extends Controller {
 		$price = $request->price;
 		$quantity = $request->quantity;
 		$totalQuantity = $request->totalQuantity;
+		$event = $request->eventID;
+		$itinID = $request->itinIDs;
+		$amount = $request->amount;
+
+		for($i = 0; $i < count($itinID); $i++){
+			$item = Itinerary::where('id', '=', $itinID[$i])->first();
+			$item->capacity = $item->capacity-$amount[$i];
+			$item->save();
+		}
 
 		$size = count($type);
 		for($i = 0; $i< $size; $i++) { 
@@ -191,8 +203,6 @@ class TicketController extends Controller {
 						
 			]);	
 		}	
-
-		
 		
 		$update = DB::table('events')
 						->where('id', '=', $request->eventID)
@@ -219,7 +229,7 @@ class TicketController extends Controller {
         $last_name = $request->input('last_name');
         $email = $request->input('email');
         $temp = UserPurchase::where('email', $email)->first();//->value('email');
-        $emailCheck = $temp->email;
+        //$emailCheck = $temp->email;
         \Stripe\Stripe::setApiKey(env('STRIPE_SK'));
 
         // If the email doesn't exist in the database create new customer and user record
@@ -270,15 +280,17 @@ class TicketController extends Controller {
 
         $ticket = new Ticket;
         // Create purchase record in the database
-        Purchase::create([
-            'user_id' => $user->id,
-            'ticket_id' => $request->id,
-            'ticket_type' => $request->type,
-            'price' => $amount/100,
-            'quantity' => $request->totalQuantity,
-            'stripe_transaction_id' => $charge->id,
-        ]);
-        
+		for($i = 0; $i < count($request->id); $i++){      
+		    Purchase::create([
+		        'user_id' => $user->id,
+		        'ticket_id' => $request->id[$i],
+		        'ticket_type' => $request->type[$i],
+		        'price' => $amount[$i]/100,
+		        'quantity' => $request->totalQuantity,
+		        'stripe_transaction_id' => $charge->id,
+		    ]);
+		}
+
         return redirect()->route('display')
             ->with('successful', 'Your purchase was successful!');
     }
@@ -337,6 +349,13 @@ class TicketController extends Controller {
 	 */
 	public function destroy($id)
 	{
+		$ticket = Ticket::findOrFail($id);
+		$quantity = $ticket->quantity;
+
+		$update = DB::table('events')
+							->where('id', '=', $ticket->event_id)
+							->increment('avail_tickets', $quantity);
+
 		DB::table('tickets')->where('id', '=', $id)->delete();
 		return redirect('tickets');
 	}

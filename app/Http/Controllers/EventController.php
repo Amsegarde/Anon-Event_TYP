@@ -16,6 +16,7 @@ use App\Itinerary;
 use App\EventContain;
 use App\TicketType;
 use App\EventTicket;
+use App\Engage;
 use App\LocationSuggestion;
 use App\Ticket;
 use App\DateSuggestion;
@@ -59,6 +60,11 @@ class EventController extends Controller {
 	 */
 	public function create(){
 		$id = Auth::id();
+		$loggedIn = true;
+		$hasOrg = true;
+		if($id == null){
+			$loggedIn = false;
+		}
 		$organisations = DB::table('organisations')
 								->whereIn('id', function($query) use ($id) {
 										$query->select('organisation_id')
@@ -66,8 +72,24 @@ class EventController extends Controller {
 										->where('user_id', '=', '?')
 										->setBindings([$id]);
 								})->get();
+		if($organisations == null){
+			$hasOrg = false;
+		}
 		
-		return view('events.create', compact('organisations'));
+		if($id == null){
+			return redirect('/auth/register')->with('message', 
+				'You must have an account to create an event!');
+		}
+		else if($organisations == null){
+			return redirect('organisation/create')->with('message', 
+				'You must have an organisation to create an event!');
+		}
+		else{
+			return view('events.create', compact('organisations',
+												'loggedIn',
+												'hasOrg'
+											));
+		}	
 	}
 
 	/**
@@ -358,12 +380,20 @@ class EventController extends Controller {
 				$locationSuggs = LocationSuggestion::where('event_id', '=',$e->id)->get();
 			}
 			$dateSuggs = DateSuggestion::where('event_id','=', $e->id)->get();
-
-			// Get itinerary for the events;
-			$itin = DB::table('itinerarys')
-				->join('event_contains', 'itinerarys.id', '=', 'event_contains.itinerary_id')
-				->where('event_contains.event_id', '=', $e->id)->get();
 			
+
+			return view('events.event', compact(
+				'event', 
+				'voteOpen',
+				'organisation',
+				'isAdmin',
+				'tickets',
+				'locationSuggs',
+				'itinArrays',
+				'itinerary',
+				'dateSuggs'
+			));
+
 
 			if ($event->start_date >= Carbon::now()) { // All active events
 				return view('events.event', compact(
@@ -400,9 +430,10 @@ class EventController extends Controller {
 		$date = $request->date_vote;
 		
 		Vote::create(['event_id'=>$eventID,'user_id'=>$userID]);
-		$locVote = DB::table('location_suggestions')->where('id','=', $location)										
+		$locVote = LocationSuggestion::where('id','=', $location)										
 										->increment('votes');
-		$dateVote = DB::table('date_suggestions')->where('id','=', $date)										
+		
+		$dateVote = DateSuggestion::where('id','=', $date)										
 										->increment('votes');
 		
 		
@@ -447,6 +478,7 @@ class EventController extends Controller {
 		$event = Event::findOrFail($request->eventID);
 		$organisation = Organisation::findOrFail($request->organisationID);
 
+
 		foreach($tickets as $ticket) {
 
 			$user = User::findOrFail($ticket->user_id);
@@ -466,6 +498,64 @@ class EventController extends Controller {
 		}
 
 		return redirect('events/' . $request->eventID);
+	}
+
+
+	public function delete($id) {
+		$eventID = $id;
+		return view('events.delete', compact('eventID'));
+	}
+
+	/**
+	 * Delete an event. Removes data from all related tables.
+	 *
+	 *
+	 */
+	public function destroy(Request $request) {
+		$event = Event::findOrFail($request->eventID);
+		
+		$delete_organise = Organise::where('event_id', '=', $request->eventID)->delete();
+	
+
+		$tickets = Ticket::where('event_id', '=', $request->eventID)->get();
+		$delete_tickets = Ticket::where('event_id', '=', $request->eventID)->delete();
+		$delete_ticketTypes = TicketType::where('event_id', '=', $request->eventID)->delete();
+		
+
+		$itinerarys = EventContain::where('event_id', '=', $request->eventID)->get();
+		$delete_itinerarys = EventContain::where('event_id', '=', $request->eventID)->delete();
+
+		if (count($itinerarys) > 0) {
+			foreach ($itinerarys as $itinerary) {
+				$delete_itinerary = Itinerary::where('id', '=', $itinerary->itinerary_id)->delete();
+				$delete_prebooks = Prebook::where('id', '=', $itinerary->itinerary_id)->delete();
+			}
+		}
+		
+
+		$delete_engages = Engage::where('event_id', '=', $request->eventID)->delete();
+
+		foreach ($tickets as $ticket) {
+			$user = User::findOrFail($ticket->user_id);
+			$prevUser = null;
+
+			if ($prevUser == null || $user->id != $prevUser->id) {
+				Mail::send('emails.event_cancelled',
+			       array(
+			            'name' => $event->name,
+			        ), function($message) use ($user, $event)  {
+			       			
+		       			$message->to($user->email, $user->firstname)
+		       				->from('anonevent.cs@gmail.com')
+		       				->subject('Anon-Event | ' . $event->name . ' Cancelled!');
+			    });
+			    $prevUser = $user;
+			}
+				
+		}
+
+		$delete_event = Event::where('id', '=', $request->eventID)->delete();
+		return redirect('events/manage');
 	}
 
 	public function media(Request $request) {

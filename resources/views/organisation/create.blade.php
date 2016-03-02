@@ -3,10 +3,12 @@
 @section('content')
 
 <div class="row">
-	@if (Auth::guest())
-		<p>You must be logged in, in order to create an organisation</p>
-		<p><a href="{{ url('/auth/login') }}">Log in</a> or <a href="{{ url('/auth/register') }}">Register</a></p>
-	@else
+		<div class="row">
+			<p><?php 
+				echo Session::get('message');
+				?>
+			</p>
+		</div>
 
 		@if ($errors->any())
 			<ul class='alert alert-danger'>
@@ -51,7 +53,6 @@
 				</div>
 			</div>
 		{!! Form::close() !!}
-	@endif
 </div>
 
 <script>
