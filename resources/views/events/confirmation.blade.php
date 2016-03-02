@@ -56,6 +56,7 @@
 										@endif
 									@endfor
 
+<<<<<<< HEAD
 								<tr><td></td><td>Total:</td><td>{{ $totalQuantity }}</td><td>{{ $totalPrice }}</td></tr>
 							</table>
 						
@@ -172,9 +173,6 @@
 						@endif
 					</div>
 					{!! Form::close() !!}
-					@endif
-				</div>
-			@endif
-		@endif
-	</div>
+				@endif
+		</div>
 @endsection

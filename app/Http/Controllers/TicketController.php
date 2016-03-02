@@ -50,7 +50,8 @@ class TicketController extends Controller {
 							'events.location',
 							'tickets.type',
 							'tickets.quantity',
-							'tickets.id')
+							'tickets.id',
+							'tickets.order_number')
 						->where('users.id', '=', '?')
 						->setBindings([$id])								
 					    ->get();
@@ -88,13 +89,22 @@ class TicketController extends Controller {
 		$event = $request->eventID;
 		$itinID = $request->itinIDs;
 
+		$OrderNumber = mt_rand(100000000, 999999999);
+		$num = Ticket::where('order_number', '=', $OrderNumber)->get();
+
+		while (count($num) > 0) {
+			$OrderNumber = mt_rand(100000000, 999999999);
+			$num = Ticket::where('order_number', '=', $OrderNumber)->get();
+		} 
+
 		$size = count($type);
 		for($i = 0; $i< $size; $i++) { 
 			$newTicket = Ticket::create([
 						'user_id' 	=> $userID,
 						'event_id' 	=> $request->eventID,
 						'type'		=> $type[$i],
-						'quantity'	=> $quantity[$i]
+						'quantity'	=> $quantity[$i],
+						'order_number' => $OrderNumber
 						
 			]);
 		
@@ -103,6 +113,8 @@ class TicketController extends Controller {
 							->decrement('avail_tickets', $totalQuantity);
 			array_push($mailTickets, $newTicket);
 		}
+
+
 
 		$event = Event::findOrFail($request->eventID);
 		$organises = Organise::findOrFail($event->id);

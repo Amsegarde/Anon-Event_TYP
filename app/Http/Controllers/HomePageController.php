@@ -3,6 +3,8 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Event;
+use App\User; 	
+use Auth;
 
 use Illuminate\Http\Request;
 

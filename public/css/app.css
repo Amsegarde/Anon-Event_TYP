@@ -6248,8 +6248,8 @@ table.ticket-table td {
     padding: 15px;
 }
 
-/*
-  TICKET PAGE CANCEL ORDER BUTTON CSS
-*/
+.badges {
+  float: left;
+}
 
 

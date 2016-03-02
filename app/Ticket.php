@@ -8,7 +8,8 @@ class Ticket extends Model {
 				'user_id',
 				'event_id',
 				'type',
-				'quantity'
+				'quantity',
+				'order_number'
 	];
 
 }

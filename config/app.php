@@ -201,7 +201,7 @@ return [
 		'Validator' => 'Illuminate\Support\Facades\Validator',
 		'View'      => 'Illuminate\Support\Facades\View',
 		'QrCode' 	=> 'SimpleSoftwareIO\QrCode\Facades\QrCode',
-
+		
 		'MaterializeCSS' => 'Skydiver\LaravelMaterializeCSS\MaterializeCSS',
 
 	],

@@ -14,7 +14,7 @@
 		<ul>
 			@foreach($errors->all() as $error)
 				<li>{{ $error }}</li>
-			@endforeach
+			<@endforeach>
 		</ul>
 			{!! Form::open(array('route' => 'create_store', 'class' => 'form', 'files'=>true)) !!}
 				<div class="row">
@@ -36,9 +36,25 @@
 					</select>		
 				</div>
 
+<<<<<<< HEAD
+				<!-- Event Information -->
+				<h5 class="title col s12">Event Information</h5>
+				<div class="divider col s12"></div>
+
+				<div class="input-field col s12">
+					{!! Form::label('Event Name') !!}
+					{!! Form::text('name', 
+									null, 
+									array('required')) !!}
+				</div>
+				
+					<div class="input-field col s12">
+						<textarea name="bio" id="bio" class="materialize-textarea" length="2000"></textarea>
+=======
 				@if (count($organisations) == 0)
 					<div class="col s12">
 						<p>You can only create an event if you have first created an organisation</p>
+>>>>>>> f637d0ff3d7853f511e1ca4cf0ca724979c231c3
 					</div>
 				@else 
 
@@ -147,7 +163,8 @@
 					</div>
 						
 						<!-- Submit Button -->
-					<div class="input-field col s12">
+					<div class=
+					"input-field col s12">
 						{!! Form::submit('Create Event!', array('class'=>'btn col s4 offset-s4 amber darken-4')) !!}
 					</div>
 				</div>
@@ -169,7 +186,37 @@
 				</ul>
 			@endif
 
-			
+
+			<!-- This is the create organisation form -->
+			{!! Form::open(array('route' => 'create_org','method'=>'POST', 'files'=>true, 'class'=>'col s12')) !!}
+				<div class="row">
+					<!-- Bio Form input -->
+					<div class="input-field col s12">
+						{!! Form::label('name', 'Organisation Name: ') !!}
+						{!! Form::text('name', null) !!}
+					</div>
+
+
+					<div class='input-fields col s12'>
+						{!! Form::select('scope', ['Scope','None', 'Local', 'Regional', 'National'], null) !!}
+					</div>
+
+					<div class='file-field input-field col s12'>
+						<div class="btn amber darken-2">
+							<span>Upload logo</span>
+							<input name="image" type="file">
+						</div>
+						<div class="file-path-wrapper">
+							<input class="file-path validate" type="text">
+						</div>
+					</div>
+					
+					<!-- Submit Form input -->
+					<div class='input-field col s12'>
+						{!! Form::submit('Add Organisation', ['class'=>'btn amber darken-2']) !!}
+					</div>
+				</div>
+			{!! Form::close() !!}
 		</div>
 	</div>
 

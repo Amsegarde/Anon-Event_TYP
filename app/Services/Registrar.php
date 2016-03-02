@@ -36,6 +36,10 @@ class Registrar implements RegistrarContract {
 			'email' => $data['email'],
 			'password' => bcrypt($data['password']),
 		]);
+
+        Flash::message('Thanks for signing up! Please check your email.');
 	}
+
+
 
 }

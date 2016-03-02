@@ -140,7 +140,7 @@
 			<li><a href="{{ url('/contact') }}">Contact</a></li>
 			<li class="divider"></li>
 
-			<li><a href="{{ url('/auth/logout') }}">Account Settings</a></li>
+		<li><a href="{{ url('/users/account') }}">Account Settings</a></li> 
 			<li class="divider"></li>
 			
 			<li><a href="{{ url('/auth/logout') }}">Logout</a></li>
@@ -187,7 +187,7 @@
 								<li><a href="{{ url('/contact') }}">Contact</a></li>
 								<li class="divider"></li>
 
-								<li><a href="{{ url('/auth/logout') }}">Account Settings</a></li>
+								<li><a href="{{ url('/users/account') }}">Account Settings</a></li>
 								<li class="divider"></li>
 								
 								<li><a href="{{ url('/auth/logout') }}">Logout</a></li>

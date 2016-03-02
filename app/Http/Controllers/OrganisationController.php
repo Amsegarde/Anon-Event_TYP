@@ -6,6 +6,7 @@ use App\FavouriteOrganisation;
 use Auth;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ChangeEmailRequest;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Validator;
@@ -284,5 +285,80 @@ class OrganisationController extends Controller {
 	{
 		//
 	}
+
+	/**
+	 * Get the account settings for the registered user.
+	 *
+	 * @return View
+	 */
+	public function getAccount() {
+		$id = Auth::user()->id;
+		return redirect('users/' . $id . '/account');
+	}
+
+	/**
+	 * Return view of the users account settings.
+	 *
+	 * @return View account settings
+	 */
+	public function account($id) {
+		$user = User::findOrFail($id);
+		return view('users.account', compact('user'));
+	}
+
+	/**
+	 * Update the user details of the account.
+	 *
+	 * @return Redirect to updated account page
+	 */
+	public function updateAccountDetails(Request $request) {
+		$id = $request->userID;
+
+		$fName = $request->firstname;
+		$lName = $request->lastname;
+
+		$updateDetails = User::where('id', '=', $id)
+            						->update([
+            							'firstname' => $fName,
+            							'lastname' => $lName]);
+
+		$user = User::findOrFail($id);
+        return view('users.account', compact('user'));
+	}
+
+	/**
+	 * Update the user email of account.
+	 *
+	 * @return Redirect to updated account page
+	 */
+	public function updateAccountEmail(ChangeEmailRequest $request) {
+		$id = $request->userID;
+
+		$email = $request->userEmail;
+		$password = $request->password;
+
+		if (Auth::attempt(array('email' => $email, 'password' => $password))){
+            $updateEmail = User::where('id', '=', $id)
+            						->update(['email' => $request->email]);
+            $user = User::findOrFail($id);
+            return view('users.account', compact('user'));
+        } else {
+        	return redirect('users/' . $id . '/account')
+        				->withErrors([
+							'password' => $this->getFailedLoginMessage(),
+						]);
+        }
+	}
+
+	/**
+	 * Get the failed login message.
+	 *
+	 * @return string
+	 */
+	protected function getFailedLoginMessage()
+	{
+		return 'Your password is incorrect!';
+	}
+
 
 }

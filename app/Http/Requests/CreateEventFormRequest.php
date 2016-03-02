@@ -33,7 +33,8 @@ class CreateEventFormRequest extends Request {
 		return [
 			'name' => 'required',
     		'organisation' => 'required',
-    		'bio' => 'required'
+    		'bio' => 'required',
+    		'tickets' => 'required'
 		];
 	}
 
