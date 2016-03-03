@@ -72,7 +72,7 @@
 								<div id="locationField">
 	      							<input id="autocomplete2" placeholder="Enter your address"
 	             					onFocus="geolocate()" name="location" type="text">
-	             					<input type="button" onclick="loadMap()"value="Get Directions">
+	             					<input type="button" class="btn" onclick="loadMap()"value="Get Directions">
 	   			 				</div>
 	   			 				<div id ="map"></div>
 		   			 				
@@ -94,7 +94,7 @@
 						</div>
 						{!!  Form::hidden('eventID', $event->id) !!}
 						@if($voteOpen == 1)
-							{!! Form::submit('Vote', array('class'=>'btn indigo lighten-1')) !!}
+							{!! Form::submit('Vote', array('class'=>'btn')) !!}
 						@else
 							<p>Your vote has been logged</p>
 						@endif
@@ -117,6 +117,7 @@
 						</div>
 						<div class="col s12"><h5><a href="{{ url('/auth/login') }}">Login to get tickets</a></h5></div>
 					@else 
+					<a class="btn col s6 offset-s3 modal-trigger" href="#modal1">Get Tickets</a>
 				</div>
 
 					@if ($isAdmin === true)
@@ -226,7 +227,7 @@
 									<div class="divider col s12"></div>
 
 									<div class="file-field input-field col s12">
-										<div class="btn indigo lighten-1">
+										<div class="btn">
 											<span>Upload Event Image</span>
 											<input name="image" type="file">
 										</div>				
@@ -248,7 +249,7 @@
 
 										<!-- Submit Button -->
 									<div class="input-field col s12">
-										<!-- {!! Form::submit('Update Event!', array('class'=>'btn indigo lighten-1')) !!} -->
+										<!-- {!! Form::submit('Update Event!', array('class'=>'btn')) !!} -->
 									</div>
 								</div>
 							{!! Form::close() !!}
@@ -288,7 +289,7 @@
 
 								<div class="input-field">
 								    {!! Form::submit('Send', 
-								      array('class'=>'btn btn-primary')) !!}
+								      array('class'=>'btn')) !!}
 								      <a href="{{ url('/events/'.$event->id) }}">Cancel</a>
 								</div>
 

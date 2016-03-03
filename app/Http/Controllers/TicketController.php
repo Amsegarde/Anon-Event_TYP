@@ -22,6 +22,7 @@ use App\Purchase;
 use Mail;
 use App\EventContain;
 use App\Itinerary;
+use App\User;
 
 class TicketController extends Controller {
 

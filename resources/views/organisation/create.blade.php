@@ -38,7 +38,7 @@
 				</div>
 
 				<div class='file-field input-field '>
-					<div class="btn indigo lighten-1">
+					<div class="btn">
 						<span>Upload logo</span>
 						<input name="image" type="file">
 					</div>
@@ -49,7 +49,7 @@
 				
 				<!-- Submit Form input -->
 				<div class='input-field'>
-					{!! Form::submit('Add Organisation', ['class'=>'btn indigo lighten-1']) !!}
+					{!! Form::submit('Add Organisation', ['class'=>'btn']) !!}
 				</div>
 			</div>
 		{!! Form::close() !!}

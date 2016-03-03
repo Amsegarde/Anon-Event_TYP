@@ -231,7 +231,6 @@ class EventController extends Controller {
 		$newEvent->active = $active;
 		$newEvent->location= $location;
 		$newEvent->save();
-
 		return redirect('events/'.$eventID)->with('message', 'Event Created!');
 	}
 

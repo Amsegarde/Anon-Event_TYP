@@ -14,7 +14,7 @@
 		<ul>
 			@foreach($errors->all() as $error)
 				<li>{{ $error }}</li>
-			<@endforeach>
+			@endforeach
 		</ul>
 			{!! Form::open(array('route' => 'create_store', 'class' => 'form', 'files'=>true)) !!}
 				<div class="row">
@@ -36,25 +36,9 @@
 					</select>		
 				</div>
 
-<<<<<<< HEAD
-				<!-- Event Information -->
-				<h5 class="title col s12">Event Information</h5>
-				<div class="divider col s12"></div>
-
-				<div class="input-field col s12">
-					{!! Form::label('Event Name') !!}
-					{!! Form::text('name', 
-									null, 
-									array('required')) !!}
-				</div>
-				
-					<div class="input-field col s12">
-						<textarea name="bio" id="bio" class="materialize-textarea" length="2000"></textarea>
-=======
 				@if (count($organisations) == 0)
 					<div class="col s12">
 						<p>You can only create an event if you have first created an organisation</p>
->>>>>>> f637d0ff3d7853f511e1ca4cf0ca724979c231c3
 					</div>
 				@else 
 
@@ -82,7 +66,7 @@
 							<input type="date" class="end_datepicker" name="end_date[]" placeholder="End Date">
 						</div>	
 										
-						 <input type="button" id="addDateButton" class="btn col s12 amber darken-2"value="Open Dates to Voting" onClick="toggleDatePoll(dates);">				
+						 <input type="button" id="addDateButton" class="btn col s12"value="Open Dates to Voting" onClick="toggleDatePoll(dates);">				
 
 					</div>
 
@@ -99,7 +83,7 @@
 						      				array('required', 
 						         		    'class'=>'form-control', 
 						          		    'placeholder'=>'Enter The Location Of Your Event')) !!}-->
-							<input type="button" class="btn col s12 amber darken-2"value="Open Location to Polling" onClick="togglePoll(locations);">
+							<input type="button" class="btn col s12"value="Open Location to Polling" onClick="togglePoll(locations);">
 						
 						</div>
 
@@ -121,7 +105,7 @@
 					<div class="divider col s12"></div>
 
 					<div class="file-field input-field col s12">
-						<div class="btn amber darken-2">
+						<div class="btn">
 							<span>Upload Event Image</span>
 							<input name="image" type="file">
 						</div>				
@@ -143,7 +127,7 @@
 
 					<div class="input-field col s12">
 						<table id="dynamic-tickets" class="ticket-table col s12"></table>
-						<input type="button" class="btn col s8 offset-s2 amber darken-2"value="Add Ticket" onClick="addTicket('dynamic-tickets');">
+						<input type="button" class="btn col s8 offset-s2"value="Add Ticket" onClick="addTicket('dynamic-tickets');">
 					</div>
 
 					<div class="form-group">
@@ -159,12 +143,13 @@
 						<div id="dynamicInput">
 						   <!--  Itinerary From divs will go here  -->
 						</div>	 
-						<input type="button" class="btn col s8 offset-s2 amber darken-2"value="Add Itinerary Item" onClick="addInput('dynamicInput');">
+						<input type="button" class="btn col s8 offset-s2" value="Add Itinerary Item" onClick="addInput('dynamicInput');">
 					</div>
 						
 						<!-- Submit Button -->
-					<div class="input-field col s12">
-						{!! Form::submit('Create Event!', array('class'=>'btn col s4 offset-s4 amber darken-4')) !!}
+					<div class=
+					"input-field col s12">
+						{!! Form::submit('Create Event!', array('class'=>'btn col s4 offset-s4')) !!}
 					</div>
 				</div>
 			@endif
@@ -185,8 +170,9 @@
 				</ul>
 			@endif
 
+
 			<!-- This is the create organisation form -->
-			{!! Form::open(array('route' => 'create_org','method'=>'POST', 'files'=>true, 'class'=>'col s12')) !!}
+			
 				<div class="row">
 					<!-- Bio Form input -->
 					<div class="input-field col s12">
@@ -200,7 +186,7 @@
 					</div>
 
 					<div class='file-field input-field col s12'>
-						<div class="btn amber darken-2">
+						<div class="btn">
 							<span>Upload logo</span>
 							<input name="image" type="file">
 						</div>
@@ -211,7 +197,7 @@
 					
 					<!-- Submit Form input -->
 					<div class='input-field col s12'>
-						{!! Form::submit('Add Organisation', ['class'=>'btn amber darken-2']) !!}
+						{!! Form::submit('Add Organisation', ['class'=>'btn']) !!}
 					</div>
 				</div>
 			{!! Form::close() !!}
@@ -363,15 +349,15 @@
     										+"<label for='location'>Enter Location Suggestion</label>"
          									+"<input type='text' name='location[]'>"
            									+"</div>"
-           									+"<input type='button' id='addButton' class='btn col s4 offset-s1 amber darken-4' value='Add Suggestion' onClick='addSuggestion(locations);'>"
-					 						+"<input type='button' class='btn col s4 offset-s1 amber darken-4' value='Remove Poll' onClick='togglePoll(locations);'>";
+           									+"<input type='button' id='addButton' class='btn col s4 offset-s1' value='Add Suggestion' onClick='addSuggestion(locations);'>"
+					 						+"<input type='button' class='btn col s4 offset-s2' value='Remove Poll' onClick='togglePoll(locations);'>";
     	}else{
     		locationPolled = false;
     		numOfSuggestions = 0;
     		document.getElementById('locations').innerHTML=
     										"<label for='location'>Enter Location</label>"
          									+"<input type='text' name='location[]' placeholder='Enter Location Suggestion'>"
-              								+"<input type='button' class='btn col s12 amber darken-2' value='Open to suggestions' onClick='togglePoll(locations);'>";
+              								+"<input type='button' class='btn col s12' value='Open to suggestions' onClick='togglePoll(locations);'>";
     	}
     	next_ID++;
 
@@ -383,7 +369,7 @@
     	var nextSuggestion = document.createElement('div');
     	nextSuggestion.innerHTML="<div id='locationSuggestion"+next_ID+"'>"								
          						+"<input type='text' name='location[]' class='form-control'>"
-         						+"<input type='button' class='btn col s6 offset-s3 amber darken-4'value='remove Suggestion' onClick='removeSuggestion(locationSuggestion"+next_ID+");'>"
+         						+"<input type='button' class='btn col s6 offset-s3'value='remove Suggestion' onClick='removeSuggestion(locationSuggestion"+next_ID+");'>"
            						+"</div>";         									
            	next_ID++;
     		num.insertBefore(nextSuggestion, addButton);
@@ -416,8 +402,8 @@
 											+		"<input type='date' class='end_datepicker' name='end_date[]' placeholder='End Date'>"
 											+	"</div>"	
            									+"</div>"
-           									+"<input type='button' id='addDateButton' class='btn col s4 offset-s1 amber darken-4'value='Add Date Suggestion' onClick='addDateSuggestion(dates);'>"
-					 						+"<input type='button' class='btn col s4 offset-s2 amber darken-4'value='Remove Poll' onClick='toggleDatePoll(dates);'>";
+           									+"<input type='button' id='addDateButton' class='btn col s4 offset-s1'value='Add Date Suggestion' onClick='addDateSuggestion(dates);'>"
+					 						+"<input type='button' class='btn col s4 offset-s2'value='Remove Poll' onClick='toggleDatePoll(dates);'>";
     	}else{
 			datePolled = false;
 			numDateSugg = 0;
@@ -428,7 +414,7 @@
 											+		"<input type='date' class='end_datepicker' name='end_date[]' placeholder='End Date'>"
 											+	"</div>"	
            								
-					 						+"<input type='button' class='btn btn-secondary'value='Create Poll' onClick='toggleDatePoll(dates);'>";
+					 						+"<input type='button' class='btn col s12'value='Open Date Suggestion' onClick='toggleDatePoll(dates);'>";
 			//nextDateID++;
 		}
 
@@ -458,7 +444,7 @@ $('.start_datepicker').pickadate({
 											+	"</div>"
 											+	"<div class='input-field col s6'>"
 											+		"<input type='date' class='end_datepicker' name='end_date[]' placeholder='End Date'>"
-					 						+"<input type='button' class='btn btn-secondary' value='Remove Suggestion put here by add' onClick='removeDateSuggestion(dateSuggestion"+nextDateID+");'/>";
+					 						+"<input type='button' class='btn' value='Remove Suggestion put here by add' onClick='removeDateSuggestion(dateSuggestion"+nextDateID+");'/>";
 											+	"</div>"
         nextDateID++;   									
 		num.insertBefore(nextDateSugg, addDateButton);
