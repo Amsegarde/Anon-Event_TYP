@@ -26,11 +26,7 @@
 				z-index: 1;
 			}
 			nav li a {
-				color: black;
-			}
-
-			.brand-logo {
-				color: black !important;
+				color: gray;
 			}
 
 			.parallax {
@@ -44,6 +40,11 @@
 
 			.parallax img {
 				display: inherit !important;
+				-webkit-filter: grayscale(90%);
+                -moz-filter: grayscale(90%);
+                -o-filter: grayscale(90%);
+                -ms-filter: grayscale(90%);
+                filter: grayscale(90%);
 			}
 
 			#event_blank {
@@ -72,33 +73,68 @@
 	        .check .alert {
 	            margin-top: 20px;
 	        }
+
+	        #browse_card {
+	        	width: 35%;
+	        	height: 150%;
+	        }
+
+	        #browse {
+	        	max-height:200px;
+	        }
+
+	        body {
+				display: flex;
+				min-height: 100vh;
+				flex-direction: column;
+				/*background: #e8eddf !important;*/
+			}
+
+			footer {
+				background: #333533 !important;
+			}
+
+			main {
+				flex: 1 0 auto;
+			}
+
+			.btn {
+				background: #f5cb5c !important;
+				color: #242423 ;
+			}
+
+			.title {
+				color: #333533 !important;
+			}
+			ul li a {
+				color: #f5cb5c !important;
+			}
+			.card{
+				background: #e8eddf !important;
+			}
+
+			.badges {
+				border: 1px dashed black;
+			}
+
 		</style>
 
 	</head>
 
 
-	<body>
+	<body onload="printBadges();">
+
+		<div class="container">
+			@yield('content')
+		</div>
+
 
 		<script>
 
 			function printBadges() {
 			    window.print();
 			}
-
 		</script>
 
-		<div class="container">
-			@yield('content')
-		</div>
-		
-		<footer class="page-footer blue-grey">
-
-			<div class="footer-copyright">
-				<div class="container">
-					© 2016 Copyright Anon-Event
-					<a class="grey-text text-lighten-4 right" href="#!"></a>
-				</div>
-			</div>
-		</footer>
 	</body>
 </html>

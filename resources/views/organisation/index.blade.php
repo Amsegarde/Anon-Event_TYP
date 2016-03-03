@@ -1,24 +1,23 @@
 @extends('app')
 
 @section('content')
-	<div class="container">
-	<div class="row">
-		<div class="col-md-10 col-md-offset-1">
-			<div class="panel panel-default">		
+	
 				
-	<h2>My Organisations</h2>
 
-	@foreach ($organisations as $organisation) 
-		<article >
-			<a href="{{ url('/organisation/' . $organisation->id) }}">
-				<h2>{{ $organisation->name }}</h2>		
-			</a>
-		</article>
-	@endforeach
+		@foreach ($organisations as $organisation) 
+			<div class="col s5 offset-s1">
+				<a href="{{ url('organisation/' . $organisation->id) }}">
+					{{-- <div class="card small"> --}}	
+						
+							<img class="responsive-img" src="{{ asset('images/organisations/').'/'. $organisation->id.'.'.$organisation->image }}">
 
-	</div>
-		</div>
-	</div>
-</div>
+								<h3>{{ $organisation->name }}</h3>		
+
+					{{-- </div> --}}
+				</a>
+			</div>
+		@endforeach
+
+
 
 @endsection

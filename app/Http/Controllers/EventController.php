@@ -598,15 +598,28 @@ public function close_date_vote(Request $request){
 
 	}
 
-	public function printBadges($id) {
+	public function badges($id) {
 		$tickets = Ticket::where('event_id', '=', $id)->get();
 		$usersArray = array();
+		$event = Event::findOrFail($id);
 
 		foreach ($tickets as $ticket) {
 			$user = User::findOrFail($ticket->user_id);
 			array_push($usersArray, $user);
 		}
 
-		return view('events.badges', compact('tickets', 'usersArray'));
+		return view('events.badges', compact('tickets', 'usersArray', 'event'));
 	}
+
+	public function printBadges($id) {
+		$tickets = Ticket::where('event_id', '=', $id)->get();
+		$usersArray = array();
+		$event = Event::findOrFail($id);
+		foreach ($tickets as $ticket) {
+			$user = User::findOrFail($ticket->user_id);
+			array_push($usersArray, $user);
+		}
+
+		return view('events.printBadges', compact('tickets', 'usersArray', 'event'));
+	}	
 }

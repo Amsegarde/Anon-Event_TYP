@@ -1,4 +1,4 @@
-@extends('app')
+@extends('print')
 
 @section('content')
 
@@ -15,8 +15,9 @@
 					<h6 align="middle">General Admission</h6>
 				</div>
 			@endforeach
-			<a class="waves-effect waves-light btn modal-trigger" href="{{ url('/events/' . $event->id . '/badges/print') }}">Print Badges</a>
 		@endif
 	</div>
+
+
 
 @endsection
