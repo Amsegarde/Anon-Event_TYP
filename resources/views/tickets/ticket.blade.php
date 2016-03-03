@@ -11,7 +11,7 @@
 						<p>You must be logged in, in order to view tickets</p>
 						<p><a href="{{ url('/auth/login') }}">Log in</a> or <a href="{{ url('/auth/register') }}">Register</a></p>
 					@else
-						<article style="background-color:pink">
+						<article style="border: 1px solid black;">
 							<h2>{{ $event->name }}</h2>
 							<h4><a href="{{ url('/organisation/' . $organisation->id) }}">{!! $organisation->name !!}</a></h4>
 							<h4>Type: {{ $ticket->type }}</h4>
