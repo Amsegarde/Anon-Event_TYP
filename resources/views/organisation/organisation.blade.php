@@ -1,10 +1,7 @@
 @extends('app')
 
 @section('content')
-	<div class="row">
-		<div class="col-md-10 col-md-offset-1">
-			<div class="panel panel-default">
-				<div class="panel-heading"></div>
+
 
 				<div class="panel-body">
 					<h1>{!! $org->name !!}</h1>
@@ -16,9 +13,12 @@
 					@if  (Auth::guest())
 
 					@elseif ($isAdmin === true)
-						<p>	<a class="waves-effect waves-light btn modal-trigger" href="#modal2">Contact Followers</a> <a class="waves-effect waves-light btn modal-trigger" href="#modal2">Delete Organisation</a></p>
+						<p>	<a class="waves-effect waves-light btn modal-trigger" href="#modal1">Contact Followers</a> 
+							<a class="waves-effect waves-light btn modal-trigger" href="#modal2">Delete Organisation</a>
+							<a class="waves-effect waves-light btn modal-trigger" href="#modal3">Update Details</a>
+						</p>
 						<!-- Modal Structure -->
-						<div id="modal2" class="modal">
+						<div id="modal1" class="modal">
 					    	<div class="modal-content">
 						    	<h4>Contact Followers</h4>
 
@@ -58,22 +58,56 @@
 						</div>
 
 
-							<!-- Modal Structure -->
-							<div id="modal2" class="modal">
-						    	<div class="modal-content">
-							    	{!! Form::open(array('method' => 'delete')) !!}
-										
+						<!-- Modal Structure -->
+						<div id="modal2" class="modal">
+					    	<div class="modal-content">
+						    	{!! Form::open(array('method' => 'delete')) !!}
+									
 
+									<div class="row">
+										{!! Form::label('Are you sure you want to cancel the order?') !!}
+									</div>
+									<div class="input-field">
+										{!! Form::submit('Confirm Cancelation', array('class'=>'btn')) !!}
+									</div>
+
+								{!! Form::close() !!}
+						    </div>
+						</div>
+
+						<!-- Modal Structure -->
+						<div id="modal3" class="modal">
+					    	<div class="modal-content">
+								{!! Form::open(array('route' => 'update_organisation', 'class' => 'form')) !!}
+									{!! Form::hidden('organisationID', $org->id) !!}
+									
+									<div class="row">
+									{!! Form::hidden('userID', $org->id) !!}	
 										<div class="row">
-											{!! Form::label('Are you sure you want to cancel the order?') !!}
+											<div class="input-field col s5">
+												{!! Form::label('Name') !!}
+												{!! Form::text('name', 
+																$org->name) !!}
+											</div>
 										</div>
-										<div class="input-field">
-											{!! Form::submit('Confirm Cancelation', array('class'=>'btn')) !!}
+										
+										<div row="row">
+											<div class="input-field col s9">
+												{!! Form::label('Biograpahy') !!}
+												{!! Form::textarea('bio', 
+																$org->bio) !!}
+											</div>
 										</div>
-
-									{!! Form::close() !!}
-							    </div>
+																	
+										<!-- Submit Button -->
+										<div class="input-field col s12">
+											{!! Form::submit('Update!', array('class'=>'btn indigo lighten-1')) !!} 
+											<a href="">Cancel</a>
+										</div>
+									</div>
+								{!! Form::close() !!}
 							</div>
+						</div>
 					@elseif ($hasFavourited === true) 
 						{!! Form::open(array('url' => 'organisation/'. $org->id)) !!}
 							{!! Form::submit('Unfavourite') !!}
@@ -83,6 +117,28 @@
 							{!! Form::submit('Favourite') !!}
 						{!! Form::close() !!}
 					@endif
+
+					<div class="col s9">
+						@foreach ($events as $event)
+						<a href="{{ url('events/' . $event->id) }}">
+							<div class="card small" id="browse">
+								<div class="card-image left" id="browse_card">
+									<img class="responsive-img" src="{{ asset('images/events/').'/'.$event->id.'.'.$event->image }}">
+								</div>
+								<div class="right-content">
+									<div class="card-content">
+										<p>Date: {{ $event->start_date }}</p>
+										<p>Location: {{ $event->location }}</p>
+										<span class="card-title">{{ $event->name }}</span>
+									</div>
+									<div class="card-action">
+										<a href="{{ url('/events/'.$event->id) }}">Get Tickets</a>
+									</div>
+								</div>
+							</div>
+						</a>
+						@endforeach
+					</div>
 
 					<script type="text/javascript">
 						$(document).ready(function(){
@@ -98,8 +154,5 @@
 						CKEDITOR.replace( 'bio' );
 					</script>
 					
-				</div>
-			</div>
-		</div>
-	</div>
+
 @endsection

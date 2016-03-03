@@ -77,8 +77,8 @@ class EventController extends Controller {
 		}
 		
 		if($id == null){
-			return redirect('/auth/register')->with('message', 
-				'You must have an account to create an event!');
+			return redirect('/auth/login')->with('message', 
+				'You must be logged in to create an event!');
 		}
 		else if($organisations == null){
 			return redirect('organisation/create')->with('message', 

@@ -145,7 +145,7 @@
 		<!-- Dropdown Structure -->
 		<ul id="dropdown1" class="dropdown-content" style="min-width: 200px;">
 			<li><a href="{{ url('/tickets') }}">Tickets</a></li>
-			<li><a href="{{ url('/events') }}">Saved/Favourited</a></li>
+			<li><a href="{{ url('/organisation/favourite') }}">Saved/Favourited</a></li>
 			<li class="divider"></li>
 			
 			<li><a href="{{ url('events/manage') }}">Manage Events</a></li>
@@ -187,12 +187,12 @@
 							<li><a href="{{ url('/auth/register') }}">Register</a></li>
 						@else
 							<li><a href="{{ url('events/create') }}">Create Event</a></li>
-							<li><a href="{{ url('organisations/create') }}">Create Organisation</a></li>
+							<li><a href="{{ url('organisation/create') }}">Create Organisation</a></li>
 							<li class="divider"></li>
 							<li class="divider"></li>
 							<ul>
 								<li><a href="{{ url('/tickets') }}">Tickets</a></li>
-								<li><a href="{{ url('/events') }}">Saved/Favourited</a></li>
+								<li><a href="{{ url('/organisations/favourite') }}">Saved/Favourited</a></li>
 								<li class="divider"></li>
 								
 								<li><a href="{{ url('events/manage') }}">Manage Events</a></li>
