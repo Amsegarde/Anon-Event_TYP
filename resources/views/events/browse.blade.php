@@ -10,7 +10,7 @@
 				{!! Form::open(array('url' => 'events')) !!}
 
 					<div class="input-field col s12">
-						{!! Form::label('location', 'Location') !!}
+						{!! Form::label('location', 'location') !!}
 						{!! Form::text('location') !!}
 					</div>
 

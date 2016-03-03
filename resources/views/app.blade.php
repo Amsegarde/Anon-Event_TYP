@@ -290,7 +290,12 @@
 				<div class="container">
 					© 2016 Copyright Anon-Event
 					<a class="right" href="#!"></a>
+					
 				</div>
+			</div>
+			<div class="footer-about">
+				<div><a href="{{ url('about') }}">About</a></div>
+				<div><a href="{{ url('about/contact') }}">Contact us</a></div>
 			</div>
 		</footer>
 

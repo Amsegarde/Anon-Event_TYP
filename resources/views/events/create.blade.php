@@ -207,7 +207,7 @@
 <script type="text/javascript">	
 	// For the Rich Text Editor
 	CKEDITOR.replace( 'bio' );
-
+	var numDateSugg = 0;
     // Select Menu woring
 	$(document).ready(function() {
 		$('select').material_select();
@@ -244,15 +244,18 @@
         				"<div class='input-field col s12'>"+
 						"<label for='item["+itemElement+"]'>Name</label>"+
 						"<input type='text' name='item["+itemElement+"]'></div>"+
-						
+					
 						"<div class='input-field col s12'>"+
 						"<label for='item["+(itemElement+1)+"]'>Description</label>"+
-						"<textarea id='bio' name='item["+(itemElement+1)+"]' class='materialize-textarea'length='500'></textarea></div>"+
-
+						"<textarea id='bio' name='item["+(itemElement+1)+"]' class='materialize-textarea'length='500'></textarea></div>";
+						console.log(numDateSugg);
+				if(numDateSugg == 0){
+					newdiv.innerHTML +=
 						"<div class='input-field col s12'>"+
 						"<label for='item["+(itemElement+2)+"]'>Date</label>"+
-						"<input type='date' class='start_datepicker' name='item["+(itemElement+2)+"]' placeholder='Date'></div>"+
-
+						"<input type='date' class='start_datepicker' name='item["+(itemElement+2)+"]' placeholder='Date'></div>";
+				}
+					newdiv.innerHTML +=
 						"<div class='input-field col s6'>"+
 						"<label for='item["+(itemElement+3)+"]'>Cost(optional)</label>"+
 						"<input type='number' name='item["+(itemElement+3)+"]'></div>"+
@@ -385,7 +388,7 @@
 
 //***************************Date Toggle, add and remove********************    	
 	var datePolled = false;
-	var numDateSugg = 0;
+	
 	var nextDateID = 1;
 
 	function toggleDatePoll(e){
@@ -436,6 +439,7 @@ $('.start_datepicker').pickadate({
 	}
 	function addDateSuggestion(num){
 		numDateSugg++;
+		console.log(numDateSugg);
 		var nextDateSugg = document.createElement('div');
 		nextDateSugg.setAttribute('id','dateSuggestion'+nextDateID);
 
@@ -444,7 +448,7 @@ $('.start_datepicker').pickadate({
 											+	"</div>"
 											+	"<div class='input-field col s6'>"
 											+		"<input type='date' class='end_datepicker' name='end_date[]' placeholder='End Date'>"
-					 						+"<input type='button' class='btn' value='Remove Suggestion put here by add' onClick='removeDateSuggestion(dateSuggestion"+nextDateID+");'/>";
+					 						+"<input type='button' class='btn' value='Remove Suggestion' onClick='removeDateSuggestion(dateSuggestion"+nextDateID+");'/>";
 											+	"</div>"
         nextDateID++;   									
 		num.insertBefore(nextDateSugg, addDateButton);

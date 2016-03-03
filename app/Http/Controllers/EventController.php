@@ -29,8 +29,22 @@ use Illuminate\Support\Facades\Redirect;
 
 class EventController extends Controller {
 
-	//
+	public function close_loc_vote(Request $request){
+		$event = Event::where('id','=', $request->id)->first();
+		$event->location = $request->location;
+		$event->save();
+		return Redirect::back();
+	}
 
+public function close_date_vote(Request $request){
+		$dates = DateSuggestion::findOrFail($request->dateId)->first();
+		$event = Event::where('id','=', $request->id)->first();
+		$event->start_date = $dates->start_date;
+		$event->end_date = $dates->end_date;
+		$event->save();
+		$delete = DateSuggestion::where("event_id", '=', $event->id)->delete();
+		return Redirect::back();
+	}
 	/**
 	 * Show the event dashboard screen to the user.
 	 *
@@ -295,15 +309,15 @@ class EventController extends Controller {
 
 		if (!empty($request->all())) {
 			if ($request->location){
-				$events = $events->where('location', 'like', $request->location)
-						->where('start_date', '>=', Carbon::now())->get();
+				$events = Event::where('location', 'like', $request->location)->first();
+				return $events->location;				
 			}
 
 			if ($request->date) {
 				$carbon = new Carbon;
 				$searchDate = $carbon->createFromFormat('j F, Y', $request->date);
-				$events = Event::where('start_date', '>=', $searchDate)
-						->where('start_date', '>=', Carbon::now())->get();
+				$events = Event::where('start_date', '>=', $searchDate);
+						//->where('start_date', '>=', Carbon::now())->get();
 			}
 
 			if ($request->genre) {
@@ -311,9 +325,9 @@ class EventController extends Controller {
 						->where('start_date', '>=', Carbon::now())->get();
 			}
 
-			if ($request->price) {
-				$events = Event::where('price', '<=', $request->price)
-						->where('start_date', '>=', Carbon::now())->get();
+			if ($request->price){
+				// $events = Event::where('price', '<=', $request->price)
+				// 		->where('start_date', '>=', Carbon::now())->get();
 			}
 		} else {
 			$events = Event::where('start_date', '<', Carbon::now())->get();
