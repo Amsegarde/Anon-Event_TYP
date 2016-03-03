@@ -62,11 +62,11 @@
 
 			.parallax img {
 				display: inherit !important;
-				-webkit-filter: grayscale(85%);
-                -moz-filter: grayscale(85%);
-                -o-filter: grayscale(85%);
-                -ms-filter: grayscale(85%);
-                filter: grayscale(85%);
+				-webkit-filter: grayscale(90%);
+                -moz-filter: grayscale(90%);
+                -o-filter: grayscale(90%);
+                -ms-filter: grayscale(90%);
+                filter: grayscale(90%);
 			}
 
 			#event_blank {

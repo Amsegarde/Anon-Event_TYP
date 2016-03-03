@@ -14,21 +14,21 @@
       </li>
       <li>
         <img class="responsive-img" src="images/foodSplash.jpg"> <!-- random image -->
-        <div class="caption left-align">
+        <div class="caption right-align">
           <h3>Promote Your  Organisation</h3>
           <h5 class="light grey-text text-lighten-3">Get your organisation out there</h5>
         </div>
       </li>
       <li>
         <img class="responsive-img" src="images/sportSplash.jpg"> <!-- random image -->
-        <div class="caption right-align">
+        <div class="caption left-align">
           <h3>Create Your Own Events</h3>
           <h5 class="light grey-text text-lighten-3">You're the one in charge of your events</h5>
         </div>
       </li>
       <li>
         <img class="responsive-img" src="images/musicSplash.jpg"> <!-- random image -->
-        <div class="caption center-align">
+        <div class="caption bottom-align">
           <h3>Sell Your Own Tickets</h3>
           <h5 class="light grey-text text-lighten-3">Sell and manage tickets directly on the site</h5>
         </div>
