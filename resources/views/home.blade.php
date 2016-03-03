@@ -48,13 +48,6 @@
 @endsection
 
 @section('content')
-<div class="section">
-	<div class="row">
-		<div class="col s4">
-			<h4>Upcoming Events</h4>
-		</div>
-	</div>
-</div>
 
 <div class="divider"></div>
 

@@ -44,8 +44,8 @@ Route::get('events/{id}','EventController@show');
 Route::post('events/{id}', 
 	['as' => 'contact_attendees', 'uses' => 'EventController@sendMessage']);
 
-Route::get('events/{id}/badges', 'EventController@printBadges');
-
+Route::get('events/{id}/badges', 'EventController@badges');
+Route::get('events/{id}/badges/print', 'EventController@printBadges');
 
 Route::post('vote','EventController@vote');
 Route::post('date_vote','EventController@date_vote');

@@ -134,6 +134,11 @@
 			.card{
 				background: #e8eddf !important;
 			}
+
+			.badges {
+				border: 1px dashed black;
+			}
+
 		</style>
 
 	</head>
@@ -295,6 +300,7 @@
 		</footer>
 
 	<script>
+
 		$(document).ready(function() {
 			$('select').material_select();
 			$('.modal-trigger').leanModal();

@@ -27,20 +27,6 @@
 			    </div>
 			</div>
 
-			<script type="text/javascript">
-				// For the Rich Text Editor
-				// CKEDITOR.replace( 'bio' );
-				
-				$(document).ready(function(){
-					// the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
-					$('.modal-trigger').leanModal();
-				});
-
-				$(document).ready(function(){
-					$('ul.tabs').tabs('select_tab', 'tab_id');
-				});
-
-			</script>
 		</div>
 	</div>
 </div>
