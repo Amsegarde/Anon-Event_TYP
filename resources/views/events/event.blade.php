@@ -5,14 +5,14 @@
 	<div class="parallax-container">
 		<div class="parallax"><img class="responsive-img" src="{{ asset('images/events/').'/'.$event->id.'.'.$event->image }}"></div>
 		<div class="caption center-align" style="margin-top:200px;">
-			<h1>{!! $event->name !!}</h1>
+			<h1 class="event_title">{!! $event->name !!}</h1>
 			<h5><a href="{{ url('/organisation/' . $organisation->id) }}">{!! $organisation->name !!}</a></h5>
 		</div>
 	</div>
 @else
 	<div class="section indigo lighten-3" id="event_blank">
 		<div class="caption center-align">
-			<h1>{!! $event->name !!}</h1>
+			<h1 class="event_title">{!! $event->name !!}</h1>
 			<h3><a href="{{ url('/organisation/' . $organisation->id) }}">{!! $organisation->name !!}</a></h3>
 		</div>
 	</div>
@@ -72,7 +72,7 @@
 								<div id="locationField">
 	      							<input id="autocomplete2" placeholder="Enter your address"
 	             					onFocus="geolocate()" name="location" type="text">
-	             					<input type="button" class="btn" onclick="loadMap()"value="Get Directions">
+	             					<input type="button" class="btn" onclick="loadMap()" value="Get Directions">
 	   			 				</div>
 	   			 				<div id ="map"></div>
 		   			 				
@@ -117,10 +117,12 @@
 						</div>
 						<div class="col s12"><h5><a href="{{ url('/auth/login') }}">Login to get tickets</a></h5></div>
 					@else 
-					<a class="btn col s6 offset-s3 modal-trigger" href="#modal1">Get Tickets</a>
+					@if ($isAdmin != true)
+						<a class="btn col s6 offset-s3 modal-trigger" href="#modal1">Get Tickets</a>
+					@endif
 				</div>
 
-					@if ($isAdmin === true)
+					@if ($isAdmin == true)
 						<div id="tix" class="col s12">
 							<a class="btn modal-trigger" href="#modal2">Contact Attendees</a>
 							<h4>Tickets Sold Information</h4>
@@ -150,22 +152,29 @@
 							</table>
 							<table>
 							@if($locationSuggs != null)
-								
-									<tr><th>Location Suggestions</th><th>Votes</th></tr>
+								{!! Form::open(array('url'=>'close_loc_vote','method'=>'POST', 'class'=>'col s12')) !!}
+									{!! Form::hidden('id', $event->id) !!}
+									<tr><th>Location Suggestions</th><th>Votes</th><th>{!! Form::submit('Finalise Location', array('class'=>'btn')) !!}</th></tr>
 								@foreach($locationSuggs as $sug)
-									<tr><td>{{$sug->location}}</td><td>{{$sug->votes}}</td></tr>
+									<tr><td>{{$sug->location}}</td><td>{{$sug->votes}}</td><td><input value="{{$sug->location}}"name="location" type="radio" id="{{$sug->location}}"/><label for="{{$sug->location}}"></label></td>
+									</tr>
 								@endforeach
+								{!! Form::close() !!}
 							@endif
-								@if($dateSuggs != null)
-									<tr><th>Date Suggestions</th><th>Votes</th></tr>
+							@if(count($dateSuggs)>0)
+									
+								{!! Form::open(array('url'=>'close_date_vote','method'=>'POST', 'class'=>'col s12')) !!}
+									{!! Form::hidden('id', $event->id) !!}
+									<tr><th>Date Suggestions</th><th>Votes</th><th>{!! Form::submit('Finalise Date', array('class'=>'btn')) !!}</th></tr>
 								@foreach($dateSuggs as $dsug)
-									<tr><td>{{$dsug->start_date}} - {{$dsug->end_date}}</td><td>{{$dsug->votes}}</td></tr>
+									<tr><td>{{$dsug->start_date}} - {{$dsug->end_date}}</td><td>{{$dsug->votes}}</td><td><input name="dateId" type="radio" value="{{$dsug->id}}" id="{{$dsug->start_date}}"/><label for="{{$dsug->start_date}}"></label></td></tr>
+									
 								@endforeach
+								{!! Form::close() !!}
 							@endif
 							</table>
-			
-						</div>
 							
+						</div>
 
 						<div class="row" id="edit">
 							<h4>Edit your Event</h4>
@@ -392,12 +401,16 @@
 	</div>
 <script>
 	function loadMap(){
-		var origin = document.getElementById('autocomplete').value;
+		var origin = document.getElementById('autocomplete2').value;
 		var map = document.getElementById('map');
 		map.innerHTML = '<iframe width="450" height="300" frameborder="0" style="border:0"src="https://www.google.com/maps/embed/v1/directions?origin='+origin+'&destination={{$event->location}}&key={{env("API_KEY")}}" allowfullscreen></iframe>';
 	}
 </script>
 	<script type="text/javascript">
+
+		$(document).ready(function(){
+			// the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+			// Datepicker working - uses pickadate.js
 
 		$('.start_datepicker').pickadate({
 			selectMonths: false, // Creates a dropdown to control month
@@ -410,6 +423,11 @@
 			selectYears: 15, // Creates a dropdown of 15 years to control year
 			min: true
 		});
+		$('ul.tabs').tabs('select_tab', 'tab_id');
+		});
+		
+		// For the Rich Text Editor
+		CKEDITOR.replace( 'bio' );
 
 	</script>
 @endsection

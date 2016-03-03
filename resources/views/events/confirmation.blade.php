@@ -56,6 +56,26 @@
 										@endif
 									@endfor
 
+									@if(count($name) > 0)
+									@for ($i = 0; $i < count($name); $i++)
+										@if ($amount[$i] > 0)
+
+											{!!	Form::hidden('name[]', $name[$i]) !!}
+											{!!	Form::hidden('cost[]', $cost[$i]) !!}
+											{!!	Form::hidden('amount[]', $amount[$i]) !!}
+											{!! Form::hidden('itinIDs[]', $itinIDs[$i]) !!}
+
+											<tr>
+												<td>{{ $name[$i] }}</td>
+												<td>{{ $cost[$i] }}</td>
+												<td>{{ $amount[$i] }}</td>
+												<td>{{ $itinTotals[$i] }}</td>
+												<td>{{ $itinIDs[$i] }}</td>
+											</tr>
+										@endif
+									@endfor
+								@endif
+
 								<tr><td></td><td>Total:</td><td>{{ $totalQuantity }}</td><td>{{ $totalPrice }}</td></tr>
 								</table>
 						

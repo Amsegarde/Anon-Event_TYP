@@ -49,7 +49,8 @@ Route::get('events/{id}/badges/print', 'EventController@printBadges');
 
 Route::post('vote','EventController@vote');
 Route::post('date_vote','EventController@date_vote');
-
+Route::post('close_loc_vote', 'EventController@close_loc_vote');
+Route::post('close_date_vote', 'EventController@close_date_vote');
 Route::get('organisation/create', 'OrganisationController@create');
 Route::get('organisation/dashboard', 'OrganisationController@dashboard');
 Route::get('organisation', 'OrganisationController@index');

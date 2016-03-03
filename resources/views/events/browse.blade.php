@@ -10,7 +10,7 @@
 				{!! Form::open(array('url' => 'events')) !!}
 
 					<div class="input-field col s12">
-						{!! Form::label('location', 'Location') !!}
+						{!! Form::label('location', 'location') !!}
 						{!! Form::text('location') !!}
 					</div>
 
@@ -45,9 +45,10 @@
 		</div>
 
 		<div class="col s9">
+		<p>{{ $msg }}</p>
 			@foreach ($events as $event)
 				<a href="{{ url('/events/'.$event->id) }}">
-					<p>{{ $msg }}</p>
+					
 					<div class="card small" id="browse">
 						<div class="card-image left" id="browse_card">
 							<img class="responsive-img" src="{{ asset('images/events/').'/'.$event->id.'.'.$event->image }}">
