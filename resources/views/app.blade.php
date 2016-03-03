@@ -168,7 +168,7 @@
 		<div class="navbar">
 			<nav class="z-depth-0">
 				<div class="nav-wrapper z-depth-0" >
-					<a href="{{ url('/') }}" class="brand-logo"><img src="{{ asset('/images/logo.jpg') }}" style="width:150px; height:80px;"></a>
+					<a href="{{ url('/') }}" class="brand-logo"><img src="{{ asset('/images/logo.png') }}" style="width:150px; height:80px;"></a>
 					<a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
 					<ul class="right hide-on-med-and-down">
 						<li><a href="{{ url('/') }}">Home</a></li>
