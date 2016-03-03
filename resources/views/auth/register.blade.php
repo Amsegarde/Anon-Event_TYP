@@ -55,6 +55,7 @@
 		<div class="row">
 			<p>Already have an account? <a href="{{ url('/auth/login') }}">Login Here!</a></p>
 		</div>
+		
 	</div>
 
 	

@@ -1,6 +1,8 @@
 <?php namespace App\Http\Controllers;
 
 use App\Organisation;
+use App\Organise;
+use App\Event;
 use App\Admin;
 use App\FavouriteOrganisation;
 use Auth;
@@ -23,7 +25,7 @@ class OrganisationController extends Controller {
 
 	/**
 	 * Display a listing of the resource.
-	 * Display the Dashboard
+	 * Display the organisations
 	 *
 	 * @return Response
 	 */
@@ -50,8 +52,8 @@ class OrganisationController extends Controller {
 	{
 		$id = Auth::id();
 		if($id == null){
-			return redirect('/auth/register')->with('message', 
-				'You must have an account to create an organisation!');
+			return redirect('/auth/login')->with('message', 
+				'You must be logged in to create an organisation!');
 		}else{
 			return view('organisation.create');
 		}
@@ -125,6 +127,7 @@ class OrganisationController extends Controller {
 	{
 		$hasFavourited = false;
 		$isAdmin = false;
+		$eventsArray = array();
 
 		$userID = Auth::user()->id;
 		$favUserId = DB::table('favourite_organisations')
@@ -155,13 +158,24 @@ class OrganisationController extends Controller {
 				}
 		}
 
+		$organises = Organise::where('organisation_id', '=', $id)->get();
+		foreach ($organises as $organise) {
+			$event = Event::findOrFail($organise->event_id);
+			array_push($eventsArray, $event);
+		}
 
 		return view('organisation.organisation', array(
 						'org' => $org, 
 						'hasFavourited' => $hasFavourited,
-						'isAdmin' => $isAdmin));
+						'isAdmin' => $isAdmin,
+						'events' => $eventsArray));
 	}
 
+	/**
+	 * View the organisation dashboard.
+	 *
+	 * @return organisation dashboard.
+	 */
 	public function dashboard()
 	{
 		//
@@ -179,6 +193,11 @@ class OrganisationController extends Controller {
 		//
 	}
 
+	/**
+	 * Favourite an organisation.
+	 *
+	 * @return organisation page.
+	 */
 	public function favourite($id) {
 		$userID = Auth::user()->id;
 		$favUserId = DB::table('favourite_organisations')
@@ -217,9 +236,15 @@ class OrganisationController extends Controller {
 										->setBindings([$id]);
 								})->get();
 
+
 		return view('organisation.favourites', compact('organisations'));
 	}
 
+	/**
+	 * Contact users who follow this organisation.
+	 *
+	 * @return organisation page
+	 */
 	public function contactFollowers(Request $request, $id) {
 		$followers = FavouriteOrganisation::where('organisation_id', '=', $request->organisationID)->get();
 		$organisation = Organisation::findOrFail($request->organisationID);
@@ -292,23 +317,37 @@ class OrganisationController extends Controller {
 	 * @return View
 	 */
 	public function getAccount() {
-		$id = Auth::user()->id;
-		return redirect('users/' . $id . '/account');
+
+		if(Auth::check()){
+			$id = Auth::user()->id;
+			return redirect('users/' . $id . '/account');
+		}else {
+			return redirect('/auth/login')->with('message', 
+				'You must be logged in to create an organisation!');
+			
+		}
 	}
 
 	/**
 	 * Return view of the users account settings.
 	 *
+	 * @param $id of user account.
 	 * @return View account settings
 	 */
 	public function account($id) {
-		$user = User::findOrFail($id);
+		if(Auth::check()){
+			$user = User::findOrFail($id);
 		return view('users.account', compact('user'));
+		} else {
+			return redirect('/auth/login')->with('message', 
+				'You must be logged in to create an organisation!');	
+		}
 	}
 
 	/**
 	 * Update the user details of the account.
 	 *
+	 * @param Request form details.
 	 * @return Redirect to updated account page
 	 */
 	public function updateAccountDetails(Request $request) {
@@ -322,13 +361,13 @@ class OrganisationController extends Controller {
             							'firstname' => $fName,
             							'lastname' => $lName]);
 
-		$user = User::findOrFail($id);
         return view('users.account', compact('user'));
 	}
 
 	/**
 	 * Update the user email of account.
 	 *
+	 * @param Request form details.
 	 * @return Redirect to updated account page
 	 */
 	public function updateAccountEmail(ChangeEmailRequest $request) {
@@ -358,6 +397,25 @@ class OrganisationController extends Controller {
 	protected function getFailedLoginMessage()
 	{
 		return 'Your password is incorrect!';
+	}
+
+	/**
+	 * Update organisation details.
+	 *
+	 * @param Request form details.
+	 * @return show organisaiton.
+	 */
+	public function updateOrganisation(Request $request) {
+		$id = $request->organisationID;
+
+		$name = $request->name;
+		$bio = $request->bio;
+
+		$updateDetails = Organisation::where('id', '=', $id)
+            						->update([
+            							'name' => $name,
+            							'bio' => $bio]);
+       	return $this->show($id);
 	}
 
 

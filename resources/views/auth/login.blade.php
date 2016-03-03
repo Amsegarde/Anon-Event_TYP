@@ -15,6 +15,13 @@
 			</div>
 		@endif
 
+		<div class="row">
+			<p><?php 
+				echo Session::get('message');
+				?>
+			</p>
+		</div>
+
 		{!! Form::open(array('url'=>'/auth/login','method'=>'POST', 'class'=>'col s12')) !!}
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">
 			<div class="row">
@@ -44,6 +51,12 @@
 				</div>
 			</div>
 		{!! Form::close() !!}
+
+		<div class="row">
+			<p>Don't have an account? <a href="{{ url('/auth/register') }}">Register Here!</a></p>
+		</div>
+
+
 	</div>
 
 @endsection
