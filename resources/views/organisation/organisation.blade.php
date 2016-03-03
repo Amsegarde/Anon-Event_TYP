@@ -59,10 +59,10 @@
 									
 
 									<div class="row">
-										{!! Form::label('Are you sure you want to cancel the order?') !!}
+										{!! Form::label('Are you sure you want to delete the event?') !!}
 									</div>
 									<div class="input-field">
-										{!! Form::submit('Confirm Cancelation', array('class'=>'btn')) !!}
+										{!! Form::submit('Confirm Deletion', array('class'=>'btn')) !!}
 									</div>
 
 								{!! Form::close() !!}
@@ -106,7 +106,7 @@
 																	
 										<!-- Submit Button -->
 										<div class="input-field col s12">
-											{!! Form::submit('Update!', array('class'=>'btn indigo lighten-1')) !!} 
+											{!! Form::submit('Update!', array('class'=>'btn')) !!} 
 											<a href="">Cancel</a>
 										</div>
 									</div>

@@ -199,6 +199,15 @@ class TicketController extends Controller {
 		$event = $request->eventID;
 		$itinID = $request->itinIDs;
 		$amount = $request->amount;
+		$mailTickets = array();
+
+		$OrderNumber = mt_rand(100000000, 999999999);
+		$num = Ticket::where('order_number', '=', $OrderNumber)->get();
+
+		while (count($num) > 0) {
+			$OrderNumber = mt_rand(100000000, 999999999);
+			$num = Ticket::where('order_number', '=', $OrderNumber)->get();
+		} 
 
 		for($i = 0; $i < count($itinID); $i++){
 			$item = Itinerary::where('id', '=', $itinID[$i])->first();
@@ -304,6 +313,33 @@ class TicketController extends Controller {
 		    ]);
 		}
 
+		for($i = 0; $i < count($request->id); $i++){      
+		    $newTicket = Ticket::create([
+						'user_id' 	=> $userID,
+						'event_id' 	=> $request->eventID,
+						'type'		=> $type[$i],
+						'quantity'	=> $quantity[$i],
+						'order_number' => $OrderNumber
+						
+			]);
+			$update = DB::table('events')
+							->where('id', '=', $request->eventID)
+							->decrement('avail_tickets', $totalQuantity);
+			array_push($mailTickets, $newTicket);
+		}
+
+		Mail::send('emails.tickets',
+	       array(
+	            'email' => Auth::user()->email,
+	            'event' => $event,
+	            'organisation' => $organisation,
+	            'mailTickets' => $mailTickets
+	        ), function($message) use ($request, $event)  {
+	       			
+       				$message->to(Auth::user()->email, Auth::user()->firstname)
+       						->from('anonevent.cs@gmail.com')
+       						->subject('Your tickets for - ' . $event->name);
+	    });
         return redirect()->route('display')
             ->with('successful', 'Your purchase was successful!');
     }

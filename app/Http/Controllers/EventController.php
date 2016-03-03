@@ -173,7 +173,9 @@ public function close_date_vote(Request $request){
 			$itinerary = new Itinerary;
 			$itinerary->name = $itins[$i];
 			$itinerary->blurb = $itins[$i+1];
-			$itinerary->date = $itins[$i+2];
+			if (isset($itins[$i+2])) {
+				$itinerary->date = $itins[$i+2];	
+			}
 			$itinerary->prebooked = $prebooked;
 			$itinerary->cost = $itins[$i+3];
 			$itinerary->capacity = $itins[$i+4];

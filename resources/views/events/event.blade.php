@@ -5,14 +5,14 @@
 	<div class="parallax-container">
 		<div class="parallax"><img class="responsive-img" src="{{ asset('images/events/').'/'.$event->id.'.'.$event->image }}"></div>
 		<div class="caption center-align" style="margin-top:200px;">
-			<h1>{!! $event->name !!}</h1>
+			<h1 class="event_title">{!! $event->name !!}</h1>
 			<h5><a href="{{ url('/organisation/' . $organisation->id) }}">{!! $organisation->name !!}</a></h5>
 		</div>
 	</div>
 @else
 	<div class="section indigo lighten-3" id="event_blank">
 		<div class="caption center-align">
-			<h1>{!! $event->name !!}</h1>
+			<h1 class="event_title">{!! $event->name !!}</h1>
 			<h3><a href="{{ url('/organisation/' . $organisation->id) }}">{!! $organisation->name !!}</a></h3>
 		</div>
 	</div>

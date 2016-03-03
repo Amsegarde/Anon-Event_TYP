@@ -43,7 +43,7 @@
 				</div>
 
 				<div class="input-field">
-					{!! Form::submit('Login', ['class'=>'btn indigo lighten-1']) !!}
+					{!! Form::submit('Login', ['class'=>'btn']) !!}
 				</div>
 
 				<div class="input-field">

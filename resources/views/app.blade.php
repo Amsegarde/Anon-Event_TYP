@@ -111,20 +111,51 @@
 				flex-direction: column;
 				/*background: #e8eddf !important;*/
 			}
-
+			a {
+				color: #f5cb5c !important;
+			}
 			footer {
 				background: #333533 !important;
 			}
-
+			footer a{
+				color: #e8eddf !important;
+			}
 			main {
 				flex: 1 0 auto;
 			}
-
 			.btn {
 				background: #f5cb5c !important;
-				color: #242423 ;
+				color: #242423 !important;
+			}
+			.card-title{
+				color: #333533 !important;
+			}
+			.picker__date-display{
+				background: #f5cb5c !important;
+				color: #242423 !important;
 			}
 
+			.picker__weekday-display{
+				background: #333533 !important;
+				color: #f5cb5c !important;
+			}
+			.picker__close, .picker__today{
+				color: #f5cb5c !important;
+			}
+			.picker__day.picker__day--today{
+				color: #f5cb5c !important;
+			}
+			.picker__day--selected, .picker__day--selected:hover, .picker--focused .picker__day--selected{
+				background: #333533 !important;
+			}
+			[type="checkbox"]+label{
+				color: #f5cb5c !important;
+			}
+			[type="checkbox"]:checked+label:before{
+				color: #f5cb5c !important;
+				border-right: 2px solid #f5cb5c; 
+    			border-bottom: 2px solid #f5cb5c; 
+			}
 			.title {
 				color: #333533 !important;
 			}
@@ -137,6 +168,10 @@
 
 			.badges {
 				border: 1px dashed black;
+			}
+
+			.event_title{
+				color: #f5cb5c !important;
 			}
 
 		</style>
@@ -254,7 +289,7 @@
 						</div>
 
 						<div class="input-field">
-							{!! Form::submit('Login', ['class'=>'btn indigo lighten-1']) !!}
+							{!! Form::submit('Login', ['class'=>'btn']) !!}
 						</div>
 
 						<div class="input-field">
@@ -291,6 +326,12 @@
 		</main>
 
 		<footer class="page-footer">
+			<div class="container">
+			<div class="footer-about">
+				<div><a href="{{ url('about') }}">About</a></div>
+				<div><a href="{{ url('about/contact') }}">Contact us</a></div>
+			</div>
+			</div>
 			<div class="footer-copyright">
 				<div class="container">
 					© 2016 Copyright Anon-Event
@@ -298,10 +339,7 @@
 					
 				</div>
 			</div>
-			<div class="footer-about">
-				<div><a href="{{ url('about') }}">About</a></div>
-				<div><a href="{{ url('about/contact') }}">Contact us</a></div>
-			</div>
+			
 		</footer>
 
 	<script>
