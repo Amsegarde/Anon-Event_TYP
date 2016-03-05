@@ -28,7 +28,7 @@
 							<p>
 								<a class="waves-effect waves-light btn modal-trigger" href="#modal1">Cancel Order</a>
 								<a class="waves-effect waves-light btn modal-trigger" href="#modal2">Contact Organisation</a>
-								<a class="waves-effect waves-light btn modal-trigger" href="#modal3">Print Tickets</a>
+								<a class="waves-effect waves-light btn modal-trigger" href="{{ url('/tickets/' . $ticket->id . '/print') }}">Print Tickets</a>
 							</p>
 
 							<!-- Modal Structure -->

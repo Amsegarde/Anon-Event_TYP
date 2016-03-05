@@ -72,45 +72,45 @@
 						<!-- Modal Structure -->
 						<div id="modal3" class="modal">
 					    	<div class="modal-content">
-								{!! Form::open(array('route' => 'update_organisation', 'class' => 'form')) !!}
+								{!! Form::open(array('route' => 'update_organisation', 'class' => 'form', 'files' => true)) !!}
 									{!! Form::hidden('organisationID', $org->id) !!}
 
 									<div class="row">
-									{!! Form::hidden('userID', $org->id) !!}	
-										<div class="row">
-											<div class="input-field col s5">
-												{!! Form::label('Name') !!}
-												{!! Form::text('name', 
-																$org->name) !!}
-											</div>
-										</div>	
-										
-										<div class="input-field col s9">
-											{!! Form::label('Biograpahy') !!}
-											{!! Form::textarea('orgBio', 
-															$org->bio, array('class' => 'materialize-textarea', 'length' => '500')) !!}
-										</div>
-										</div>
-										
-										<div row="row">
-											<div class='file-field input-field '>
-												<div class="btn">
-													<span>Upload logo</span>
-													<input name="image" type="file">
+										{!! Form::hidden('userID', $org->id) !!}	
+											<div class="row">
+												<div class="input-field col s5">
+													{!! Form::label('Name') !!}
+													{!! Form::text('name', 
+																	$org->name) !!}
 												</div>
-												<div class="file-path-wrapper">
-													<input class="file-path validate" type="text">
+											</div>	
+											<div class="row">
+												<div class="input-field col s9">
+													{!! Form::label('Biograpahy') !!}
+													{!! Form::textarea('orgBio', 
+																	$org->bio, array('class' => 'materialize-textarea', 'length' => '500')) !!}
 												</div>
 											</div>
-										</div>
-																	
-										<!-- Submit Button -->
-										<div class="input-field col s12">
-											{!! Form::submit('Update!', array('class'=>'btn')) !!} 
-											<a href="">Cancel</a>
-										</div>
+											<div class="row"> 
+												<div class='file-field input-field '>
+													<div class="btn">
+														<span>Upload logo</span>
+														<input name="image" type="file">
+													</div>
+													<div class="file-path-wrapper">
+														<input class="file-path validate" type="text">
+													</div>
+												</div>
+											</div>
+																		
+											<!-- Submit Button -->
+											<div class="input-field col s12">
+												{!! Form::submit('Update!', array('class'=>'btn')) !!} 
+												<a href="">Cancel</a>
+											</div>
+										{!! Form::close() !!}
 									</div>
-								{!! Form::close() !!}
+								
 							</div>
 						</div>
 					

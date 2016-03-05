@@ -36,9 +36,6 @@ class TicketController extends Controller {
 	{
 
 	 	$id = Auth::user()->id;
-	 	// $tickets = Ticket::where('user_id', '=', $id);
-	 	// $userTickets = EventTickets::findOrFail($id);
-	 	// $events = Event::where('id', '=', $userTickets->event_id);
 
 		$tickets = DB::table('events')
 						->join('tickets','events.id', '=', 'tickets.event_id')
@@ -57,7 +54,7 @@ class TicketController extends Controller {
 					    ->get();
 							
 							
-		return view('tickets.index', compact('tickets'));
+		return view('tickets.index', compact('tickets', 'event'));
 
 	}
 
@@ -409,5 +406,10 @@ class TicketController extends Controller {
 		return redirect('tickets');
 	}
 
+	public function printTickets($id) {
+		$tickets = Ticket::findOrFail($id);
+		$event = Event::findOrFail($tickets->event_id);
+		return view('tickets.print', compact('tickets', 'event'));
+	}
 
 }

@@ -174,6 +174,13 @@
 				color: #f5cb5c !important;
 			}
 
+			.capitalize {
+				text-transform: capitalize;
+			}
+
+
+
+
 		</style>
 
 	</head>

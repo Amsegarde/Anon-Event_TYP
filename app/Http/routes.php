@@ -72,8 +72,7 @@ Route::post('tickets',
 	['as' => 'store_tickets', 'uses' => 'TicketController@store']);
 Route::get('tickets/{id}', 'TicketController@show');
 
-Route::get('ticket/{id}/print', 
-	['as' => 'ticket_print', 'uses' => 'TicketController@helloWorld']);
+Route::get('tickets/{id}/print', 'TicketController@printTickets');
 
 Route::post('ticket/{id}/contact', 
 	['as' => 'contact_organisation', 'uses' => 'OrganisationController@contact']);
