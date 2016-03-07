@@ -95,6 +95,8 @@
 						{!!  Form::hidden('eventID', $event->id) !!}
 						@if($voteOpen == 1)
 							{!! Form::submit('Vote', array('class'=>'btn')) !!}
+						@elseif($voteOpen == 2)
+							<p></p>
 						@else
 							<p>Your vote has been logged</p>
 						@endif
@@ -258,7 +260,7 @@
 
 										<!-- Submit Button -->
 									<div class="input-field col s12">
-										<!-- {!! Form::submit('Update Event!', array('class'=>'btn')) !!} -->
+										{!! Form::submit('Update Event!', array('class'=>'btn')) !!}
 									</div>
 								</div>
 							{!! Form::close() !!}

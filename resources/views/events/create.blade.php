@@ -10,7 +10,7 @@
 			<p><a href="{{ url('/organistaion/create') }}">Create Organisaion</a>
 		@else
 		<div class="row">
-		<h1>Create a New Event</h1>
+		<h1>Create A New Event</h1>
 		<ul>
 			@foreach($errors->all() as $error)
 				<li>{{ $error }}</li>
@@ -347,7 +347,7 @@
     	if(!locationPolled){
     		locationPolled = true;
     		numOfSuggestions = 1;
-    	document.getElementById('locations').innerHTML=
+    		document.getElementById('locations').innerHTML=
     										"<div id='locationSuggestion"+next_ID+"'>"
     										+"<label for='location'>Enter Location Suggestion</label>"
          									+"<input type='text' name='location[]'>"

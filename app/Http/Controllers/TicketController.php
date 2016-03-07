@@ -317,7 +317,7 @@ class TicketController extends Controller {
 		    $newTicket = Ticket::create([
 						'user_id' 	=> $userID,
 						'event_id' 	=> $request->eventID,
-						'type'		=> $type[$i],
+						//'type'		=> $type[$i],
 						'quantity'	=> $quantity[$i],
 						'order_number' => $OrderNumber
 						
