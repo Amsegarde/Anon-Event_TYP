@@ -1,16 +1,17 @@
 @extends('app')
 
 @section('content')
+	
+		@if (Auth::guest())
+			<p>You must be logged in, in order to create an event</p>
+			<p><a href="{{ url('/auth/login') }}">Log in</a> or <a href="{{ url('/auth/register') }}">Register</a></p>
+		@elseif($loggedIn && !$hasOrg)
+			<p>You must have an organisation, in order to create an event</p>
+			<p><a href="{{ url('/organistaion/create') }}">Create Organisaion</a>
+		@else
+		<div class="row">
+		<h1>Create A New Event</h1>
 
-@if (Auth::guest())
-<p>You must be logged in, in order to create an event</p>
-<p><a href="{{ url('/auth/login') }}">Log in</a> or <a href="{{ url('/auth/register') }}">Register</a></p>
-@elseif($loggedIn && !$hasOrg)
-<p>You must have an organisation, in order to create an event</p>
-<p><a href="{{ url('/organistaion/create') }}">Create Organisaion</a>
-	@else
-	<div class="row">
-		<h1>Create a New Event</h1>
 		<ul>
 			@foreach($errors->all() as $error)
 			<li>{{ $error }}</li>
@@ -361,12 +362,21 @@
     		locationPolled = true;
     		numOfSuggestions = 1;
     		document.getElementById('locations').innerHTML=
+<<<<<<< HEAD
+    										"<div id='locationSuggestion"+next_ID+"'>"
+    										+"<label for='location'>Enter Location Suggestion</label>"
+         									+"<input type='text' name='location[]'>"
+           									+"</div>"
+           									+"<input type='button' id='addButton' class='btn col s4 offset-s1' value='Add Suggestion' onClick='addSuggestion(locations);'>"
+					 						+"<input type='button' class='btn col s4 offset-s2' value='Remove Poll' onClick='togglePoll(locations);'>";
+=======
     		"<div id='locationSuggestion"+next_ID+"'>"
     		+"<label for='location'>Enter Location Suggestion</label>"
     		+"<input type='text' name='location[]'>"
     		+"</div>"
     		+"<input type='button' id='addButton' class='btn col s4 offset-s1' value='Add Suggestion' onClick='addSuggestion(locations);'>"
     		+"<input type='button' class='btn col s4 offset-s2' value='Remove Poll' onClick='togglePoll(locations);'>";
+>>>>>>> f27a0420ea0527badf02be317f10805fd21c0c3c
     	}else{
     		locationPolled = false;
     		numOfSuggestions = 0;

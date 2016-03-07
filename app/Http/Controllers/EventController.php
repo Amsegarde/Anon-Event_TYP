@@ -391,11 +391,15 @@ public function close_date_vote(Request $request){
 			$e = Event::findOrFail($id);
 			$tickets = TicketType::where('event_id', '=', $e->id)->get();
 
-			$voteOpen= 0;
+			$voteOpen = 0;
 			$voted = Vote::where('user_id','=', $userID)->where('event_id','=',$e->id)->first();
+			$closed = Event::where('id', '=', $e->id)->first();
 			if(empty($voted)){
-				//return "voting is opne";
+				//return "voting is open";
 				$voteOpen = 1;
+			}
+			if($closed->location != 'To Be Decided'){
+				$voteOpen = 2;
 			}
 			//decide on showing location poll
 			$locations = $e->location;
