@@ -38,8 +38,8 @@
 		</div>
 
 		<div class="col s9">
-			@foreach ($events as $event)
 			<p>{{ $msg }}</p>
+			@foreach ($events as $event)
 			<div class="card small" id="browse">
 				<div class="card-image left" id="browse_card">
 					<img class="responsive-img" src="{{ asset('images/events/').'/'.$event->id.'.'.$event->image }}">
