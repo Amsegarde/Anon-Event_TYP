@@ -94,13 +94,12 @@ class TicketController extends Controller {
 			$num = Ticket::where('order_number', '=', $OrderNumber)->get();
 		} 
 
-		$size = count($type);
+		$size = count($totalQuantity);
 		for($i = 0; $i< $size; $i++) { 
 			$newTicket = Ticket::create([
 						'user_id' 	=> $userID,
 						'event_id' 	=> $request->eventID,
 						'type'		=> $type[$i],
-						'quantity'	=> $quantity[$i],
 						'order_number' => $OrderNumber
 						
 			]);

@@ -331,6 +331,10 @@
 								        	<input readonly value="Quantity" id="disabled" type="text">
 								        </div>
 									</div>
+									<div class="row">
+										<table id="dynamic-tickets" class="ticket-table col s12"></table>
+										<input type="button" class="btn col s8 offset-s2"value="Add Ticket" onClick="addTicket('dynamic-tickets');">
+									</div>
 
 									@foreach ($tickets as $ticket)
 
@@ -431,5 +435,43 @@
 		// For the Rich Text Editor
 		CKEDITOR.replace( 'bio' );
 
+		function addTicket(divName){
+	    	if (ticketCounter == 10)  {
+	    		alert("You may only add " + counter + " tickets");
+	    	}
+	    	else {
+	    		var newhead = document.createElement('tr');
+	    		var newrow = document.createElement('tr');
+	    		newrow.setAttribute('id','ticket' + nextTicket);	
+	    		newhead.setAttribute('id','tickethead');
+	    	}
+	    	if (ticketCounter == 0) {
+	    		newhead.innerHTML ='<th>Type</th><th>Price</th><th>Remove</th>';
+	    		document.getElementById(divName).appendChild(newhead);				
+
+	    	} 
+	    	newrow.innerHTML =	'<td>'+
+		    	'<select class="ticketSelect" name="tickets[]">'+
+		    	'<option value="free">Free</option>'+
+		    	'<option value="paid">Paid</option>'+
+		    	'<option value="students">Students</option>'+
+		    	'<option value="oap">OAP</option>'+
+		    	'<option value="early_bird">Early Bird</option>'+
+		    	'<option value="rsvp">R.S.V.P</option>'+
+		    	'</select>'+
+		    	'</td>	'+
+		    	'<td>'+
+		    	'<div class="form-group">'+
+		    	'<input type="number" name="tickets[]" step="0.50" class="form-control" />'+
+		    	'</div>'+
+		    	'</td>'+
+		    	'<td>'+
+		    	'<input type="button" step="0.50" class="btn" value="-" onClick="removeTicket(ticket'+ nextTicket+');" />'+
+		    	'</td>';
+
+	    	document.getElementById(divName).appendChild(newrow);  
+	    	ticketCounter++;
+	    	nextTicket++;
+	    }
 	</script>
 @endsection
