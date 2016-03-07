@@ -17,8 +17,8 @@ class CreateTicketsTable extends Migration {
 			$table->increments('id');
 			$table->integer('user_id');
 			$table->integer('event_id');
-			$table->integer('type');
-			$table->integer('quantity');
+			$table->integer('type')->nullable();
+			$table->integer('quantity')->nullable();
 			$table->integer('order_number');
 			$table->timestamps();
 		});

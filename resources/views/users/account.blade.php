@@ -92,7 +92,7 @@
 															
 								<!-- Submit Button -->
 								<div class="input-field col s12">
-									{!! Form::submit('Update Details!', array('class'=>'btn indigo lighten-1')) !!} 
+									{!! Form::submit('Update Details!', array('class'=>'btn')) !!} 
 								</div>
 							</div>
 						{!! Form::close() !!}

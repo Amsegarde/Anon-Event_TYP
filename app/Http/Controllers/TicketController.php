@@ -196,7 +196,6 @@ class TicketController extends Controller {
 		$itinID = $request->itinIDs;
 		$amount = $request->amount;
 		$mailTickets = array();
-
 		$OrderNumber = mt_rand(100000000, 999999999);
 		$num = Ticket::where('order_number', '=', $OrderNumber)->get();
 
@@ -213,6 +212,7 @@ class TicketController extends Controller {
 
 		$size = count($type);
 		for($i = 0; $i< $size; $i++) { 
+
 			$newTicket = Ticket::create([
 						'user_id' 	=> $userID,
 						'event_id' 	=> $request->eventID,
@@ -324,6 +324,10 @@ class TicketController extends Controller {
 			array_push($mailTickets, $newTicket);
 		}
 
+		$event = Event::findOrFail($request->eventID);
+		$organises = Organise::findOrFail($event->id);
+		$organisation = Organisation::findOrFail($organises->organisation_id);
+		
 		Mail::send('emails.tickets',
 	       array(
 	            'email' => Auth::user()->email,

@@ -92,6 +92,13 @@
 									{!! Form::hidden('request', $tickets) !!}
 									{!!	Form::hidden('totalQuantity', $totalQuantity) !!}
 									{!!	Form::hidden('totalPrice', $totalPrice) !!}
+									@for ($i = 0; $i < count($totals); $i++)
+										@if ($quantity[$i] > 0)
+											{!!	Form::hidden('type[]', $type[$i]) !!}
+											{!!	Form::hidden('price[]', $price[$i]) !!}
+											{!!	Form::hidden('quantity[]', $quantity[$i]) !!}
+										@endif
+									@endfor
 
 								<div class="row col s6" id="first-name-group">
 									{!! Form::label('firstName', 'First Name:') !!}
