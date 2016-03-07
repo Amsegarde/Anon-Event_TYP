@@ -20,10 +20,11 @@ class CreateEventsTable extends Migration {
 			$table->string('image');
 			$table->dateTime('start_date')->nullable();
 			$table->dateTime('end_date')->nullable();
+			$table->time('time')->nullable();
 			$table->string('location')->nullable();
 			$table->integer('no_tickets');
 			$table->integer('avail_tickets');
-			$table->integer('price');
+			//$table->integer('price');
 			$table->string('genre');
 			//active is zero if polls arent used. one if polls are in progress and 2 if poll is closed
 			$table->integer('active');

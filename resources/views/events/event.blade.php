@@ -95,6 +95,8 @@
 						{!!  Form::hidden('eventID', $event->id) !!}
 						@if($voteOpen == 1)
 							{!! Form::submit('Vote', array('class'=>'btn')) !!}
+						@elseif($voteOpen == 2)
+							<p></p>
 						@else
 							<p>Your vote has been logged</p>
 						@endif
@@ -258,7 +260,7 @@
 
 										<!-- Submit Button -->
 									<div class="input-field col s12">
-										<!-- {!! Form::submit('Update Event!', array('class'=>'btn')) !!} -->
+										{!! Form::submit('Update Event!', array('class'=>'btn')) !!}
 									</div>
 								</div>
 							{!! Form::close() !!}
@@ -310,7 +312,7 @@
 
 						<!-- Modal Structure -->
 						<div id="modal1" class="modal">
-					    	<div class="modal-content">
+					    	<div class="modal-content" id="ticketTable">
 						    	{!! Form::open(array('url' => 'events/' . $event->id . '/ticket/confirm', 'class' => 'form')) !!}
 									{!!  Form::hidden('eventID', $event->id) !!}
 									{!!  Form::hidden('eventName', $event->name) !!}
@@ -428,6 +430,6 @@
 		
 		// For the Rich Text Editor
 		CKEDITOR.replace( 'bio' );
-
+		
 	</script>
 @endsection

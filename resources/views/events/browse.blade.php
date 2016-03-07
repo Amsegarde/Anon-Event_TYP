@@ -16,8 +16,16 @@
 
 					<div class="input-field col s12">
 						<p class="range-field">
+							Min Price
+					    	<input type="range" name='minPrice' id="test5" min="0" max="200" value='0' />
+					    </p>
+					</div>
+
+
+					<div class="input-field col s12">
+						<p class="range-field">
 							Max Price
-					    	<input type="range" name='price' id="test5" min="0" max="100" />
+					    	<input type="range" name='maxPrice' id="test5" min="0" max="200" value='200' />
 					    </p>
 					</div>
 
@@ -48,14 +56,13 @@
 		<p>{{ $msg }}</p>
 			@foreach ($events as $event)
 				<a href="{{ url('/events/'.$event->id) }}">
-					
 					<div class="card small" id="browse">
 						<div class="card-image left" id="browse_card">
 							<img class="responsive-img" src="{{ asset('images/events/').'/'.$event->id.'.'.$event->image }}">
 						</div>
 						<div class="right-content">
 							<div class="card-content">
-								<p>Date: {{ $event->start_date }}</p>
+								<p>Date: {{ date('F d, Y', strtotime($event->start_date)) . ' ' . date('g:i a', strtotime($event->time)) }}</p>
 								<p>Location: {{ $event->location }}</p>
 								<span class="card-title">{{ $event->name }}</span>
 							</div>
