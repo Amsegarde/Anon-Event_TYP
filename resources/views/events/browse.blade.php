@@ -10,7 +10,7 @@
 				{!! Form::open(array('url' => 'events')) !!}
 
 					<div class="input-field col s12">
-						{!! Form::label('location', 'Location') !!}
+						{!! Form::label('location', 'location') !!}
 						{!! Form::text('location') !!}
 					</div>
 
@@ -45,23 +45,26 @@
 		</div>
 
 		<div class="col s9">
+		<p>{{ $msg }}</p>
 			@foreach ($events as $event)
-			<p>{{ $msg }}</p>
-			<div class="card small" id="browse">
-				<div class="card-image left" id="browse_card">
-					<img class="responsive-img" src="{{ asset('images/events/').'/'.$event->id.'.'.$event->image }}">
-				</div>
-				<div class="right-content">
-					<div class="card-content">
-						<p>Date: {{ $event->start_date }}</p>
-						<p>Location: {{ $event->location }}</p>
-						<span class="card-title">{{ $event->name }}</span>
+				<a href="{{ url('/events/'.$event->id) }}">
+					
+					<div class="card small" id="browse">
+						<div class="card-image left" id="browse_card">
+							<img class="responsive-img" src="{{ asset('images/events/').'/'.$event->id.'.'.$event->image }}">
+						</div>
+						<div class="right-content">
+							<div class="card-content">
+								<p>Date: {{ $event->start_date }}</p>
+								<p>Location: {{ $event->location }}</p>
+								<span class="card-title">{{ $event->name }}</span>
+							</div>
+							<div class="card-action">
+								<a href="{{ url('/events/'.$event->id) }}">Get Tickets</a>
+							</div>
+						</div>
 					</div>
-					<div class="card-action">
-						<a href="{{ url('/events/'.$event->id) }}">Get Tickets</a>
-					</div>
-				</div>
-			</div>
+				</a>
 			@endforeach
 		</div>
 

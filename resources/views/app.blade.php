@@ -111,20 +111,51 @@
 				flex-direction: column;
 				/*background: #e8eddf !important;*/
 			}
-
+			a {
+				color: #f5cb5c !important;
+			}
 			footer {
 				background: #333533 !important;
 			}
-
+			footer a{
+				color: #e8eddf !important;
+			}
 			main {
 				flex: 1 0 auto;
 			}
-
 			.btn {
 				background: #f5cb5c !important;
-				color: #242423 ;
+				color: #242423 !important;
+			}
+			.card-title{
+				color: #333533 !important;
+			}
+			.picker__date-display{
+				background: #f5cb5c !important;
+				color: #242423 !important;
 			}
 
+			.picker__weekday-display{
+				background: #333533 !important;
+				color: #f5cb5c !important;
+			}
+			.picker__close, .picker__today{
+				color: #f5cb5c !important;
+			}
+			.picker__day.picker__day--today{
+				color: #f5cb5c !important;
+			}
+			.picker__day--selected, .picker__day--selected:hover, .picker--focused .picker__day--selected{
+				background: #333533 !important;
+			}
+			[type="checkbox"]+label{
+				color: #f5cb5c !important;
+			}
+			[type="checkbox"]:checked+label:before{
+				color: #f5cb5c !important;
+				border-right: 2px solid #f5cb5c; 
+    			border-bottom: 2px solid #f5cb5c; 
+			}
 			.title {
 				color: #333533 !important;
 			}
@@ -134,6 +165,22 @@
 			.card{
 				background: #e8eddf !important;
 			}
+
+			.badges {
+				border: 1px dashed black;
+			}
+
+			.event_title{
+				color: #f5cb5c !important;
+			}
+
+			.capitalize {
+				text-transform: capitalize;
+			}
+
+
+
+
 		</style>
 
 	</head>
@@ -163,7 +210,7 @@
 		<div class="navbar">
 			<nav class="z-depth-0">
 				<div class="nav-wrapper z-depth-0" >
-					<a href="{{ url('/') }}" class="brand-logo"><img src="{{ asset('/images/logo.jpg') }}" style="width:150px; height:80px;"></a>
+					<a href="{{ url('/') }}" class="brand-logo"><img src="{{ asset('/images/logo.png') }}" style="width:150px; height:80px;"></a>
 					<a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
 					<ul class="right hide-on-med-and-down">
 						<li><a href="{{ url('/') }}">Home</a></li>
@@ -249,7 +296,7 @@
 						</div>
 
 						<div class="input-field">
-							{!! Form::submit('Login', ['class'=>'btn indigo lighten-1']) !!}
+							{!! Form::submit('Login', ['class'=>'btn']) !!}
 						</div>
 
 						<div class="input-field">
@@ -286,15 +333,24 @@
 		</main>
 
 		<footer class="page-footer">
+			<div class="container">
+			<div class="footer-about">
+				<div><a href="{{ url('about') }}">About</a></div>
+				<div><a href="{{ url('about/contact') }}">Contact us</a></div>
+			</div>
+			</div>
 			<div class="footer-copyright">
 				<div class="container">
 					© 2016 Copyright Anon-Event
 					<a class="right" href="#!"></a>
+					
 				</div>
 			</div>
+			
 		</footer>
 
 	<script>
+
 		$(document).ready(function() {
 			$('select').material_select();
 			$('.modal-trigger').leanModal();

@@ -17,7 +17,7 @@
 				@endforeach
 			</ul>
 		@endif
-
+		<h1>Create A New Organisation</h1>
 		<!-- This is the create organisation form -->
 		{!! Form::open(array('url'=>'organisation','method'=>'POST', 'files'=>true, 'class'=>'col s12')) !!}
 			<div class="row">

@@ -44,12 +44,13 @@ Route::get('events/{id}','EventController@show');
 Route::post('events/{id}', 
 	['as' => 'contact_attendees', 'uses' => 'EventController@sendMessage']);
 
-Route::get('events/{id}/badges', 'EventController@printBadges');
-
+Route::get('events/{id}/badges', 'EventController@badges');
+Route::get('events/{id}/badges/print', 'EventController@printBadges');
 
 Route::post('vote','EventController@vote');
 Route::post('date_vote','EventController@date_vote');
-
+Route::post('close_loc_vote', 'EventController@close_loc_vote');
+Route::post('close_date_vote', 'EventController@close_date_vote');
 Route::get('organisation/create', 'OrganisationController@create');
 Route::get('organisation/dashboard', 'OrganisationController@dashboard');
 Route::get('organisation', 'OrganisationController@index');
@@ -71,8 +72,7 @@ Route::post('tickets',
 	['as' => 'store_tickets', 'uses' => 'TicketController@store']);
 Route::get('tickets/{id}', 'TicketController@show');
 
-Route::get('ticket/{id}/print', 
-	['as' => 'ticket_print', 'uses' => 'TicketController@helloWorld']);
+Route::get('tickets/{id}/print', 'TicketController@printTickets');
 
 Route::post('ticket/{id}/contact', 
 	['as' => 'contact_organisation', 'uses' => 'OrganisationController@contact']);

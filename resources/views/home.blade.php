@@ -48,15 +48,7 @@
 @endsection
 
 @section('content')
-<div class="section">
-	<div class="row">
-		<div class="col s4">
-			<h4>Upcoming Events</h4>
-		</div>
-	</div>
-</div>
 
-<div class="divider"></div>
 
 <div class="row">
 	<h4>Upcoming Events</h4>
@@ -64,15 +56,15 @@
 	<div class="card small col s4">
 		<div class="card-image">
 			<img class="responsive-img" src="{{ asset('images/events/').'/'.$event->id.'.'.$event->image }}">
-			<span class="card-title">{{ $event->name }}</span>
+			
 		</div>
 			<div class="card-content">
+				<span class="card-title">{{ $event->name }}</span>
 				<p>{!! $event->start_date !!}</p>
 				<p>{!! $event->bio !!}</p>
 		</div>
 		<div class="card-action">
-			<a href="">Favourite link</a>
-			<a href="{{ url('/events/'.$event->id) }}">Tickets link</a>
+			<a href="{{ url('/events/'.$event->id) }}">More Info</a>
 		</div>
 	</div>
 	@endforeach

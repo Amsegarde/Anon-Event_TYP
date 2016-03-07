@@ -409,12 +409,26 @@ class OrganisationController extends Controller {
 		$id = $request->organisationID;
 
 		$name = $request->name;
-		$bio = $request->bio;
+		$bio = $request->orgBio;
+		$image = null;
+		if (Input::file('image')){
+			$imageFile = Input::file('image');
+			$imageName = $id . '.' . $imageFile->getClientOriginalExtension(); 
+			$destinationPath = base_path() . '/public/images/organisations/';
+
+			Input::file('image')->move($destinationPath, $imageName);
+			$image = $imageFile->getClientOriginalExtension();
+		
+		} else {
+			return 'false';
+		}
 
 		$updateDetails = Organisation::where('id', '=', $id)
             						->update([
             							'name' => $name,
-            							'bio' => $bio]);
+            							'bio' => $bio,
+            							'image' => $image
+        ]);
        	return $this->show($id);
 	}
 

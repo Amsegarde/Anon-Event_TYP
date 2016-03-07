@@ -200,9 +200,7 @@
 <script type="text/javascript">	
 	// For the Rich Text Editor
 	CKEDITOR.replace( 'bio' );
-
-	//start_date = new Date();
-
+	var numDateSugg = 0;
     // Select Menu woring
     $(document).ready(function() {
     	start_date = 0;
@@ -211,7 +209,7 @@
 		// Datepicker working - uses pickadate.js
 		$('.start_datepicker').pickadate({
 			selectMonths: false, // Creates a dropdown to control month
-			selectYears: 15, // Creates a dropdown of 15 years to control year
+			selectYears: 15, // Creates a dropdofwn of 15 years to control year
 			min: true,
 			onSet: function(context) {
 				start_date = (context.select)
@@ -245,36 +243,40 @@
     		var newdiv = document.createElement('div');
     		newdiv.setAttribute('id','itinItem'+counter);
        		//counter++;
-       		newdiv.innerHTML =
-       		"<div class='input-field col s12'>"+
-       		"<label for='item["+itemElement+"]'>Name</label>"+
-       		"<input type='text' name='item["+itemElement+"]'></div>"+
 
-       		"<div class='input-field col s12'>"+
-       		"<label for='item["+(itemElement+1)+"]'>Description</label>"+
-       		"<textarea id='bio' name='item["+(itemElement+1)+"]' class='materialize-textarea'length='500'></textarea></div>"+
+        	newdiv.innerHTML =
+        				"<div class='input-field col s12'>"+
+						"<label for='item["+itemElement+"]'>Name</label>"+
+						"<input type='text' name='item["+itemElement+"]'></div>"+
+					
+						"<div class='input-field col s12'>"+
+						"<label for='item["+(itemElement+1)+"]'>Description</label>"+
+						"<textarea id='bio' name='item["+(itemElement+1)+"]' class='materialize-textarea'length='500'></textarea></div>";
+						console.log(numDateSugg);
+				if(numDateSugg == 0){
+					newdiv.innerHTML +=
+						"<div class='input-field col s12'>"+
+						"<label for='item["+(itemElement+2)+"]'>Date</label>"+
+						"<input type='date' class='start_datepicker' name='item["+(itemElement+2)+"]' placeholder='Date'></div>";
+				}
+					newdiv.innerHTML +=
+						"<div class='input-field col s6'>"+
+						"<label for='item["+(itemElement+3)+"]'>Cost(optional)</label>"+
+						"<input type='number' name='item["+(itemElement+3)+"]'></div>"+
 
-       		"<div class='input-field col s12'>"+
-       		"<label for='item["+(itemElement+2)+"]'>Date</label>"+
-       		"<input type='date' class='start_datepicker' name='item["+(itemElement+2)+"]' placeholder='Date'></div>"+
+						"<div class='input-field col s6'>"+
+						"<label for='item["+(itemElement+4)+"]'>Capacity</label>"+
+						"<input type='number' name='item["+(itemElement+4)+"]'></div>"+
 
-       		"<div class='input-field col s6'>"+
-       		"<label for='item["+(itemElement+3)+"]'>Cost(optional)</label>"+
-       		"<input type='number' name='item["+(itemElement+3)+"]'></div>"+
+						"<div class='input-field col s6'>"+
+						"<input type='checkbox' id='checkbox"+(itemElement+5)+"' name='item["+(itemElement+5)+"]' value='true'><label for='checkbox"+(itemElement+5)+"'>Pre-booked?</label></div>"+
 
-       		"<div class='input-field col s6'>"+
-       		"<label for='item["+(itemElement+4)+"]'>Capacity</label>"+
-       		"<input type='number' name='item["+(itemElement+4)+"]'></div>"+
-
-       		"<div class='input-field col s6'>"+
-       		"<input type='checkbox' id='checkbox"+(itemElement+5)+"' name='item["+(itemElement+5)+"]' value='true'><label for='checkbox"+(itemElement+5)+"'>Pre-booked?</label></div>"+
-
-       		"<div class='input-field col s6'>"+
-       		"<input type='button' class='btn' value='Remove Itinerary Item' onClick='removeInput(itinItem"+counter+");'></div>";
-       		counter++;
-       		itemElement+=6;
-       		document.getElementById(divName).appendChild(newdiv);     
-       		$('select').material_select();
+						"<div class='input-field col s6'>"+
+						"<input type='button' class='btn' value='Remove Itinerary Item' onClick='removeInput(itinItem"+counter+");'></div>";
+			counter++;
+			itemElement+=6;
+        	document.getElementById(divName).appendChild(newdiv);     
+        	$('select').material_select();
 
 			// Datepicker working - uses pickadate.js
 			$('.start_datepicker').pickadate({
@@ -389,37 +391,38 @@
     }   
 
 //***************************Date Toggle, add and remove********************    	
-var datePolled = false;
-var numDateSugg = 0;
-var nextDateID = 1;
 
-function toggleDatePoll(e){
+	var datePolled = false;
+	
+	var nextDateID = 1;
+
+	function toggleDatePoll(e){
 
 
-	if(!datePolled){
-		datePolled = true;
-		numDateSugg = 1
-		document.getElementById('dates').innerHTML="<div id='dateSuggestion"+nextDateID+"'>"
-		+	"<div class='input-field col s6'>"
-		+		"<input type='date' class='start_datepicker' name='start_date[]' placeholder='Start Date'>"
-		+	"</div>"
-		+	"<div class='input-field col s6'>"
-		+		"<input type='date' class='end_datepicker' name='end_date[]' placeholder='End Date'>"
-		+	"</div>"	
-		+"</div>"
-		+"<input type='button' id='addDateButton' class='btn col s4 offset-s1'value='Add Date Suggestion' onClick='addDateSuggestion(dates);'>"
-		+"<input type='button' class='btn col s4 offset-s2'value='Remove Poll' onClick='toggleDatePoll(dates);'>";
-	}else{
-		datePolled = false;
-		numDateSugg = 0;
-		document.getElementById('dates').innerHTML="<div class='input-field col s6'>"
-		+		"<input type='date' class='start_datepicker' name='start_date[]' placeholder='Start Date'>"
-		+	"</div>"
-		+	"<div class='input-field col s6'>"
-		+		"<input type='date' class='end_datepicker' name='end_date[]' placeholder='End Date'>"
-		+	"</div>"	
-
-		+"<input type='button' class='btn col s12'value='Open Date Suggestion' onClick='toggleDatePoll(dates);'>";
+		if(!datePolled){
+			datePolled = true;
+			numDateSugg = 1
+			document.getElementById('dates').innerHTML="<div id='dateSuggestion"+nextDateID+"'>"
+    										+	"<div class='input-field col s6'>"
+											+		"<input type='date' class='start_datepicker' name='start_date[]' placeholder='Start Date'>"
+											+	"</div>"
+											+	"<div class='input-field col s6'>"
+											+		"<input type='date' class='end_datepicker' name='end_date[]' placeholder='End Date'>"
+											+	"</div>"	
+           									+"</div>"
+           									+"<input type='button' id='addDateButton' class='btn col s4 offset-s1'value='Add Date Suggestion' onClick='addDateSuggestion(dates);'>"
+					 						+"<input type='button' class='btn col s4 offset-s2'value='Remove Poll' onClick='toggleDatePoll(dates);'>";
+    	}else{
+			datePolled = false;
+			numDateSugg = 0;
+			document.getElementById('dates').innerHTML="<div class='input-field col s6'>"
+											+		"<input type='date' class='start_datepicker' name='start_date[]' placeholder='Start Date'>"
+											+	"</div>"
+											+	"<div class='input-field col s6'>"
+											+		"<input type='date' class='end_datepicker' name='end_date[]' placeholder='End Date'>"
+											+	"</div>"	
+           								
+					 						+"<input type='button' class='btn col s12'value='Open Date Suggestion' onClick='toggleDatePoll(dates);'>";
 			//nextDateID++;
 		}
 
@@ -441,17 +444,18 @@ function toggleDatePoll(e){
 	}
 	function addDateSuggestion(num){
 		numDateSugg++;
+		console.log(numDateSugg);
 		var nextDateSugg = document.createElement('div');
 		nextDateSugg.setAttribute('id','dateSuggestion'+nextDateID);
 
 		nextDateSugg.innerHTML="<div class='input-field col s6'>"
-		+		"<input type='date' class='start_datepicker' name='start_date[]' placeholder='Start Date'>"
-		+	"</div>"
-		+	"<div class='input-field col s6'>"
-		+		"<input type='date' class='end_datepicker' name='end_date[]' placeholder='End Date'>"
-		+"<input type='button' class='btn' value='Remove Suggestion put here by add' onClick='removeDateSuggestion(dateSuggestion"+nextDateID+");'/>";
-		+	"</div>"
-		nextDateID++;   									
+											+		"<input type='date' class='start_datepicker' name='start_date[]' placeholder='Start Date'>"
+											+	"</div>"
+											+	"<div class='input-field col s6'>"
+											+		"<input type='date' class='end_datepicker' name='end_date[]' placeholder='End Date'>"
+					 						+"<input type='button' class='btn' value='Remove Suggestion' onClick='removeDateSuggestion(dateSuggestion"+nextDateID+");'/>";
+											+	"</div>"
+        nextDateID++;   									
 		num.insertBefore(nextDateSugg, addDateButton);
 		$('.start_datepicker').pickadate({
 			selectMonths: false, // Creates a dropdown to control month
