@@ -58,6 +58,15 @@
 			<div class="input-field col s12">
 				<textarea name="bio" id="bio" class="materialize-textarea" length="2000"></textarea>
 			</div>
+
+			<div class='input-field col s3'>
+				{!! Form::label('Start Time:')!!}
+			</div>
+
+			<div class='input-field col s9'>
+				{!! Form::input('time', 'time', '00:00') !!}
+			</div>
+
 			<div id="dates" class="col s12">
 				<div class="input-field col s6">
 					<input type="date" class="start_datepicker" name="start_date[]" placeholder="Start Date">

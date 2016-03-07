@@ -120,13 +120,13 @@ public function close_date_vote(Request $request){
 
 		$newEvent->name = $request->name;
 		$newEvent->bio = $request->bio;
-
+		$newEvent->time = $request->time;
 		// $newEvent->start_date = $start_date->toDateTimeString();
 		// $newEvent->end_date = $end_date->toDateTimeString();
 		// $newEvent->Location = $request->location;
 		$newEvent->no_tickets = $request->no_tickets;
 		$newEvent->avail_tickets = $request->no_tickets;
-		$newEvent->price = 0;
+		//$newEvent->price = 0;
 		$newEvent->genre = $request->genre;
 		$newEvent->scope = $request->scope;
 
@@ -263,7 +263,7 @@ public function close_date_vote(Request $request){
 			// echo "2";
 			if ($request->location){
 				// echo "3";
-				$events = Event::where('location', 'Like', $request->location)
+				$events = Event::where('location', 'like', '%' . $request->location . '%')
 						->where('start_date', '<', Carbon::now())->get();
 			} 
 
@@ -309,40 +309,50 @@ public function close_date_vote(Request $request){
 		//needs to be relevant events not just all.
 		$events = new Event;
 
+		// echo "1";
 		if (!empty($request->all())) {
+			// echo "2";
 			if ($request->location){
-				$events = Event::where('location', 'like', $request->location)->first();
-				return $events->location;				
+				// echo "3";
+				$events = Event::where('location', 'like', '%' . $request->location . '%')
+						->where('start_date', '>=', Carbon::now())->get();
 			}
 
 			if ($request->date) {
+				// echo "4";
 				$carbon = new Carbon;
 				$searchDate = $carbon->createFromFormat('j F, Y', $request->date);
-				$events = Event::where('start_date', '>=', $searchDate);
-						//->where('start_date', '>=', Carbon::now())->get();
+				$events = Event::where('start_date', '>=', $searchDate)
+						->where('start_date', '>=', Carbon::now())->get();
 			}
 
 			if ($request->genre) {
+				// echo "5";
 				$events = Event::where('genre','=', $request->genre)
 						->where('start_date', '>=', Carbon::now())->get();
 			}
 
-			if ($request->price){
-				// $events = Event::where('price', '<=', $request->price)
-				// 		->where('start_date', '>=', Carbon::now())->get();
+			if ($request->minPrice && $request->maxPrice) {
+				// echo "6";
+				$events = Event::where('price', '>=', $request->minPrice)
+							->where('price', '<=', $request->maxPrice)->get();
+							//->where('start_date', '>=', Carbon::now())->get();
 			}
 		} else {
-			$events = Event::where('start_date', '<', Carbon::now())->get();
+			// echo "7";
+			$events = Event::where('start_date', '>=', Carbon::now())->get();
 		}
-
+		//if (count($events) == 0) {
 		if (count($events) == 0) {
+			// echo "8";
 			$msg = 'No Events match your search';
 			$events = Event::where('start_date', '>=', Carbon::now())->get();
 		}
 		else {
+			// echo "9";
 			$msg = count($events) . " event(s) found";
 		}
-		
+
 		$genre = Category::all();
 		return view('events.browse', compact('events', 'genre', 'msg'));
 	}
