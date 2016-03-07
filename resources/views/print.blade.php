@@ -117,6 +117,14 @@
 				border: 1px dashed black;
 			}
 
+			.ticketbox {
+				border: 1px solid black;
+			}
+
+			.capitalize {
+				text-transform: capitalize;
+			}
+
 		</style>
 
 	</head>

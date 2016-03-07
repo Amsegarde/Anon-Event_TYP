@@ -411,17 +411,16 @@ class OrganisationController extends Controller {
 		$name = $request->name;
 		$bio = $request->orgBio;
 		$image = null;
-
-		if (Input::hasFile('image')){
+		if (Input::file('image')){
 			$imageFile = Input::file('image');
 			$imageName = $id . '.' . $imageFile->getClientOriginalExtension(); 
-
 			$destinationPath = base_path() . '/public/images/organisations/';
 
 			Input::file('image')->move($destinationPath, $imageName);
 			$image = $imageFile->getClientOriginalExtension();
-			return $image;
 		
+		} else {
+			return 'false';
 		}
 
 		$updateDetails = Organisation::where('id', '=', $id)

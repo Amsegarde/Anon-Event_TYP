@@ -3,21 +3,24 @@
 @section('content')
 	
 				
-
+<div class="row">
 		@foreach ($organisations as $organisation) 
-			<div class="col s5 offset-s1">
-				<a href="{{ url('organisation/' . $organisation->id) }}">
-					{{-- <div class="card small"> --}}	
-						
-							<img class="responsive-img" src="{{ asset('images/organisations/').'/'. $organisation->id.'.'.$organisation->image }}">
-
-								<h3>{{ $organisation->name }}</h3>		
-
-					{{-- </div> --}}
-				</a>
-			</div>
+			<a href="{{ url('organisation/' . $organisation->id) }}">
+				
+					<div class="col s3">	
+						<div class="card">
+							<div class="card-content">
+								<div  class="card-image" id="blur">
+									<img class="responsive-img left" src="{{ asset('images/organisations/').'/'. $organisation->id.'.'.$organisation->image }}">
+								</div>
+								<h4 align="middle">{{ $organisation->name }}</h4>	
+							</div>
+						</div>	
+					</div>
+				
+			</a>
 		@endforeach
 
-
+</div>
 
 @endsection

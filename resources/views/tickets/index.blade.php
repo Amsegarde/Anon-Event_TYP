@@ -6,7 +6,7 @@
 	<div class="row">
 		<div class="col-md-10 col-md-offset-1">
 			<div class="panel panel-default">
-				<div class="panel-heading">Your Tickets</div>
+
 
 
 					@if (Auth::guest())
@@ -15,14 +15,16 @@
 					@else
 						@foreach ($tickets as $ticket) 
 							<a href="{{ url('/tickets/'.$ticket->id )}}">
-								<article style="background-color:pink">
-									<h2>{{ $ticket->name }}</h2>
-									<p>{{ $ticket->type }}</p>
-									<p>{{ $ticket->quantity }}</p>
-									<h7>Date: {{ $ticket->start_date }} | Order No: {{ $ticket->order_number }}</h7>
-									
-									<h7>| Details: {{ $ticket->location }}</h7>
-								</article>
+								<div class="col s12" style="border: 1px solid #cfdcd5; margin-bottom: 15px;">
+									<h2 style="float:left;">{{ $ticket->name }}</h2>
+									<p style="float:right;">{!! QrCode::margin(1)->size(100)->generate('Event Name: ' . $ticket->name . ' | Date ' . $ticket->start_date . ' | Location: ' . $ticket->location . ' | Order Number: ' . $ticket->order_number . ' | Qrcode generator') !!}<p>
+									<p class="capitalize" style="clear:both;">Type: {{ $ticket->type }}</p>
+									<p style="clear:both;">Quantity: {{ $ticket->quantity }}</p>
+									<h7 style="clear:both;">Date: {{ $ticket->start_date }} | Order No: {{ $ticket->order_number }}</h7>								
+									<h7 style="clear:both;">| Details: {{ $ticket->location }}</h7>
+
+
+								</div>
 							</a>
 						@endforeach
 
