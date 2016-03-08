@@ -362,21 +362,12 @@
     		locationPolled = true;
     		numOfSuggestions = 1;
     		document.getElementById('locations').innerHTML=
-<<<<<<< HEAD
     										"<div id='locationSuggestion"+next_ID+"'>"
     										+"<label for='location'>Enter Location Suggestion</label>"
          									+"<input type='text' name='location[]'>"
            									+"</div>"
            									+"<input type='button' id='addButton' class='btn col s4 offset-s1' value='Add Suggestion' onClick='addSuggestion(locations);'>"
 					 						+"<input type='button' class='btn col s4 offset-s2' value='Remove Poll' onClick='togglePoll(locations);'>";
-=======
-    		"<div id='locationSuggestion"+next_ID+"'>"
-    		+"<label for='location'>Enter Location Suggestion</label>"
-    		+"<input type='text' name='location[]'>"
-    		+"</div>"
-    		+"<input type='button' id='addButton' class='btn col s4 offset-s1' value='Add Suggestion' onClick='addSuggestion(locations);'>"
-    		+"<input type='button' class='btn col s4 offset-s2' value='Remove Poll' onClick='togglePoll(locations);'>";
->>>>>>> f27a0420ea0527badf02be317f10805fd21c0c3c
     	}else{
     		locationPolled = false;
     		numOfSuggestions = 0;

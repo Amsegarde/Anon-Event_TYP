@@ -411,20 +411,11 @@ public function close_date_vote(Request $request){
 			$dateSuggs = DateSuggestion::where('event_id','=', $e->id)->get();
 			
 
-			return view('events.event', compact(
-				'event', 
-				'voteOpen',
-				'organisation',
-				'isAdmin',
-				'tickets',
-				'locationSuggs',
-				'itinArrays',
-				'itinerary',
-				'dateSuggs'
-			));
+			
 
 
 			if ($event->start_date >= Carbon::now()) { // All active events
+				// echo "1";
 				return view('events.event', compact(
 					'event', 
 					'voteOpen',
@@ -432,18 +423,17 @@ public function close_date_vote(Request $request){
 					'isAdmin',
 					'tickets',
 					'locationSuggs',
-					'itin',
 					'itinArrays',
 					'itinerary',
 					'dateSuggs'
 				));
 			} else { // all past events
+				//echo "2";
 				$medias = Media::where('event_id', '=', $e->id)->get();
 				return view('events.past', compact(
 					'event', 
 					'organisation',
 					'isAdmin',
-					'itin',
 					'itinArrays',
 					'itinerary',
 					'medias'
@@ -590,12 +580,20 @@ public function close_date_vote(Request $request){
 	}
 
 	public function media(Request $request) {
+		echo "here";
+		$this->validate($request, [
+			'image' => 'mimes:png|mimes:jpg|mimes:jpeg',
+			'video' => 'mimes:mp4'
+			]);
+
 		$media = new Media;
 
 		$media->event_id = $request->event_id;
 		$media->user_id = $request->user_id;
 		$media->flagged = false;
 		$media->save();
+
+		echo $media;
 
 		if (Input::hasFile('image')){
 			$uploadFile = Input::file('image');
@@ -610,7 +608,22 @@ public function close_date_vote(Request $request){
 		}
 		$media->save();
 
-		return redirect::back()->with('message', 'Media Uploaded');
+		if (Input::hasFile('video')){
+			$uploadFile = Input::file('image');
+			$filename = $media->id . '.' . $uploadFile->getClientOriginalExtension(); 
+
+			$destinationPath = base_path() . '/public/images/media/';
+
+			Input::file('image')->move($destinationPath, $filename);
+			$media->media = $uploadFile->getClientOriginalExtension();	
+		} else {
+			$media->media = '';
+		}
+		$media->save();
+
+		// Youtube link
+
+		//return redirect::back()->with('message', 'Media Uploaded');
 
 	}
 

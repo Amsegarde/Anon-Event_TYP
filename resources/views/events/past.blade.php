@@ -20,14 +20,6 @@
 @endsection
 
 @section('content')
-	
-<!-- ToDo 
-	Event description etc
-	Upoad media
-	Display media
-
-	Have admin for media
- -->
  	<div class="row" id="event_body" style="margin-top: -60px; background: white;">
 		<div class="col s12">
 			<div class="row">
@@ -45,14 +37,11 @@
 					</div>
 					<!-- Itinerary -->
 					<div class="col s12">
-							@foreach ($itin as $it)
+							@foreach ($itinArrays as $itinArray)
 								<div class="col s8 offset-s2">
-									<h5 align="middle">{!! $it->name !!}</h5>
-									<p>Date: {{ $it->date }}</p> 
-									<!-- <p>Time: {{ $it->time }}</p> -->
-									<p>{{ $it->blurb }}</p>
-									<p>The Cost of the extra event is €{{ $it->cost }}</p>
-									<p>There is limited spaces to this event, {{ $it->capacity }} tickets are remaining</p>
+									<h5 align="middle">{!! $itinArray->name !!}</h5>
+									<p>Date: {{ $itinArray->date }}</p> 
+									<p>{{ $itinArray->blurb }}</p>
 								</div>
 							@endforeach
 					</div>
@@ -70,47 +59,47 @@
 					<div class="row col s12">
 						<h5 class="title" align="middle">Event Media</h5>
 						@if (count($medias) != 0)
+							@foreach ($medias as $media)
+								<div class="col s6">
+									@if ($media->media == 'jpg' || $media->media == 'jpeg' || $media->media == 'png')
+										<img class="materialboxed responsive-img" width="300" src="{{ asset('images/media/'.$media->id.'.'.$media->media) }}">
+									@endif
+								</div>
+							@endforeach
 
-							<div class="carousel">
-								@foreach ($medias as $media) 
-									<a class="carousel-item" href="{!!'#img' . $media->id !!}">
-										<img src="{{ asset('images/media'.'/'.$media->id.'.'.$media->media) }}"> <!-- style="width:250; heigth:250;"> -->
-									</a>
-								@endforeach
-							</div>
-
-							<div class="carousel carousel-slider">
-								@foreach ($medias as $media) 
-									<a class="carousel-item" href="{!!'#img' . $media->id !!}">
-										<img src="{{ asset('images/media'.'/'.$media->id.'.'.$media->media) }}"> <!-- style="width:800 !impo; heigth:400;"> -->
-									</a>
-								@endforeach
-							</div>
+							@foreach ($medias as $media)
+								@if ($media->media == 'mp4')
+									<div class="col s6">
+										<video class="responsive-video" controls>
+											<source src="{{ asset('images/media/'.$media->id.'.'.$media->media) }}" type="video/mp4">
+										</video>
+									</div>
+								@endif
+							@endforeach
 						@else
 							<p align="middle">There is no media for this event</p>
 						@endif
 
-						<!-- @if (auth::guest())
+						@if (auth::guest())
 							<p>You must be logged in, in order to upload media</p>
 							<p><a href="{{ url('/auth/login') }}">Log in</a> or <a href="{{ url('/auth/register') }}">Register</a></p>
-						 -->
+						@else
 							<div class="row col s12">
-								{!! Form::open(array('url' => 'media', 'files' => 'true', 'class' => 'form')) !!}
-								{!! Form::hidden('user_id', auth::id()) !!}
-								{!! Form::hidden('event_id', $event->id) !!}
-									<h5 class="title col s12">Upload Event media</h5>
+								{!! Form::open(array('url' => 'media', 'files' => 'true')) !!}
+									{!! Form::hidden('user_id', auth::id()) !!}
+									{!! Form::hidden('event_id', $event->id) !!}
+									<h5 class="title col s12">Upload Images</h5>
 									<p>You can upload files of the following size and type:</p>
 									<ul>
 										<li>Image Size:</li>
-										<li>Image Types:</li>
-										<li>Video Size:</li>
-										<li>Video Types:</li>
+										<li>Image Types: jpeg, jpg or png</li>
 									</ul>
 									<div class="divider col s12"></div>
 
+									<!-- Image Upload -->
 									<div class="file-field input-field col s12">
-										<div class="btn indigo lighten-1">
-											<span>Upload Event Media</span>
+										<div class="btn">
+											<span>Upload Images</span>
 											<input name="image" type="file">
 										</div>				
 										<div class="file-path-wrapper">
@@ -119,20 +108,68 @@
 									</div>
 
 									<div class="input-field col s12">
-										{!! Form::submit('Upload Media!', array('class'=>'btn indigo lighten-1')) !!}
+										{!! Form::submit('Upload Images!', array('class'=>'btn col s6 offset-s3')) !!}
 									</div>
 								{!! Form::close() !!}
 							</div>
-						<!-- @endif -->
+
+							<div class="row col s12">
+								{!! Form::open(array('url' => 'media', 'files' => 'true')) !!}
+									{!! Form::hidden('user_id', auth::id()) !!}
+									{!! Form::hidden('event_id', $event->id) !!}
+									<h5 class="title col s12">Upload Videos</h5>
+									<p>You can upload files of the following size and type:</p>
+									<ul>
+										<li>Video Size:</li>
+										<li>Video Types: mp4</li>
+									</ul>
+									<div class="divider col s12"></div>
+
+									<!-- Video upload -->
+									<div class="file-field input-field col s12">
+										<div class="btn">
+											<span>Upload Videos</span>
+											<input name="video" type="file">
+										</div>				
+										<div class="file-path-wrapper">
+											<input class="file-path validate type="text>
+										</div>
+									</div>
+
+									<div class="input-field col s12">
+										{!! Form::submit('Upload Video!', array('class'=>'btn col s6 offset-s3')) !!}
+									</div>
+								{!! Form::close() !!}
+							</div>
+						@endif
 					</div>
 				</div>
+
+				<div id="media">
+					@foreach ($medias as $media)
+						@if ($media->flagged == 1)	
+							@if ($media->media == 'jpg' || $media->media == 'jpeg' || $media->media == 'png')
+								<div class="col s6">
+									<img class="materialboxed responsive-img" width="300" src="{{ asset('images/media/'.$media->id.'.'.$media->media) }}">
+								</div>
+							@endif
+
+							@if ($media->media == 'mp4')
+								<div class="col s6">
+									<video class="responsive-video" controls>
+										<source src="{{ asset('images/media/'.$media->id.'.'.$media->media) }}" type="video/mp4">
+									</video>
+								</div>
+							@endif
+						@endif
+					@endforeach
+				</div>
+
 			</div>
 		</div>
 	</div>
 
 	<script>
-		$(document).ready(function(){
-			$('.carousel').carousel();
-		});
+
 	</script>
 @endsection

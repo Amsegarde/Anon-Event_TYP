@@ -16,7 +16,6 @@ Route::get('about', 'AboutController@index');
 Route::get('about/contact', 'AboutController@create');
 Route::get('/', 'HomePageController@index');
 
-Route::post('media', 'EventController@media');
 Route::get('events', 'EventController@browse');
 Route::post('events', 'EventController@browse');
 Route::get('events/past', 'EventController@browsePast');
@@ -41,6 +40,8 @@ Route::delete('events/{id}/delete/confirm', [
 
 
 Route::get('events/{id}','EventController@show');
+Route::post('events/{id}',
+	['as' => 'media', 'uses' => 'EventController@media']);
 Route::post('events/{id}', 
 	['as' => 'contact_attendees', 'uses' => 'EventController@sendMessage']);
 
