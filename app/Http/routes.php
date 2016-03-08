@@ -57,12 +57,19 @@ Route::get('organisation/dashboard', 'OrganisationController@dashboard');
 Route::get('organisation', 'OrganisationController@index');
 Route::post('organisation', 'OrganisationController@store');
 Route::get('organisation/favourite', 'OrganisationController@myFavourites');
+
+Route::get('organisation/{id}/unfavourite', 'OrganisationController@unFavourite');
+Route::get('organisation/{id}/favourite', 'OrganisationController@favourite');
 Route::get('organisation/{id}', 'OrganisationController@show');
-Route::post('organisation/{id}/favourite', 'OrganisationController@favourite');
+
+// Route::post('organisation/{id}/favourite', 'OrganisationController@favourite');
+
 Route::post('organisation/{id}', 
 	['as' => 'contact_followers', 'uses' => 'OrganisationController@contactFollowers']);
 Route::post('organisation/{id}/account/update', 
  	['as' => 'update_organisation', 'uses' => 'OrganisationController@updateOrganisation']);
+Route::post('organisation/{id}/addAdmin', 
+ 	['as' => 'add_admin', 'uses' => 'OrganisationController@addAdmin']);
 
 
 

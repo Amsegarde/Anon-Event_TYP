@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTicketsTable extends Migration {
+class CreateItineraryTicketsTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,14 +12,11 @@ class CreateTicketsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('tickets', function(Blueprint $table)
+		Schema::create('itinerary_tickets', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('user_id');
-			$table->integer('event_id');
-			$table->integer('type')->nullable();
-			$table->integer('quantity')->nullable();
-			$table->integer('order_number');
+			$table->integer('ticket_id');
+			$table->string('title');
 			$table->timestamps();
 		});
 	}
@@ -31,7 +28,7 @@ class CreateTicketsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('tickets');
+		Schema::drop('itinerary_tickets');
 	}
 
 }

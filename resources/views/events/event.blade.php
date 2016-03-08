@@ -312,7 +312,7 @@
 
 						<!-- Modal Structure -->
 						<div id="modal1" class="modal">
-					    	<div class="modal-content">
+					    	<div class="modal-content" id="ticketTable">
 						    	{!! Form::open(array('url' => 'events/' . $event->id . '/ticket/confirm', 'class' => 'form')) !!}
 									{!!  Form::hidden('eventID', $event->id) !!}
 									{!!  Form::hidden('eventName', $event->name) !!}
@@ -430,6 +430,6 @@
 		
 		// For the Rich Text Editor
 		CKEDITOR.replace( 'bio' );
-
+		
 	</script>
 @endsection

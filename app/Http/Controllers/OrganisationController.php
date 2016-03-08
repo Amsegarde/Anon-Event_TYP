@@ -13,8 +13,8 @@ use App\Http\Requests\ChangeEmailRequest;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Validator;
 use Illuminate\Support\Facades\URL;
-//use Illuminate\Support\Facades\Request;
-//use Request;
+use Illuminate\Support\Facades\Redirect;
+
 use DB;
 use Input;
 use Mail;
@@ -37,8 +37,9 @@ class OrganisationController extends Controller {
 										$query->select('organisation_id')
 										->from('admins')
 										->where('user_id', '=', '?')
+
 										->setBindings([$id]);
-								})->get();
+								})->orderBy('name', 'asc')->get();
 
 		return view('organisation.index', compact('organisations'));
 	}
@@ -221,6 +222,22 @@ class OrganisationController extends Controller {
 
 		return redirect('organisation/' . $id);
 	}
+
+	/**
+	 * Favourite an organisation.
+	 *
+	 * @return organisation page.
+	 */
+	public function unFavourite($id) {
+
+		$userID = Auth::user()->id;
+		$unfavourite = DB::table('favourite_organisations')
+										->where('organisation_id', '=', $id)
+										->where('user_id', '=', $userID)
+										->delete();
+
+		return redirect('organisation/' . $id);
+	}	
 
 	/**
 	 * Displays the users favourited organisations.
@@ -432,5 +449,29 @@ class OrganisationController extends Controller {
        	return $this->show($id);
 	}
 
+	public function addAdmin(Request $request) {
+		$userID = Auth::user()->id;
+		$orgID = $request->organisationID;
+		
+		if (User::where('email', '=', Input::get('email'))->exists()) {
+			$user = User::where('email', '=', $request->email)->first();
+			$admin = new Admin;
+			$admin->user_id = $user->id;
+			$admin->organisation_id = $orgID;
+			$admin->save();
+			return redirect('organisation/' . $orgID);
+		} else {
+			return Redirect::back()->with('message','That is not a registered email!');
+		}
+	}
 
+	/**
+	 * Get the failed registered email error.
+	 *
+	 * @return string
+	 */
+	protected function getFailedEmailMessage()
+	{
+		return 'That is not a regisered email!';
+	}
 }

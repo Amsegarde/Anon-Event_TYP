@@ -318,23 +318,23 @@
 
     	} 
     	newrow.innerHTML =	'<td>'+
-    	'<select class="ticketSelect" name="tickets[]">'+
-    	'<option value="free">Free</option>'+
-    	'<option value="paid">Paid</option>'+
-    	'<option value="students">Students</option>'+
-    	'<option value="oap">OAP</option>'+
-    	'<option value="early_bird">Early Bird</option>'+
-    	'<option value="rsvp">R.S.V.P</option>'+
-    	'</select>'+
-    	'</td>	'+
-    	'<td>'+
-    	'<div class="form-group">'+
-    	'<input type="number" name="tickets[]" step="0.50" class="form-control" />'+
-    	'</div>'+
-    	'</td>'+
-    	'<td>'+
-    	'<input type="button" step="0.50" class="btn" value="-" onClick="removeTicket(ticket'+ nextTicket+');" />'+
-    	'</td>';
+	    	'<select class="ticketSelect" name="tickets[]">'+
+	    	'<option value="free">Free</option>'+
+	    	'<option value="paid">Paid</option>'+
+	    	'<option value="students">Students</option>'+
+	    	'<option value="oap">OAP</option>'+
+	    	'<option value="early_bird">Early Bird</option>'+
+	    	'<option value="rsvp">R.S.V.P</option>'+
+	    	'</select>'+
+	    	'</td>	'+
+	    	'<td>'+
+	    	'<div class="form-group">'+
+	    	'<input type="number" name="tickets[]" step="0.50" class="form-control" />'+
+	    	'</div>'+
+	    	'</td>'+
+	    	'<td>'+
+	    	'<input type="button" step="0.50" class="btn" value="-" onClick="removeTicket(ticket'+ nextTicket+');" />'+
+	    	'</td>';
 
     	document.getElementById(divName).appendChild(newrow);  
     	ticketCounter++;
@@ -368,6 +368,7 @@
            									+"</div>"
            									+"<input type='button' id='addButton' class='btn col s4 offset-s1' value='Add Suggestion' onClick='addSuggestion(locations);'>"
 					 						+"<input type='button' class='btn col s4 offset-s2' value='Remove Poll' onClick='togglePoll(locations);'>";
+
     	}else{
     		locationPolled = false;
     		numOfSuggestions = 0;

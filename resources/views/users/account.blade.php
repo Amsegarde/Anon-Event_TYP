@@ -2,12 +2,6 @@
 
 @section('content')
 
-<div class="container">
-	<div class="row">
-		<div class="col-md-10 col-md-offset-1">
-			<div class="panel panel-default">
-
-				
 				<div class="row">
 					<p><?php 
 						echo Session::get('message');
@@ -92,7 +86,7 @@
 															
 								<!-- Submit Button -->
 								<div class="input-field col s12">
-									{!! Form::submit('Update Details!', array('class'=>'btn indigo lighten-1')) !!} 
+									{!! Form::submit('Update Details!', array('class'=>'btn')) !!} 
 								</div>
 							</div>
 						{!! Form::close() !!}
@@ -113,8 +107,5 @@
 
 						</script>
 				@endif
-			</div>
-		</div>
-	</div>
-</div>
+
 @endsection
