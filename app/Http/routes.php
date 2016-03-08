@@ -69,6 +69,8 @@ Route::post('organisation/{id}/account/update',
  	['as' => 'update_organisation', 'uses' => 'OrganisationController@updateOrganisation']);
 Route::post('organisation/{id}/addAdmin', 
  	['as' => 'add_admin', 'uses' => 'OrganisationController@addAdmin']);
+Route::post('organisation/{id}/removeAdmin', 
+ 	['as' => 'remove_admin', 'uses' => 'OrganisationController@removeAdmin']);
 
 
 

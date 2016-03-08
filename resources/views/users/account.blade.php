@@ -3,10 +3,7 @@
 @section('content')
 
 				<div class="row">
-					<p><?php 
-						echo Session::get('message');
-						?>
-					</p>
+					<p><?php echo Session::get('message'); ?></p>
 				</div>
 				
 				@if (Auth::guest())

@@ -465,6 +465,19 @@ class OrganisationController extends Controller {
 		}
 	}
 
+	public function removeAdmin(Request $request) {
+		$userID = Auth::user()->id;
+		$orgID = $request->organisationID;
+		
+		if (User::where('email', '=', Input::get('email'))->exists()) {
+			$user = User::where('email', '=', $request->email)->first();
+			$removeAdmin = Admin::where('user_id', '=', $user->id)->delete();
+			return redirect('organisation/' . $orgID);
+		} else {
+			return Redirect::back()->with('message','That is not a registered email!');
+		}
+	}
+
 	/**
 	 * Get the failed registered email error.
 	 *

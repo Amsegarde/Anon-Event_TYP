@@ -2,7 +2,7 @@
 
 @section('content')
 	<div class="row">
-		<p style="color:red;"><? php echo Session::get('message'); ?></p>
+		<p style="color:red;"><?php echo Session::get('message'); ?></p>
 	</div>
 
 	<div class="info-block">
@@ -19,7 +19,7 @@
 			<p><a id="btn-width" class="waves-effect waves-light btn modal-trigger" href="#modal1">Contact Followers</a></p>
 			<p><a id="btn-width" class="waves-effect waves-light btn modal-trigger" href="#modal2">Delete Organisation</a></p>
 			<p><a id="btn-width" class="waves-effect waves-light btn modal-trigger" href="#modal3">Update Details</a></p>
-			<p><a id="btn-width" class="waves-effect waves-light btn modal-trigger" href="#modal4">Admins</a></p>
+			<p><a id="btn-width" class="waves-effect waves-light btn modal-trigger" href="#modal4"> Add/Remove Admin</a></p>
 		</div>
 
 
@@ -122,8 +122,19 @@
 			</div>
 		</div><!-- END UPDATE DETAILS DIV -->
 
-		<!-- ADD ADMIN -->
+		<!-- ADD OR REMOVE ADMIN -->
 		<div id="modal4" class="modal">
+	    	<div class="modal-content">
+		    	<h4>Add or Remove Admin</h4>
+		    	<p>
+					<a id="add-remove-width" class="waves-effect waves-light btn modal-trigger" href="#modal5">Add</a>
+					<a id="add-remove-width" class="waves-effect waves-light btn modal-trigger" href="#modal6">Remove</a>
+				</p>
+		    </div>
+		</div><!-- END ADD ADMIN DIV -->
+
+		<!-- ADD ADMIN -->
+		<div id="modal5" class="modal">
 	    	<div class="modal-content">
 		    	<h4>Add a new admin for {{ $org->name }}</h4>
 
@@ -147,6 +158,31 @@
 				{!! Form::close() !!}
 		    </div>
 		</div><!-- END ADD ADMIN DIV -->
+
+		<!-- REMOVE ADMIN -->
+		<div id="modal6" class="modal">
+	    	<div class="modal-content">
+		    	<h4>Add a new admin for {{ $org->name }}</h4>
+
+				{!! Form::open(array('route' => 'remove_admin', 'class' => 'form')) !!}
+					{!! Form::hidden('organisationID', $org->id) !!}
+					<div class="form-group">
+					    {!! Form::label('Enter User Email') !!}
+					    {!! Form::text('email', null, 
+					        array('required', 
+					              'class'=>'form-control', 
+					              'placeholder'=>'Email')) !!}
+					</div>
+
+					<div class="form-group">
+					    {!! Form::submit('Remove', 
+					      array('class'=>'btn btn-primary')) !!}
+					      <a href="">Cancel</a>
+					</div>
+
+				{!! Form::close() !!}
+		    </div>
+		</div><!-- END ADD ADMIN DIV -->
 	
 
 	@elseif ($hasFavourited === true) 
@@ -159,7 +195,7 @@
 		</div>
 	@endif
 
-	<div class="col s9">
+	<div id="eve" class="col s9">
 		@foreach ($events as $event)
 		<a href="{{ url('events/' . $event->id) }}">
 			<div class="card small" id="browse">
