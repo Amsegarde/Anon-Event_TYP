@@ -53,20 +53,22 @@
 <div class="row">
 	<h4>Upcoming Events</h4>
 	@foreach ($events as $event)
-	<div class="card small col s4">
-		<div class="card-image">
-			<img class="responsive-img" src="{{ asset('images/events/').'/'.$event->id.'.'.$event->image }}">
-			
-		</div>
-			<div class="card-content">
-				<span class="card-title">{{ $event->name }}</span>
-				<p>{!! $event->start_date !!}</p>
-				<p>{!! $event->bio !!}</p>
-		</div>
-		<div class="card-action">
-			<a href="{{ url('/events/'.$event->id) }}">More Info</a>
-		</div>
-	</div>
+    <a href="{{ url('/events/'.$event->id) }}">
+    	<div id="hom" class="card small col s3">
+    		<div class="card-image">
+    			<img class="responsive-img" src="{{ asset('images/events/').'/'.$event->id.'.'.$event->image }}">
+    			
+    		</div>
+    			<div class="card-content">
+    				<span class="card-title">{{ $event->name }}</span>
+    				<p>{!! $event->start_date !!}</p>
+    				<p>{!! $event->bio !!}</p>
+    		</div>
+    		<div class="card-action">
+    			<a href="{{ url('/events/'.$event->id) }}">More Info</a>
+    		</div>
+    	</div>
+    </a>
 	@endforeach
 </div>
 
