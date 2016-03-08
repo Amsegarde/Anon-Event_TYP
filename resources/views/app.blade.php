@@ -181,8 +181,16 @@
 				width: 50%;
 			}
 
-			ul.error-message {
-				
+			#add-remove-width {
+				width: 25%
+			}
+
+			#eve {
+				clear:both;
+			}
+
+			.fav-block {
+				clear:both;
 			}
 
 		</style>

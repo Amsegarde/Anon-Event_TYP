@@ -150,11 +150,13 @@
 	
 
 	@elseif ($hasFavourited === true) 
-		
-		<a class="waves-effect waves-light btn modal-trigger" href="{{ url('/organisation/' . $org->id . '/unfavourite') }}">UnFavourite</a>
-
+		<div class="fav-block">
+			<a class="waves-effect waves-light btn modal-trigger" href="{{ url('/organisation/' . $org->id . '/unfavourite') }}">UnFavourite</a>
+		</div>
 	@else
-		<a class="waves-effect waves-light btn modal-trigger" href="{{ url('/organisation/' . $org->id . '/favourite') }}">Favourite</a>
+		<div class="fav-block">
+			<a class="waves-effect waves-light btn modal-trigger" href="{{ url('/organisation/' . $org->id . '/favourite') }}">Favourite</a>
+		</div>
 	@endif
 
 	<div class="col s9">
