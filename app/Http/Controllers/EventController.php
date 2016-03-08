@@ -580,11 +580,11 @@ public function close_date_vote(Request $request){
 	}
 
 	public function media(Request $request) {
-		echo "here";
-		$this->validate($request, [
-			'image' => 'mimes:png|mimes:jpg|mimes:jpeg',
-			'video' => 'mimes:mp4'
-			]);
+
+		// $this->validate($request, [
+		// 	'image' => 'mimes:png|mimes:jpg|mimes:jpeg',
+		// 	'video' => 'mimes:mp4'
+		// 	]);
 
 		$media = new Media;
 
@@ -593,7 +593,7 @@ public function close_date_vote(Request $request){
 		$media->flagged = false;
 		$media->save();
 
-		echo $media;
+
 
 		if (Input::hasFile('image')){
 			$uploadFile = Input::file('image');
@@ -603,27 +603,25 @@ public function close_date_vote(Request $request){
 
 			Input::file('image')->move($destinationPath, $filename);
 			$media->media = $uploadFile->getClientOriginalExtension();	
-		} else {
-			$media->media = '';
+			$media->save();
+
 		}
-		$media->save();
 
 		if (Input::hasFile('video')){
-			$uploadFile = Input::file('image');
+			$uploadFile = Input::file('video');
 			$filename = $media->id . '.' . $uploadFile->getClientOriginalExtension(); 
 
 			$destinationPath = base_path() . '/public/images/media/';
 
-			Input::file('image')->move($destinationPath, $filename);
+			Input::file('video')->move($destinationPath, $filename);
 			$media->media = $uploadFile->getClientOriginalExtension();	
-		} else {
-			$media->media = '';
-		}
-		$media->save();
+			$media->save();
+		} 
+		
 
 		// Youtube link
 
-		//return redirect::back()->with('message', 'Media Uploaded');
+		return redirect::back()->with('message', 'Media Uploaded');
 
 	}
 

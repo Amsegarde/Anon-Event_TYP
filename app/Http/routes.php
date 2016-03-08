@@ -40,7 +40,7 @@ Route::delete('events/{id}/delete/confirm', [
 
 
 Route::get('events/{id}','EventController@show');
-Route::post('events/{id}',
+Route::post('events/{id}/past/media',
 	['as' => 'media', 'uses' => 'EventController@media']);
 Route::post('events/{id}', 
 	['as' => 'contact_attendees', 'uses' => 'EventController@sendMessage']);

@@ -62,18 +62,22 @@
 							@foreach ($medias as $media)
 								<div class="col s6">
 									@if ($media->media == 'jpg' || $media->media == 'jpeg' || $media->media == 'png')
-										<img class="materialboxed responsive-img" width="300" src="{{ asset('images/media/'.$media->id.'.'.$media->media) }}">
+										<img class="materialboxed responsive-img col s10" width="300" src="{{ asset('images/media/'.$media->id.'.'.$media->media) }}">
+										<a class="btn col s2" href="">Report</a>
 									@endif
+									
 								</div>
 							@endforeach
 
 							@foreach ($medias as $media)
 								@if ($media->media == 'mp4')
 									<div class="col s6">
-										<video class="responsive-video" controls>
+										<video class="responsive-video col s10" controls>
 											<source src="{{ asset('images/media/'.$media->id.'.'.$media->media) }}" type="video/mp4">
 										</video>
+										<a class="btn col s2" href="">Report</a>
 									</div>
+									
 								@endif
 							@endforeach
 						@else
@@ -85,7 +89,7 @@
 							<p><a href="{{ url('/auth/login') }}">Log in</a> or <a href="{{ url('/auth/register') }}">Register</a></p>
 						@else
 							<div class="row col s12">
-								{!! Form::open(array('url' => 'media', 'files' => 'true')) !!}
+								{!! Form::open(array('route' => 'media', 'files' => 'true')) !!}
 									{!! Form::hidden('user_id', auth::id()) !!}
 									{!! Form::hidden('event_id', $event->id) !!}
 									<h5 class="title col s12">Upload Images</h5>
@@ -103,7 +107,7 @@
 											<input name="image" type="file">
 										</div>				
 										<div class="file-path-wrapper">
-											<input class="file-path validate type="text>
+											<input  style="text-transform:lowercase;" class="file-path validate type="text>
 										</div>
 									</div>
 
@@ -114,7 +118,7 @@
 							</div>
 
 							<div class="row col s12">
-								{!! Form::open(array('url' => 'media', 'files' => 'true')) !!}
+								{!! Form::open(array('route' => 'media', 'files' => 'true')) !!}
 									{!! Form::hidden('user_id', auth::id()) !!}
 									{!! Form::hidden('event_id', $event->id) !!}
 									<h5 class="title col s12">Upload Videos</h5>
@@ -132,7 +136,7 @@
 											<input name="video" type="file">
 										</div>				
 										<div class="file-path-wrapper">
-											<input class="file-path validate type="text>
+											<input style="text-transform:lowercase;" class="file-path validate type="text>
 										</div>
 									</div>
 
